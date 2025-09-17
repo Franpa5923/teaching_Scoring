@@ -1,0 +1,1973 @@
+---
+title: "Scoring"
+subtitle: "M2 D3S/EGR 2025-2026"
+format: clean-revealjs
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+author:
+  - name: Louis Olive
+    email: louis.olive@gmail.com / louis.olive@ut-capitole.fr
+date: 2025-09-10
+bibliography: references_intro.bib
+csl: apa.csl
+---
+
+# Outline {background-color="#40666e"}
+
+<!-- Quick and dirty -->
+<!-- Lightbox Figures not working with Revealjs / https://quarto.org/docs/output-formats/html-lightbox-figures.html -->
+<!-- https://stackoverflow.com/questions/56361986/zoom-function-in-rmarkdown-html-plot/59401761#59401761 -->
+
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js""></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').prepend('<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>');
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src')).css({width: '100%'});
+      $('.zoomDiv').css({opacity: '1', width: 'auto', border: '1px solid white', borderRadius: '5px', position: 'fixed', top: '50%', left: '50%', marginRight: '-50%', transform: 'translate(-50%, -50%)', boxShadow: '0px 0px 50px #888888', zIndex: '50', overflow: 'auto', maxHeight: '100%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'}); 
+    });
+  });
+</script>
+
+## Outline
+
+:::{.extrapad}
+- Course logistics
+
+- Corporate bankruptcies
+
+- Scoring
+
+- (Warm Up) Desbois case study
+
+:::
+
+# Course logistics {background-color="#40666e"}
+
+## Course logistics {.smaller}
+### Logistics/Prerequisites
+
+:::{.extrapad}
+- Material available/uploaded at [https://github.com/louis-olive/teaching_Scoring](https://github.com/louis-olive/teaching_Scoring) and partially on Moodle
+
+- Email: louis.olive@gmail.com / louis.olive@ut-capitole.fr (copy both with [TSE - SCORING] as object)
+
+- Personal laptop or university desktop / Running RStudio using [Quarto](https://quarto.org/docs/get-started/hello/rstudio.html) or [R Markdown](https://rmarkdown.rstudio.com) for reports
+
+- Basic knowledge of math, statistics / Good command of R (if not you'll have to learn it throughout the course)
+:::
+
+## Course logistics {.smaller}
+### Agenda
+
+:::{.extrapad}
+- Part 1 (9h): Methods
+
+    Wed 10 Sep / Tue 16 Sep / Wed 24 Sep / Wed 1 Oct / Mon 6 Oct / Wed 8 Oct
+
+
+- Part 2 (15h): Case study / project by group of students
+
+    Mon 13 Oct / Wed 15 Oct / Mon 27 Oct / Wed 29 Oct / Mon 3 Nov / Wed 5 Nov / Wed 12 Nov / Mon 17 Nov / Wed 19 Nov / Wed 26 Nov
+
+Throughout the course, the emphasis is put on numerical examples with a hands on / code from scratch approach. 
+
+Codes are given in R.
+:::
+
+## Course logistics {.smaller}
+### Grading
+
+:::{.extrapad}
+- Part 1 (8 Oct: 1.5 hour in-class exam / additional take home due 19 Oct): 
+
+    In-class data analysis on a real data set including data exploration and applications from the course, followed by a take-home assignment with additional tasks (report with text + R code, 40%).
+    
+
+- Part 2 (19 Oct group composition / 26 Nov: in-class presentation of your project progress, should be almost finished / final report due date: TBD but before Christmas):
+
+    Case study / project per group of students (in-class presentation + report, 60%).
+:::
+
+## Course logistics {.smaller}
+### Agenda - Part 1 (9h): Methods
+
+:::{.extrapad}
+- Statistical learning goals and vocabulary are defined in the context of scoring and classification (10 Sep).
+
+- Introduction and study of two workhorses: 
+
+    - Logistic Regression: model fit, inference, selection, penalization (16/24 Sep);
+    
+    - Decision Trees for Classification / (Gradient) Boosting (1/6 Oct).
+:::
+
+## Course logistics {.smaller}
+### Agenda - Part 2 (15h): Case study / project by group 
+
+
+- Credit risk is one of the various application of scoring. 
+
+- Case study using a real life data set, you will be given a set of tasks to perform in group:
+    
+    - Defining the problem / Building the data set [Getting/Cleansing/Enriching Data] / Exploration / Baseline model / Model evaluation pipeline
+    
+    - Implementing Logistic Regression and Tree based methods
+    
+    - “Expert” approach: Implementing ideas from academic literature on credit risk (involving in particular feature engineering)
+    
+    - “Off the shelf” approach: lasso for variable selection, gradient boosting
+    
+    - (Optionnal/Time permitting) more advanced topics: dealing with data imbalance, model calibration, interpretable ML (SHAP/PDP)
+    
+- A final presentation (group/one-to-one short meeting sketching the highlights your project, 26 Nov). The writing of a final report implementing/documenting your analysis (due date, TBD before Christmas).
+
+
+## Course logistics {.smaller}
+### Material
+
+- **Logistic regression/Scoring:**
+    
+    Hosmer D.W., Lemeshow S. and Sturdivant  R.X. (2013). Applied Logistic Regression, Wiley.
+
+    Cornillon P.A., Matzner-Løber E., Rouvière L. (2019). Régression avec R, Springer (in French). I borrow a lot from this one.
+
+- **Statistical Learning/Decision Trees/Boosting:**
+
+    Hastie T., Tibshirani R. and Friedman. J. (2009). The Elements of Statistical Learning: Data Mining, Inference and Prediction, Springer. [available here](https://hastie.su.domains/ElemStatLearn/printings/ESLII_print12_toc.pdf)
+
+    Lindholm, A. and Wahlström, N., Lindsten, F. and Schön, T. (2022). Machine Learning - A First Course for Engineers and Scientists, Cambridge University Press. [latest draft available here](https://smlbook.org/book/sml-book-draft-latest.pdf)
+    
+    Murphy, K. P. (2022). Probabilistic Machine Learning: An introduction, MIT Press. [available here](https://github.com/probml/pml-book/releases/latest/download/book1.pdf) or [here](https://probml.github.io/pml-book/book1.html)
+
+
+# Corporate bankruptcies {background-color="#40666e"}
+
+## Corporate bankruptcies - US - 2024{.smaller}
+### Newspaper headline
+
+
+![](images/news_us_bankruptcies_ft.png){.r-stretch}
+
+
+Source: [Financial Times](https://www.ft.com/content/ac3c1e2f-c9bc-417e-a686-7170e1bf8533), January 7 2025
+
+
+## Corporate bankruptcies - US - 2024{.smaller}
+### Newspaper headline
+
+
+![](images/news_us_bankruptcies_echos.png){.r-stretch}
+
+
+Source: [Les Echos](https://www.lesechos.fr/monde/etats-unis/aux-etats-unis-les-faillites-dentreprises-a-leur-plus-haut-depuis-2010-2140819), January 7 2025
+
+
+## Corporate bankruptcies - US - 2024{.smaller}
+### Newspaper source
+
+![](images/news_us_bankruptcies_s&p.png){.r-stretch}
+
+
+Source: [S&P Global Market](https://www.spglobal.com/marketintelligence/en/news-insights/latest-news-headlines/us-corporate-bankruptcies-soar-to-14-year-high-in-2024-61-filings-in-december-87008718), January 7 2025
+
+## Corporate bankruptcies - US - 2025 YTD{.smaller}
+### Update
+
+![](images/news_us_bankruptcies_s&p_jul25.png){.r-stretch}
+
+Source: [S&P Global Market](https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/7/63-us-corporate-bankruptcies-in-june-set-up-2025-for-highest-pace-since-2010-91441423), July 8 2025 
+
+## Corporate bankruptcies - US - 2025 YTD{.smaller}
+### Update
+
+![](images/news_us_bankruptcies_s&p_aug25.png){.r-stretch}
+
+Source: [S&P Global Market](https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/8/july-us-corporate-bankruptcy-filings-hit-highest-monthly-total-in-5-years-91873904), August 6 2025 
+
+## Corporate bankruptcies - US - 2025 YTD{.smaller}
+### Update
+
+![](images/news_us_bankruptcies_s&p_aug25_graph.png){.r-stretch}
+
+Source: [S&P Global Market](https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/8/july-us-corporate-bankruptcy-filings-hit-highest-monthly-total-in-5-years-91873904), August 6 2025 
+
+## Corporate bankruptcies - FR - 2024{.smaller}
+### Newspaper headline
+
+![](images/news_fr_bankruptcies_echos.png){.r-stretch}
+
+Source: [Les Echos](https://www.lesechos.fr/economie-france/conjoncture/record-de-defaillances-dentreprises-en-france-pas-declaircie-en-vue-2141233), January 8 2025
+
+## Corporate bankruptcies - FR - 2024{.smaller}
+### Newspaper source
+
+![](images/news_fr_bankruptcies_bpce.png){.r-stretch}
+
+Source: [BPCE L’Observatoire](https://newsroom.groupebpce.fr/actualites/etude-defaillances-dentreprises-en-france-les-defaillances-de-pme-eti-au-plus-haut-en-2024-b0b3d-7b707.html), January 8 2025
+
+## Corporate bankruptcies - FR - 2024{.smaller}
+### Alternative source
+
+![](images/news_en_bankruptcies_bdf_lt.png){.r-stretch}
+
+Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12), January 17 2025
+
+## Corporate bankruptcies - FR - 2024{.smaller}
+### Alternative source
+
+![](images/news_en_bankruptcies_bdf.png){.r-stretch}
+
+Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12), January 17 2025
+
+## Corporate bankruptcies - FR - 2024{.smaller}
+### Alternative source
+
+![](images/news_en_bankruptcies_bdf_sector.png){.r-stretch}
+
+Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12), January 17 2025
+
+## Corporate bankruptcies - FR - 2025 YTD{.smaller}
+### Alternative source
+
+![](images/news_en_bankruptcies_bdf_lt_ytd205.png){.r-stretch}
+
+Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2025-07), September 5 2025
+
+## Corporate bankruptcies - FR - 2025 YTD{.smaller}
+### Alternative source
+
+![](images/news_en_bankruptcies_bdf_ytd205.png){.r-stretch}
+
+Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2025-07), September 5 2025
+
+
+
+## Corporate bankruptcies{.smaller}
+### Some definitions
+
+
+FR: ["défaillance"](https://www.insee.fr/fr/metadonnees/definition/c1617)
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/insee_defaillance_fr.png)
+:::
+
+::: {.column width="50%"}
+
+![](images/insee_bankruptcy_us.png)
+:::
+
+::::
+
+US: [Chapter 11](https://en.wikipedia.org/wiki/Chapter_11,_Title_11,_United_States_Code) bankruptcy / [Chapter 7](https://en.wikipedia.org/wiki/Chapter_7,_Title_11,_United_States_Code) bankruptcy
+
+
+## Corporate bankruptcies{.smaller}
+### A complex phenomenon
+
+![](images/bardos_scoring_lda.png){.r-stretch}
+
+Source: [@bardos2007]
+
+
+# Scoring {background-color="#40666e"}
+
+## Scoring{.smaller}
+### Supervised learning - a reminder
+
+This an informal and very rapid overview of Statistical Learning, where we introduce concepts and definitions. 
+
+For a rigorous introduction see for example the dedicated lesson from [Sébastien Gadat - M1 course on Mathematical Statistics](https://perso.math.univ-toulouse.fr/gadat/files/2012/12/Intro_Stat_Learning.pdf) or the book by [Francis Bach - Learning Theory from First Principles](https://www.di.ens.fr/%7Efbach/ltfp_book.pdf).
+
+## Scoring{.smaller}
+### Supervised learning - Inputs-Outputs
+
+We follow here the terminology of @hastie2009. 
+
+The problem: we are given a data set where some variables, denoted as **inputs**[^1], have some influence on one or more **output(s)**[^2].
+
+[^1]: In statistics, inputs are often called the predictors, factors or the independent variables. In machine learning the term features is also used.
+
+[^2]: The outputs are also called responses, labels or dependent variables.
+
+We will denote inputs by the symbol $X$ having values in $\mathrm{X}$ (to explicit things we will consider $\mathrm X$ is $\mathbb R^p$). 
+
+If $X$ is a vector, its components can be accessed by subscripts $X_j$, $j = 1, . . . , p$.
+
+Outputs will be denoted by $Y$ having value in $\mathrm Y$.
+
+## Scoring{.smaller}
+### Supervised learning - Framework
+Outputs are denoted by $Y$ having value in $\mathrm Y$:
+
+-   When $\mathrm Y$ is $\mathbb R$, it is a **regression problem**;
+
+-   When $\mathrm Y$ is a discrete set, it is a **classification problem** (for example $\mathrm Y$ is $\{0,1\}$ for binary classification). In this course we will restrict to the case of **binary classification**.
+
+
+We need data to construct predictions or classifications. We suppose we have available a set of observed data:
+
+$(x_i, y_i) \in \mathrm X \times \mathrm Y$ , $i = 1, \cdots ,n$, known as the **learning** or **training** set, with which to construct our prediction.
+
+We assume $(x_i, y_i) \in \mathrm X \times \mathrm Y$ are generated i.i.d. from $\mathbf P_{\mathrm X \times \mathrm Y}$ where we denote $\mathbf P_{\mathrm X \times \mathrm Y}$, the data generating distribution (or underlying probability distribution or joint law) which is unknown.
+
+The main goal of supervised learning will be to predict unobserved outputs $y$ given unobserved inputs $x$ using the learning set.
+
+Such new or unobserved data is referred as the **testing** set.
+
+## Scoring{.smaller}
+### Supervised learning - Loss
+
+To achieve that goal we try to find a "best" or optimal **classifier** (or prediction function in general):
+
+$$
+f: \mathrm X \to \mathrm Y
+$$
+
+We first must define some criterion to assess the classifier performance (what is optimal?).
+
+For that purpose we consider a **loss** function $\ell: \mathrm Y \times \mathrm Y \to \mathbb R^+$:
+
+$$
+\left\{ \begin{array}{ll} 
+    \ell(y,z) > 0 &  \mbox{if } y \neq z\cr
+    \ell(y,z) = 0 &  \mbox{if } y = z\cr
+\end{array} \right.
+$$
+
+$\ell(y,f(x))$ is the loss or cost of predicting $f(x)$ while the true output is $y$.
+
+In the context of binary classification a natural selection for loss is the 0-1 loss:
+
+$$
+\ell(y,z)=\mathbf 1_{y \neq z}
+$$
+
+We will see later in the course that other losses are used.
+
+## Scoring{.smaller}
+### Supervised learning - Risk
+
+We then define the expected **risk** of a prediction function $f$ given the loss $\ell$ as:
+
+$$
+\mathrm R(f) = \mathbb{E}[\ell(Y,f(X))]
+$$ In the context of binary classification $Y \in \{0,1\}$ and 0-1 loss, we have:
+
+$$
+\mathrm R(f) = \mathbb{P}[Y\neq f(X))]
+$$
+
+Given a data set $(x_i, y_i) \in \mathrm X \times \mathrm Y$, we also define the empirical risk of a classifier $f$ as:
+
+$$
+\hat{\mathrm R}(f) = \frac{1}{n} \sum_i \ell(y_i,f(x_i))
+$$
+
+## Scoring{.smaller .scrollable}
+### Supervised learning - Bayes classifier
+
+We now define the **Bayes(ian) classifier**[^3] $f^*: \mathrm X \to \mathrm Y$ as a function that achieves the minimal expected risk among all possible functions:
+
+$$
+\underset{f}{\operatorname{argmin}}\mathrm R(f) 
+$$
+
+[^3]: It is sometimes designed as oracle in the literature.
+
+The Bayes classifier depends on $\ell$ and $\mathbf P_{\mathrm X \times \mathrm Y}$ which is generally unknown (otherwise the job would be easy).
+
+The Bayes classifier for the 0-1 loss is:
+
+$$
+f^*(x)=\left\{ \begin{array}{ll} 
+    1 &  \mbox{if } \eta(x)\geq \frac{1}{2}\cr
+    0 &  \mbox{otherwise}\cr
+\end{array} \right.
+$$
+
+where:
+
+$$
+\eta(x)=\mathbb{P}[Y=1|X=x)] = \mathbb{E}[Y=1|X=x)]
+$$
+
+$\eta(x)$ is called the regression function.
+
+## Scoring{.smaller .scrollable}
+### Supervised learning - Theory vs practice
+
+In practice $\mathbf P_{\mathrm X \times \mathrm Y}$ is unknown. What we have is the learning set. The Bayes classifier minimizes the expected risk but is not a function of the learning set. What to do? Conceptually two approaches are used[^4]:
+
+[^4]: See Sébastien Gadat - TSE - Maths of Deep and Machine Learning course [here](https://perso.math.univ-toulouse.fr/gadat/files/2012/12/Note-25-oct.-2022.pdf). Other very good references are Philippe Rigollet - MIT - 18.657: Mathematics of Machine Learning [here](https://ocw.mit.edu/courses/18-657-mathematics-of-machine-learning-fall-2015/81406c87dccb9e873cfafa876a4d69c3_MIT18_657F15_LecNote.pdf) or Erwan Le Pennec - Polytechnique - Introduction to Machine Learning (M2 MSV) [slides here](http://www.cmap.polytechnique.fr/~lepennec/files/MSV/MLMethods_Adv%20-%20MSV%20-%2023.pdf). We will see in another course that in the context of the Logistic Regression the two approaches are strongly linked: it can be seen as a probabilistic\|discriminative approach or an optimization approach.
+
+-   the "probabilistic" approach: we estimate the regression function $\eta(x)$ and use/plug this estimate "inside" the Bayes classifier (Plugin); within this approach mainly two sub-approaches:
+
+    - the "discriminative" approach: we directly model or make an assumption on $\eta(X)=\mathbf P_{\mathrm Y | \mathrm X}$ and estimate it; for example we can make the assumption that $\eta(x)$ is a function of a particular form.
+
+    - the "generative" approach: we model the conditional distribution $\mathbf P_{\mathrm X | \mathrm Y}$ and use Bayes formula to get: $\eta(X)=\frac{\mathbb{P}[X|Y=1)]\mathbb{P}[Y=1)]}{\mathbb{P}[X]}=\frac{\mathbb{P}[X|Y=1)]\mathbb{P}[Y=1)]}{\mathbb{P}[X|Y=1)]\mathbb{P}[Y=1)]+\mathbb{P}[X|Y=0)]\mathbb{P}[Y=0)]}$
+
+-   the optimization or "machine learning" approach: finding $f$ minimizing the empirical risk; optimization algorithm or heuristics are used to estimate $f$; the 0-1 loss is not convex so usually it is replaced by a convex surrogate loss or upper bound; usually re-sampling methods are used to compute empirical risk ($f$ is trained on a training set and empirical risk evaluated on the testing set, $f$ is chosen to minimize empirical risk).
+
+
+
+## Scoring{.smaller .scrollable}
+### Toy example - the Mixture data
+
+To illustrate what we have seen we use the **Mixture** data set described in @hastie2009 [p. 12-16].
+
+The data set is generated as follows (p. 16):
+
+-   First the authors generate 10 "means" $m_k$ in $\mathbb R^2$ from a bivariate Gaussian distribution $\mathcal{N}((1,0),I)$ and label this class *BLUE*.
+
+-   Similarly, 10 more are drawn from $\mathcal{N}((0,1),I)$ and labeled *ORANGE*.
+
+-   Then for each class authors generate 100 observations as follows: for each observation, $m_k$ is picked at random with probability $\frac{1}{10}$ and used to generate a $\mathcal{N}(m_k,I/5)$, thus leading to a mixture of Gaussian clusters for each class. They generate similarly an additional data set of 5k observations per class for testing purposes.
+
+The task is to create a classifier that, based on the coordinates $x_1$ and $x_2$, determines whether the point is *ORANGE* or *BLUE*.
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(tidyverse)
+```
+
+## Scoring{.smaller .scrollable}
+### Toy example - the Mixture data
+
+First we load the data set and plot the "means":
+
+```{r}
+#| code-fold: true
+# Simulated mixture (ORANGE/BLUE) from ESLII/ISLR
+load(file='presentation_data/mixture.example.RData')
+
+x1_means <- mixture.example$means[,1]
+x2_means <- mixture.example$means[,2]
+mixture_means <- tibble(x1_means, x2_means) %>%
+    rowid_to_column() %>%
+    mutate(Y = if_else(rowid <= 10, "BLUE", "ORANGE"))
+
+ggplot(mixture_means) + 
+    geom_point(aes(x = x1_means, y = x2_means, col = Y), size = 3, show.legend = FALSE) +
+    scale_colour_manual(values = c("dodgerblue", "orange")) +
+    theme_void()
+
+# saveRDS(mixture_means, "mixture_means.rds")
+```
+
+## Scoring{.smaller}
+### Toy example - the Mixture data
+
+Then the training set together with the "means":
+
+```{r}
+#| code-fold: true
+Y = mixture.example$y
+x1 = mixture.example$x[,1]
+x2 = mixture.example$x[,2]
+data_mixture_example <- tibble(Y, x1, x2) %>% mutate(Y = as_factor(Y))
+
+ggplot(data_mixture_example) + 
+    geom_point(aes(x = x1, y = x2, col = Y), shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+    geom_point(data = mixture_means, aes(x = x1_means, y = x2_means, col =Y), size = 3, show.legend = FALSE) +
+    scale_colour_manual(values = c("dodgerblue", "orange", "dodgerblue", "orange")) +
+    theme_void()
+
+#saveRDS(data_mixture_example, "data_mixture_example.rds")
+
+```
+
+## Scoring{.smaller}
+### Toy example - the Mixture data
+
+Knowing the generative distribution, we generate a testing set of size 10k (half BLUE, half ORANGE).
+
+```{r}
+# generate new sampling
+set.seed(1987)
+N <- 10000
+draw <- sample(1:10, size=N, replace=TRUE)
+x1_blue <- rnorm(N/2) * 1/sqrt(5) + mixture_means[draw[1:(N/2)],2]
+x2_blue <- rnorm(N/2) * 1/sqrt(5) + mixture_means[draw[1:(N/2)],3]
+x1_orange <- rnorm(N/2) * 1/sqrt(5) + mixture_means[10 + draw[(N/2+1):N],2]
+x2_orange <- rnorm(N/2) * 1/sqrt(5) + mixture_means[10 + draw[(N/2+1):N],3]
+
+new_mixture <- rbind(cbind(x1_blue, x2_blue, Y="BLUE"), cbind(x1_orange, x2_orange, Y="ORANGE")) %>%
+    as_tibble() %>% 
+    rename(x1=x1_means, x2=x2_means)
+
+# head(new_mixture)
+```
+
+We plot the first 250 new observations of each class from the generated testing set:
+
+```{r}
+ggplot(new_mixture[c(1:250,5001:5251),]) + 
+    geom_point(aes(x = x1, y = x2, col = Y), shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+    geom_point(data = mixture_means, aes(x = x1_means, y = x2_means, col =Y), size = 3, show.legend = FALSE) +
+    scale_colour_manual(values = c("dodgerblue", "orange", "dodgerblue", "orange")) +
+    theme_void()
+# saveRDS(new_mixture, "new_mixture.rds")
+# new_mixture <- readRDS("new_mixture.rds")
+```
+
+## Scoring{.smaller}
+### Toy example - the Mixture data
+
+Knowing the generating distribution we can derive the Bayes classifier (exercise 2.2 [@hastie2009]).
+
+We plot the boundary decision in grey:
+
+```{r}
+#| cache: true
+# fine grid for predictions/decision boundaries
+grid <- expand.grid(x1 = seq(-2.6, 4.2, .01), x2 = seq(-2.0, 2.9, .01)) %>% as_tibble()
+# coarse grid for mimicking ESL figures (little dots)
+grid_background <- expand.grid(x1 = seq(-2.6, 4.2, .05), x2 = seq(-2.0, 2.9, .05)) %>% as_tibble()
+
+# Prediction function used to classify areas on the grid and imply the decision boundary
+# explicit expression for the Bayes decision boundary
+predict_oracle <- function(x1, x2){
+    obj <- 0
+    for(i in 1:10){
+       obj <- obj +
+           exp(-5/2*((x1-x1_means[i])**2+(x2-x2_means[i])**2)) -
+           exp(-5/2*((x1-x1_means[i+10])**2+(x2-x2_means[i+10])**2))
+    }
+    1 * (obj < 0)
+}
+
+predict_oracle_V <- Vectorize(predict_oracle)
+
+grid <- grid %>% mutate(predict_oracle = predict_oracle_V(x1, x2))
+
+grid_background <- grid_background %>% mutate(predict_oracle = predict_oracle_V(x1, x2))
+
+ggplot(grid) + 
+geom_contour(aes(x = x1, y = x2, z = predict_oracle),
+             breaks = 0.5, col = 'darkgrey') + 
+geom_point(data = data_mixture_example, aes(x = x1, y = x2, col = Y),
+           shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+geom_point(data = grid_background,
+           aes(x = x1, y = x2, col = as.factor(predict_oracle)),
+           shape = 20, size = .05, alpha = .5, show.legend = FALSE) +
+scale_colour_manual(values = c("dodgerblue", "orange")) +
+theme_void()
+```
+
+## Scoring{.smaller}
+### Toy example - the Mixture data
+
+We estimate Bayes risk on the testing data set simulated before (10k BLUE/ORANGE dots) using the data generating process $\mathbf P_{\mathrm X \times \mathrm Y}$.
+
+```{r}
+#| cache: true
+bayes_error_rate <- new_mixture %>%
+    mutate(Y = if_else(Y=="BLUE", 0, 1),
+           predict_oracle = predict_oracle_V(x1, x2),
+           l01 = if_else(Y==predict_oracle, 0, 1))
+
+bayes_test_risk <- bayes_error_rate %>%
+    summarise(l01 = mean(l01)) %>% 
+        pull(l01)
+
+bayes_error_rate_train <- data_mixture_example %>%
+    mutate(Y = if_else(Y=="0", 0, 1),
+           predict_oracle = predict_oracle_V(x1, x2),
+           l01 = if_else(Y==predict_oracle, 0, 1))
+
+bayes_train_risk <- bayes_error_rate_train %>%
+    summarise(l01 = mean(l01)) %>% 
+        pull(l01)
+```
+
+We get a value of `r round(bayes_test_risk,3)` for the "estimated" Bayes risk, which is in line with [@hastie2009 Figure 13.4], see below:
+
+![](images/bayeserror_mixture.png){fig-align="center" width="700"}
+
+## Scoring{.smaller}
+### Toy example - A brief tour
+
+We give a brief tour showing the decision boundary of common classifiers for the Mixture data set.
+
+## Scoring{.smaller}
+### Toy example - Logistic Regression classifier
+
+We plot below the linear decision boundary given by a Logistic Regression classifier vs Bayes classifier, we only display the training set:
+
+```{r}
+#| cache: true
+
+# fine grid for predictions/decision boundaries
+grid <- expand.grid(x1 = seq(-2.6, 4.2, .01), x2 = seq(-2.0, 2.9, .01)) %>% as_tibble()
+# coarse grid for mimicking ESL figures (little dots)
+grid_background <- expand.grid(x1 = seq(-2.6, 4.2, .05), x2 = seq(-2.0, 2.9, .05)) %>% as_tibble()
+
+mixture_example_logit <- glm(Y~., data = data_mixture_example, family = "binomial")
+
+grid <- broom::augment(mixture_example_logit,
+                       data = data_mixture_example,
+                       newdata = grid,
+                       type.predict = "response", type.residuals = "deviance") %>% 
+    mutate(predict_oracle = predict_oracle_V(x1, x2))
+
+grid_background <- broom::augment(mixture_example_logit, data = data_mixture_example,
+               newdata = grid_background, type.predict = "response", type.residuals = "deviance") %>% 
+    mutate(predict_glm = 1*(.fitted >= 0.5))
+
+coeffs <- mixture_example_logit$coefficients
+
+glm_boundary <- function(x1){
+    -(coeffs[2] * x1 + coeffs[1]) / coeffs[3]
+}
+glm_boundary_V <- Vectorize(glm_boundary) 
+
+ggplot(grid) + 
+geom_contour(aes(x = x1, y = x2, z = predict_oracle),
+             breaks = 0.5, col = 'purple') + 
+geom_line(aes(x = x1, y = glm_boundary(x1)),col = 'darkgrey') +
+geom_point(data = data_mixture_example, aes(x = x1, y = x2, col = Y),
+           shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+geom_point(data = grid_background,
+           aes(x = x1, y = x2, col = as.factor(predict_glm)),
+            shape = 20, size = .05, alpha = .5, show.legend = FALSE) +
+scale_colour_manual(values = c("dodgerblue", "orange")) +
+theme_void()
+```
+
+```{r}
+#| cache: true
+logit_error_rate <- broom::augment(mixture_example_logit,
+                                   data = data_mixture_example,
+                                   newdata = new_mixture,
+                                   type.predict = "response",
+                                   type.residuals = "deviance") %>% 
+                    mutate(Y = if_else(Y == "BLUE", 0, 1),
+                           predict_glm = 1*(.fitted >= 0.5),
+                           l01 = if_else(Y==predict_glm, 0, 1))
+
+logit_risk <- logit_error_rate %>% summarise(l01 = mean(l01)) %>% pull(l01)
+```
+
+The empirical risk on testing set is `r round(logit_risk, 3)`.
+
+## Scoring{.smaller}
+### Toy example - Logistic Regression classifier - binning
+
+It is usual, for example in the context of credit scoring or banking, to discretize or categorize numerical variables (a.k.a binning). We use a simple decile binning on $x_1$ and $x_2$:
+
+```{r}
+#| cache: true
+
+# fine grid for predictions/decision boundaries
+grid <- expand.grid(x1 = seq(-2.6, 4.2, .01), x2 = seq(-2.0, 2.9, .01)) %>% as_tibble()
+# coarse grid for mimicking ESL figures (little dots)
+grid_background <- expand.grid(x1 = seq(-2.6, 4.2, .05), x2 = seq(-2.0, 2.9, .05)) %>% as_tibble()
+
+breaks_x1 <- c(quantile(data_mixture_example$x1, probs = seq(0, 1, by = 1/10), na.rm = T))
+breaks_x1[1] <- -1e8
+breaks_x1[length(breaks_x1)] <- 1e8
+
+breaks_x2 <- c(quantile(data_mixture_example$x2, probs = seq(0, 1, by = 1/10), na.rm = T))
+breaks_x2[1] <- -1e8
+breaks_x2[length(breaks_x2)] <- 1e8
+
+data_binned <- data_mixture_example %>% 
+    mutate(x1_bin = cut(x1, breaks = breaks_x1,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE),
+           x2_bin = cut(x2, breaks = breaks_x2,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE))
+
+grid <- grid %>% 
+    mutate(x1_bin = cut(x1, breaks = breaks_x1,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE),
+           x2_bin = cut(x2, breaks = breaks_x2,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE))
+
+grid_background <- grid_background %>% 
+    mutate(x1_bin = cut(x1, breaks = breaks_x1,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE),
+           x2_bin = cut(x2, breaks = breaks_x2,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE))
+
+# from https://search.r-project.org/R/refmans/base/html/cut.html
+# x1_labs <- levels(data_binned$x1_bin)
+# x2_labs <- levels(data_binned$x2_bin)
+
+#(,] 
+# cbind(lower = as.numeric( sub("\\((.+),.*", "\\1", x1_labs) ),
+#       upper = as.numeric( sub("[^,]*,([^]]*)\\]", "\\1", x1_labs) ))
+
+#[,)
+# x1_bounds <- bind_cols(lower = as.numeric( sub("\\[(.+),.*", "\\1", x1_labs) ),
+                # upper = as.numeric( sub("[^,]*,([^\\)]*)(\\)|])", "\\1", x1_labs) ))
+
+mixture_example_glm_binned <- glm(Y ~ x1_bin + x2_bin,
+                                            data = data_binned,
+                                            family = "binomial")
+
+grid <- broom::augment(mixture_example_glm_binned,
+                       data = data_binned,
+                       newdata = grid,
+                       type.predict = "response",
+                       type.residuals = "deviance") %>% 
+               mutate(predict_glm_binned = 1*(.fitted >= 0.5),
+                      predict_oracle = predict_oracle_V(x1, x2))
+
+grid_background <- broom::augment(mixture_example_glm_binned,
+                       data = data_binned,
+                       newdata = grid_background,
+                       type.predict = "response",
+                       type.residuals = "deviance") %>% 
+               mutate(predict_glm_binned = 1*(.fitted >= 0.5),
+                      predict_oracle = predict_oracle_V(x1, x2))
+
+ggplot(grid) + 
+geom_contour(aes(x = x1, y = x2, z = predict_oracle),
+             breaks = 0.5, col = 'purple') + 
+geom_contour(aes(x = x1, y = x2, z = predict_glm_binned),
+             breaks = 0.5, col = 'darkgrey') + 
+geom_point(data = data_mixture_example, aes(x = x1, y = x2, col = Y),
+           shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+geom_point(data = grid_background,
+           aes(x = x1, y = x2, col = as.factor(predict_glm_binned)),
+           shape = 20, size = .05, alpha = .5, show.legend = FALSE) +
+scale_colour_manual(values = c("dodgerblue", "orange")) +
+theme_void()
+```
+
+```{r}
+#| cache: true
+
+new_mixture_binned <- new_mixture %>% 
+    mutate(x1_bin = cut(x1, breaks = breaks_x1,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE),
+           x2_bin = cut(x2, breaks = breaks_x2,
+                    right = FALSE,
+                    dig.lab = 1,
+                    ordered_result = TRUE))
+
+
+logit_binned_error_rate <- broom::augment(mixture_example_glm_binned,
+                                   data = data_binned,
+                                   newdata = new_mixture_binned,
+                                   type.predict = "response",
+                                   type.residuals = "deviance") %>% 
+                                mutate(Y = if_else(Y == "BLUE", 0, 1),
+                                       predict_glm = 1*(.fitted >= 0.5),
+                                       l01 = if_else(Y==predict_glm, 0, 1))
+
+logit_binned_risk <- logit_binned_error_rate  %>%
+    summarise(l01 = mean(l01)) %>% 
+    pull(l01)
+```
+
+The empirical risk on testing set is `r round(logit_binned_risk, 3)`.
+
+## Scoring{.smaller}
+### Toy example - Logistic Regression classifier - splines
+
+A popular method to move beyond linearity is to transform variables, for example using splines [@hastie2009 5.6 Nonparametric Logistic Regression, p161-164].
+
+```{r}
+#| cache: true
+
+library(splines)
+## fit additive natural cubic spline model
+# Additive Natural Cubic Splines - 4 df each (Fig 5.11 p164)
+# fine grid for predictions/decision boundaries
+grid <- expand.grid(x1 = seq(-2.6, 4.2, .01), x2 = seq(-2.0, 2.9, .01)) %>% as_tibble()
+# coarse grid for mimicking ESL figures (little dots)
+grid_background <- expand.grid(x1 = seq(-2.6, 4.2, .05), x2 = seq(-2.0, 2.9, .05)) %>% as_tibble()
+
+mixture_example_glm_splines_add <- glm(Y ~ splines::ns(x1, df=4) + 
+                                           splines::ns(x2, df=4),
+                                       data = data_mixture_example,
+                                       family = "binomial")
+
+grid <- broom::augment(mixture_example_glm_splines_add,
+                       data = data_mixture_example,
+                       newdata = grid,
+                       type.predict = "response",
+                       type.residuals = "deviance") %>% 
+               mutate(predict_gam = 1*(.fitted >= 0.5),
+                      predict_oracle = predict_oracle_V(x1, x2))
+
+grid_background <- broom::augment(mixture_example_glm_splines_add,
+                       data = data_mixture_example,
+                       newdata = grid_background,
+                       type.predict = "response",
+                       type.residuals = "deviance") %>% 
+               mutate(predict_gam = 1*(.fitted >= 0.5))
+
+ggplot(grid) + 
+geom_contour(aes(x = x1, y = x2, z = predict_oracle),
+             breaks = 0.5, col = 'purple') + 
+geom_contour(aes(x = x1, y = x2, z = predict_gam),
+             breaks = 0.5, col = 'darkgrey') + 
+geom_point(data = data_mixture_example, aes(x = x1, y = x2, col = Y),
+           shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+geom_point(data = grid_background,
+           aes(x = x1, y = x2, col = as.factor(predict_gam)),
+           shape = 20, size = .05, alpha = .5, show.legend = FALSE) +
+scale_colour_manual(values = c("dodgerblue", "orange")) +
+theme_void()
+```
+
+```{r}
+#| cache: true
+
+logit_splines_add_error_rate <- broom::augment(mixture_example_glm_splines_add,
+                                   data = data_mixture_example,
+                                   newdata = new_mixture,
+                                   type.predict = "response",
+                                   type.residuals = "deviance") %>% 
+                                mutate(Y = if_else(Y == "BLUE", 0, 1),
+                                       predict_glm = 1*(.fitted >= 0.5),
+                                       l01 = if_else(Y==predict_glm, 0, 1))
+
+logit_splines_add_risk <- logit_splines_add_error_rate  %>%
+    summarise(l01 = mean(l01)) %>% 
+    pull(l01)
+```
+
+The empirical risk on testing set is `r round(logit_splines_add_risk, 3)`.
+
+## Scoring{.smaller}
+### Toy example - k-Nearest Neighbors Algorithm - $k = 15$
+
+k-NN is a non-parametric algorithm. Given a new observation, it finds in the training set the k closest points (given a certain distance) and predicts using a majority vote. Below the boundary decision for $k=15$:
+
+```{r}
+#| cache: true
+
+library(class)
+k <- 15
+
+# fine grid for predictions
+grid <- expand.grid(x1 = seq(-2.6, 4.2, .01), x2 = seq(-2.0, 2.9, .01)) %>% as_tibble()
+# coarse grid for mimicking ESL figures
+grid_background <- expand.grid(x1 = seq(-2.6, 4.2, .05), x2 = seq(-2.0, 2.9, .05)) %>% as_tibble()
+
+# Normalize using boundaries of training sample
+normalize <- FALSE # TRUE (pred error 0.259) / FALSE (pred error 0.2498)
+
+if (normalize) {
+    
+    min1 <- min(data_mixture_example$x1)
+    min2 <- min(data_mixture_example$x2)
+    max1 <- max(data_mixture_example$x1)
+    max2 <- max(data_mixture_example$x2)
+    
+    train_mixture <- data_mixture_example %>% 
+        mutate(x1 = (x1 - min1) / (max1 - min1),
+               x2 = (x2 - min2) / (max2 - min2)) %>% 
+        select(x1, x2)
+    
+    test_grid_mixture <- grid %>% 
+        mutate(x1 = (x1 - min1) / (max1 - min1),
+               x2 = (x2 - min2) / (max2 - min2)) %>% 
+        select(x1, x2)
+    
+    test_new_mixture <- new_mixture %>% 
+        mutate(x1 = (x1 - min1) / (max1 - min1),
+               x2 = (x2 - min2) / (max2 - min2)) %>% 
+        select(x1, x2)
+    
+} else {
+    
+    train_mixture <- data_mixture_example %>%
+        select(x1,x2)
+    
+    # For boundary decision (fine grid)
+    test_grid_mixture <- grid %>%
+          select(x1,x2)
+    
+    # For background (coarse grid)
+    background_grid_mixture <- grid_background %>%
+          select(x1,x2)
+    
+    test_new_mixture <- new_mixture %>%
+        select(x1,x2)
+    
+}
+
+mixture_example_knn <- knn(train_mixture, #train X
+                           test_new_mixture, # test X
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+
+table_test <- table(mixture_example_knn,
+                     new_mixture %>% # test Y
+                        mutate(Y = as_factor(if_else(Y == "BLUE", 0, 1))) %>%
+                        pull(Y))
+
+mixture_example_knn <- knn(train_mixture, #train X
+                           train_mixture, # test X = train X
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+
+
+table_train <- table(mixture_example_knn,
+      data_mixture_example %>% pull(Y))
+
+
+mixture_example_knn <- knn(train_mixture, #train X
+                           test_grid_mixture, # test X = fine grid for boundary plot
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+
+mixture_example_knn_bg <- knn(train_mixture, #train X
+                           background_grid_mixture, # test X = "dotted" grid for plot
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+    
+
+grid <- bind_cols(grid, predict_knn = mixture_example_knn) %>%
+    mutate(predict_knn = if_else(mixture_example_knn=='0', 0, 1),
+           predict_oracle = predict_oracle_V(x1, x2))
+
+grid_background <- bind_cols(grid_background, predict_knn = mixture_example_knn_bg) %>%
+    mutate(predict_knn = if_else(mixture_example_knn_bg=='0', 0, 1))
+
+ggplot(grid) + 
+geom_contour(aes(x = x1, y = x2, z = predict_oracle),
+             breaks = 0.5, col = 'purple') +
+geom_contour(aes(x = x1, y = x2, z = predict_knn),
+             breaks = 0.5, col = 'darkgrey') + 
+geom_point(data = data_mixture_example, aes(x = x1, y = x2, col = Y),
+           shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+geom_point(data = grid_background, aes(x = x1, y = x2, col = as.factor(predict_knn)),
+           shape = 20, size = .05, alpha = .5, show.legend = FALSE) +
+scale_colour_manual(values = c("dodgerblue", "orange")) +
+theme_void()
+```
+
+```{r}
+#| cache: true
+
+knn_error_rate <- (table_test[[2]] + table_test[[3]]) /
+(table_test[[1]] + table_test[[2]] + table_test[[3]] + table_test[[4]])
+```
+
+The empirical risk on testing set is `r round(knn_error_rate, 3)`.
+
+## Scoring{.smaller}
+### Toy example - k-Nearest Neighbors Algorithm - $k = 7$
+
+We show below the boundary decision for $k=7$:
+
+```{r}
+#| cache: true
+
+library(class)
+k <- 7
+
+# fine grid for predictions
+grid <- expand.grid(x1 = seq(-2.6, 4.2, .01), x2 = seq(-2.0, 2.9, .01)) %>% as_tibble()
+# coarse grid for mimicking ESL figures
+grid_background <- expand.grid(x1 = seq(-2.6, 4.2, .05), x2 = seq(-2.0, 2.9, .05)) %>% as_tibble()
+
+# Normalize using boundaries of training sample
+normalize <- FALSE # TRUE (pred error 0.259) / FALSE (pred error 0.2498)
+
+if (normalize) {
+    
+    min1 <- min(data_mixture_example$x1)
+    min2 <- min(data_mixture_example$x2)
+    max1 <- max(data_mixture_example$x1)
+    max2 <- max(data_mixture_example$x2)
+    
+    train_mixture <- data_mixture_example %>% 
+        mutate(x1 = (x1 - min1) / (max1 - min1),
+               x2 = (x2 - min2) / (max2 - min2)) %>% 
+        select(x1, x2)
+    
+    test_grid_mixture <- grid %>% 
+        mutate(x1 = (x1 - min1) / (max1 - min1),
+               x2 = (x2 - min2) / (max2 - min2)) %>% 
+        select(x1, x2)
+    
+    test_new_mixture <- new_mixture %>% 
+        mutate(x1 = (x1 - min1) / (max1 - min1),
+               x2 = (x2 - min2) / (max2 - min2)) %>% 
+        select(x1, x2)
+    
+} else {
+    
+    train_mixture <- data_mixture_example %>%
+        select(x1,x2)
+    
+    # For boundary decision (fine grid)
+    test_grid_mixture <- grid %>%
+          select(x1,x2)
+    
+    # For background (coarse grid)
+    background_grid_mixture <- grid_background %>%
+          select(x1,x2)
+    
+    test_new_mixture <- new_mixture %>%
+        select(x1,x2)
+    
+}
+
+mixture_example_knn <- knn(train_mixture, #train X
+                           test_new_mixture, # test X
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+
+table_test <- table(mixture_example_knn,
+                     new_mixture %>% # test Y
+                        mutate(Y = as_factor(if_else(Y == "BLUE", 0, 1))) %>%
+                        pull(Y))
+
+mixture_example_knn <- knn(train_mixture, #train X
+                           train_mixture, # test X = train X
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+
+
+table_train <- table(mixture_example_knn,
+      data_mixture_example %>% pull(Y))
+
+
+mixture_example_knn <- knn(train_mixture, #train X
+                           test_grid_mixture, # test X = fine grid for boundary plot
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+
+mixture_example_knn_bg <- knn(train_mixture, #train X
+                           background_grid_mixture, # test X = "dotted" grid for plot
+                           data_mixture_example %>% pull(Y), # train Y
+                           k)
+    
+
+grid <- bind_cols(grid, predict_knn = mixture_example_knn) %>%
+    mutate(predict_knn = if_else(mixture_example_knn=='0', 0, 1),
+           predict_oracle = predict_oracle_V(x1, x2))
+
+grid_background <- bind_cols(grid_background, predict_knn = mixture_example_knn_bg) %>%
+    mutate(predict_knn = if_else(mixture_example_knn_bg=='0', 0, 1))
+
+ggplot(grid) + 
+geom_contour(aes(x = x1, y = x2, z = predict_oracle),
+             breaks = 0.5, col = 'purple') +
+geom_contour(aes(x = x1, y = x2, z = predict_knn),
+             breaks = 0.5, col = 'darkgrey') + 
+geom_point(data = data_mixture_example, aes(x = x1, y = x2, col = Y),
+           shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+geom_point(data = grid_background, aes(x = x1, y = x2, col = as.factor(predict_knn)),
+           shape = 20, size = .05, alpha = .5, show.legend = FALSE) +
+scale_colour_manual(values = c("dodgerblue", "orange")) +
+theme_void()
+```
+
+```{r}
+#| cache: true
+
+knn_error_rate <- (table_test[[2]] + table_test[[3]]) /
+(table_test[[1]] + table_test[[2]] + table_test[[3]] + table_test[[4]])
+```
+
+The empirical risk on testing set is `r round(knn_error_rate, 3)`.
+
+## Scoring{.smaller}
+### Toy example - k-Nearest Neighbors Algorithm - $k = 7$
+
+To be compared with [@hastie2009 Figure 13.4]:
+
+![](images/bayeserror_mixture.png){fig-align="center" width="700"}
+
+## Scoring{.smaller}
+### Toy example - k-Nearest Neighbors Algorithm - varying $k$
+
+We vary $k$ and show the empirical risks on training and testing sets together with Bayes risk:
+
+```{r}
+#| cache: true
+
+K = seq(100,1,-1)
+
+misclass_curve <- list()
+
+for (k in K){
+    
+    knn_test <- knn(train_mixture, #train X
+                    test_new_mixture, # test X
+                    data_mixture_example %>% pull(Y), # train Y
+                    k)
+    
+    knn_train <- knn(train_mixture, #train X
+                     train_mixture, # test X = train X
+                     data_mixture_example %>% pull(Y), # train Y
+                     k)
+    
+    table_test <- table(knn_test,
+                        new_mixture %>% # test Y
+                        mutate(Y = as_factor(if_else(Y == "BLUE", 0, 1))) %>%
+                        pull(Y))
+
+    test_error <- (table_test[[2]] + table_test[[3]]) / 
+        (table_test[[1]] + table_test[[2]] + table_test[[3]] + table_test[[4]])
+    
+    table_train <- table(knn_train,
+          data_mixture_example %>% pull(Y))
+
+    train_error <- (table_train[[2]] + table_train[[3]]) / 
+        (table_train[[1]] + table_train[[2]] + table_train[[3]] + table_train[[4]])
+    
+    misclass_curve[[k]] <- tibble(`k - Number of Nearest Neighbours` = k,
+                                  `KNN train` = train_error,
+                                  `KNN test` = test_error)
+    
+}
+
+misclass_plot <- bind_rows(misclass_curve) %>% 
+    mutate(`Bayes test` = bayes_test_risk,
+           `Bayes train` = bayes_train_risk) %>% 
+    pivot_longer(-`k - Number of Nearest Neighbours`,
+                 names_to = "Model data",
+                 values_to = "Prediction Error")
+```
+
+```{r, message = FALSE}
+#| cache: true
+
+library(scales)
+
+ggplot(misclass_plot %>% filter(!`Model data`=="Bayes train")) +
+geom_line(aes(x = `k - Number of Nearest Neighbours`,
+              y = `Prediction Error`,
+              col = as.factor(`Model data`))) +
+    scale_x_continuous(
+        trans = scales::compose_trans("log10", "reverse"),
+        breaks = c(100, 50, 15, 7, 3, 1)) +
+scale_colour_manual(values = c("purple", "orange", "dodgerblue")) +
+theme_bw() +
+labs(col = NULL)
+
+```
+## Scoring{.smaller}
+### Toy example - k-Nearest Neighbors Algorithm - varying $k$
+
+To be compared with [@hastie2009 Figure 2.4]:
+
+![](images/bayes_error_mixture_k.png)
+
+## Scoring{.smaller}
+### Toy example - Decision Trees
+
+To finish our tour, we show the result of a recursive partition of the plan using Decision Trees techniques:
+
+```{r}
+#| cache: true
+
+library(rpart)
+library(rpart.plot) 
+
+# fine grid for predictions
+grid <- expand.grid(x1 = seq(-2.6, 4.2, .01), x2 = seq(-2.0, 2.9, .01)) %>% as_tibble()
+# coarse grid for mimicking ESL figures
+grid_background <- expand.grid(x1 = seq(-2.6, 4.2, .05), x2 = seq(-2.0, 2.9, .05)) %>% as_tibble()
+
+mixture_example_CART <- rpart(Y~., data = data_mixture_example, method = "class")
+
+grid <- bind_cols(grid,
+                  as_tibble(predict(mixture_example_CART, newdata = grid))) %>%
+                    select(-`0`) %>% 
+                    rename(predict_CART = `1`) %>% 
+                    mutate(predict_CART = 1*(predict_CART >= 0.5),
+                    predict_oracle = predict_oracle_V(x1, x2))
+
+grid_background <- bind_cols(grid_background,
+                    as_tibble(predict(mixture_example_CART, newdata = grid_background))) %>%
+                    select(-`0`) %>% 
+                    rename(predict_CART = `1`) %>% 
+                    mutate(predict_CART = 1*(predict_CART >= 0.5),
+                    predict_oracle = predict_oracle_V(x1, x2))
+
+# rpart.plot(mixture_example_CART)
+# using nicer low-level function prp to change nodes color / labels etc
+mixture_example_CART_plot <- rpart(Y~.,
+                                   data = data_mixture_example %>%
+                                          mutate(Y = if_else(Y=="0", "BLUE", "ORANGE")),
+                                   method = "class")
+prp(mixture_example_CART_plot, type = 2, extra = 4, fallen.leaves = TRUE, 
+    box.col = c("dodgerblue", "orange")[mixture_example_CART$frame$yval],
+    # we indicate both Class 0-1 probabilities and number of observations for each node
+    node.fun = function(x, labs, digits, varlen) paste(labs, "\n", "B/O: ", x$frame$yval2[,2], " - ", x$frame$yval2[,3]))
+```
+
+## Scoring{.smaller}
+### Toy example - Decision Trees
+
+We show below the boundary decision for the previously fitted tree:
+```{r}
+ggplot(grid) + 
+geom_contour(aes(x = x1, y = x2, z = predict_oracle),
+             breaks = 0.5, col = 'purple') + 
+geom_contour(aes(x = x1, y = x2, z = predict_CART),
+             breaks = 0.5, col = 'darkgrey') + 
+geom_point(data = data_mixture_example, aes(x = x1, y = x2, col = Y),
+           shape = "o", size = 4, stroke = 2, show.legend = FALSE) +
+geom_point(data = grid_background,
+           aes(x = x1, y = x2, col = as.factor(predict_CART)),
+               shape = 20, size = .05, alpha = .5, show.legend = FALSE) +
+scale_colour_manual(values = c("dodgerblue", "orange")) +
+theme_void()
+```
+
+```{r}
+#| cache: true
+
+cart_error_rate <- bind_cols(new_mixture,
+                          tibble(class = predict(mixture_example_CART,
+                                                 newdata = new_mixture,
+                                                 type = "class")),
+                          tibble(prob = predict(mixture_example_CART,
+                                                 newdata = new_mixture,
+                                                 type = "prob")[, 2])) %>%
+                        #  as_tibble()) %>% 
+                        mutate(Y = if_else(Y == "BLUE", 0, 1),
+                               l01 = if_else(Y==class, 0, 1))
+cart_risk <- cart_error_rate  %>%
+    summarise(l01 = mean(l01)) %>% 
+    pull(l01)
+```
+
+The empirical risk on testing set is `r round(cart_risk, 3)`.
+
+## Scoring{.smaller}
+### If you like boundary decision plots
+
+To play further and make nicer animated 2D decision boundaries for binary classifiers see these two blogs [here](https://mathformachines.com/posts/decision/) and [here](https://paulvanderlaken.com/2020/01/20/animated-machine-learning-classifiers/). 
+
+Please also note that the `scikit-learn` `Python` library implements methods to display [decision boundaries for classifiers](https://scikit-learn.org/stable/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html).
+
+
+## Scoring{.smaller}
+
+
+At last we come to the subject of our course!
+
+We remind we are in the context of binary classification.
+
+Often we (and the business) are more interested in estimating the probabilities that $Y$ belongs to each class.
+
+Quoting Trevor Hastie: "For example, it is more valuable to have an estimate of the probability that an insurance claim is fraudulent, than a classification fraudulent or not."
+
+## Scoring{.smaller}
+### Scoring function
+
+As introduced in @cornillon2019 [chapter 11.6 "Prévision - scoring"]:
+
+- The aim of Scoring: find a Scoring function or Score $S: \mathbb R^p \to \mathbb R$ that is "high" in case $\mathbb{P}[Y=1|X=x)$ is "high" and "low" in case $\mathbb{P}[Y=0|X=x)$ is "high".
+
+- We say that $S(x)$ is the score of the observation $x \in \mathbb R^p$.
+
+- The notions of Score and classifier are closely linked. Given a Score $S$ and a cutoff $s \in \mathbb R$ we obtain the following classifier:
+
+$$
+f_s(x)=\left\{ \begin{array}{ll} 
+    1 &  \mbox{if } S(x)\geq s\cr
+    0 &  \mbox{otherwise}\cr
+\end{array} \right.
+$$
+
+-   The values taken by $S(x)$ are less important than the way they will order a set of observation $x_1,...x_n$. For any $\phi: \mathbb R \to \mathbb R$ bijective and increasing function, we say that the scores $S$ and $\phi \circ S$ are equivalent.
+
+## Scoring{.smaller}
+### First example
+
+We show below a simplified example of a credit scorecard that were typically used by banks to assess the creditworthiness of consumer loans applicants (as shown in [@scoringThomas]):
+
+![](images/scoring_scorecard.png){.r-stretch}
+
+## Scoring{.smaller}
+### First example
+
+![](images/scoring_scorecard.png){.r-stretch}
+
+- a 35-year-old owner wishing to borrow money for home improvement and that has never had a county court judgement (CCJ) will score $129 = (36+25+36+32)$,
+
+- a 20-year-old living with his parents borrowing for holiday and having more than £1200 of CCJ will score $38=(22+14+19-17)$.
+
+## Scoring{.smaller}
+### The regression function, a Scoring function
+
+We defined above, in the context of supervised learning, the regression function $\eta(x)=\mathbb{P}[Y=1|X=x)]$. 
+
+It is a natural candidate for a Scoring function. 
+
+The related Bayes classifier uses $s=\frac{1}{2}$ as cutoff. 
+
+As we have just seen in the last sections, $\eta(x)$ is unknown and we will have to approximate or estimate this regression function using the training set.
+
+## Scoring{.smaller}
+### Evaluating a Score
+
+We first define the **confusion matrix**:
+
+|       | $f_s(X)=0$ | $f_s(X)=1$ |     |
+|:------|:----------:|:----------:|:---:|
+| $Y=0$ |     TN     |     FP     |  N  |
+| $Y=1$ |     FN     |     TP     |  P  |
+
+: {.bordered}
+
+The [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix) is a contingency table which cross-tabulates $Y$ with the predicted one $f_s(X)$.
+
+It can be evaluated on the learning set as well as on the testing set.
+
+The following vocabulary originates from medical applications:
+
+-   true positive (TP)
+
+-   true negative (TN),
+
+-   false positive (FP), also Type I error
+
+-   false negative (FN), also Type II error
+
+## Scoring{.smaller}
+### Evaluating a Score
+
+More formally we define for a given cutoff $s$:
+
+$$
+\alpha(s)=\mathbf P(f_s(X)=1|Y=0)=P(S(X) \geq s|Y=0)
+$$
+
+and
+
+$$
+\beta(s)=\mathbf P(f_s(X)=0|Y=1)=P(S(X) < s|Y=1)
+$$
+
+$\alpha(s)$ is called **false positive** rate and $\beta(s)$ **false negative** rate. Similarly **specificity** and **sensitivity** are defined:
+
+$$
+sp(s)=P(S(X) < s|Y=0) = 1 - \alpha(s)
+$$
+
+and
+
+$$
+se(s)=P(S(X) \geq s|Y=1) = 1 - \beta(s)
+$$
+
+## Scoring{.smaller}
+### The Receiver Operating Characteristic (ROC) curve
+
+The ROC (Receiver Operating Characteristic) curve allows to visualize $\alpha$ and $\beta$ on a same graph for all $s$ allowing to choose the cutoff and compare different Scores.
+
+Precisely, the ROC curve of a Score $S$ is a parametric curve of the variable $s$:
+
+$$
+\begin{array}{ll} 
+    ROC:&\mathbb R \to [0,1]^2 \cr
+        & s \to (x(s)=\alpha(s),y(s)=1-\beta(s))\cr
+\end{array}
+$$
+
+For a given Score $S$, the ROC curve passes through the points $(0,0)$ and $(1,1)$, which corresponds to classifying all observations as $0$ ($s\to \infty$) or $1$ ($s\to -\infty$).
+
+## Scoring{.smaller}
+### The Receiver Operating Characteristic (ROC) curve
+
+A Score $S$ is said to be **perfect** if $s^*$ exists such that:
+
+$$
+P(Y=1|S(X) \geq s^*) = 1
+$$ and $$
+P(Y=0|S(X) < s^*) = 1
+$$
+
+It corresponds to $x(s^*)=0$ and $y(s^*)=1$ (using the preceding definitions and Bayes rule).
+
+For example:
+
+$$
+x(s^*)=P(S(X) \geq s^*|Y=0)=\frac{P(Y=0|S(X) \geq s^*)P(S(X) \geq s^*)}{P(Y=0)}=0
+$$
+
+Similarly: for $s \leq s^*$ we have $x(s)=0$ and for $s > s^*$ we have $y(s)=1$.
+
+## Scoring{.smaller}
+### The Receiver Operating Characteristic (ROC) curve
+
+A score $S$ is said to be **random** if $S(X)$ and $Y$ are independent. In such case:
+
+$$
+x(s)=P(S(X) \geq s|Y=0)=P(S(X))=P(S(X) \geq s|Y=1)=y(s)
+$$
+
+The ROC curve for a random score is the first bisector $(0,0)$ to $(1,1)$.
+
+## Scoring{.smaller}
+### The Receiver Operating Characteristic (ROC) curve
+
+@fig-roc-perfect-random shows the two curves.
+
+```{r, warning=FALSE}
+#| label: fig-roc-perfect-random
+#| fig-cap: "ROC curves of a perfect Score (solid, blue) and a random Score (dashed, orange)"
+
+
+perfect_score_label = "s=s^{\\*}"
+temp <- expression("s="~rho == 0.34)
+
+ggplot() +
+    geom_segment(aes(x = 0, y = 0, xend = 0, yend = 1), col="dodgerblue", linewidth = 2) + # perfect score vert axis
+    geom_segment(aes(x = 0, y = 1, xend = 1, yend = 1), col="dodgerblue", linewidth = 2) + # perfect score horiz axis
+    geom_segment(aes(x = 0, y = 0, xend = 1, yend = 1), col="orange", linetype = 2, linewidth = 1.5) + # random score
+    # annotate perfect score
+    annotate("segment", x = 0.05, y = 0.95, xend = 0, yend = 1,
+             arrow = arrow(type = "closed", length = unit(0.02, "npc"))) +
+    annotate("text", x=0.08,y=0.92, label = 's == "s*"', parse=TRUE) +
+    # -Inf
+    annotate("segment", x = 0.95, y = 0.95, xend = 1, yend = 1,
+             arrow = arrow(type = "closed", length = unit(0.02, "npc")))+
+    annotate("text", x=0.92,y=0.92, label = expression(s==-infinity), parse=TRUE) +
+    # +Inf
+    annotate("segment", x = 0.05, y = 0.05, xend = 0, yend = 0,
+             arrow = arrow(type = "closed", length = unit(0.02, "npc")))+
+    annotate("text", x=0.08,y=0.08, label = expression(s==infinity), parse=TRUE) +
+    coord_cartesian(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
+    labs(x = "false positives", y = "true positives") +
+    theme_bw() 
+
+```
+
+## Scoring{.smaller}
+### The Receiver Operating Characteristic (ROC) curve
+
+The ROC curves can be summarized to generate numeric criteria such as the AUC (Area Under Curve).
+
+The AUC will be $1$ for the perfect Score and $0.5$ for the random Score and can be used to rapidly compare two Scores.
+
+It is considered better than other point-wise criteria.
+
+However we must keep in mind that the AUC as a summary criterion presents some drawbacks since two Scores can have the same AUC but behave very differently in the plane.
+
+## Scoring{.smaller}
+### The Receiver Operating Characteristic (ROC) curve
+
+In practice, we do not know $x(s)$ and $y(s)$ to define the ROC curve.
+
+Usually, a training set will be used to learn a Score $S$ and a testing set to estimate the ROC curve $x(s)$ and $y(s)$ for a range of $s$.
+
+In the rest of the course/project we will be equally interested in binary classification and scoring which are closely linked.
+
+Throughout the course/project, we will focus on two fundamental and complementary models: the Logistic Regression model and Decision Trees, for which we have shown examples of decision boundaries on the Mixture data set. 
+
+Let's warm up and apply what we have seen on a first data set.
+
+# Desbois case study {background-color="#40666e"}
+
+## Desbois case study{.smaller}
+### Financial problems of farm holdings
+
+The article from @desbois2008 (available [here](https://csbigs.fr/index.php/csbigs/article/view/351) together with a sample data set) shows a complete case study around the detection of financial risks applicable to farm holdings.
+
+Among others, Linear Discriminant Analysis and Logistic Regression (plus stepwise variable selection procedure) are used. 
+
+ROC curves are then provided to compare the two methods.
+
+The original data set uses a format specific to the SPSS software, but is readable from R using the `foreign` package. 
+
+The case study by Desbois will be partly reproduced today and in the next lessons to quickly apply scoring techniques.
+
+## Desbois case study{.smaller}
+
+Loading Desbois data and first glimpse at it:
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+# package used to import spss file
+library(foreign)
+
+don_desbois <- read.spss("presentation_data/Agriculture Farm Lending/desbois.sav", to.data.frame = TRUE) %>% as_tibble()
+glimpse(don_desbois)
+```
+## Desbois case study{.smaller}
+
+
+Replacing for convenience `DIFF` target by factor `Y` with `O` (healthy) or `1` (failing):
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+don_desbois <- don_desbois %>%
+    mutate(Y = as.factor(if_else(DIFF=='healthy', 0, 1)), DIFF = NULL,
+           .before = everything())
+
+```
+
+We give in the following slides the definitions of Desbois ratio $r_1,...,r_{37}$, that we will use today, as found in the article.
+
+They might give you inspiration to create new predictors/features for the project to come.
+
+## Desbois case study{.smaller}
+### Capitalization ratios
+
+:::{.extrapad}
+- r1 total debt / total assets;
+- r2 stockholders' equity / invested capital;
+- r3 short term debt / total debt;
+- r4 short term debt / total assets;
+- r5 long and medium term debt / total assets;
+:::
+
+## Desbois case study{.smaller}
+### Weight of the debt ratios
+
+:::{.extrapad}
+- r6 total debt / gross product;
+- r7 long and medium term debt / gross product;
+- r8 short term debt / gross product;
+:::
+
+## Desbois case study{.smaller}
+### Liquidity ratios
+
+:::{.extrapad}
+- r11 working capital / gross product;
+- r12 working capital / (real inputs - financial expenses);
+- r14 short term debt / circulating assets;
+:::
+
+## Desbois case study{.smaller}
+### Debt servicing ratios
+
+:::{.extrapad}
+- r17 financial expenses / total debt;
+- r18 financial expenses / gross product;
+- r19 (financial expenses + refunding of long and medium term capital) / gross product;
+- r21 financial expenses / EBITDA;
+- r22 (financial expenses + refunding of long and medium term capital) / EBITDA;
+:::
+
+## Desbois case study{.smaller}
+### Capital profitability ratio
+
+
+- r24 EBITDA / total assets;
+
+## Desbois case study{.smaller}
+### Earnings ratios
+
+:::{.extrapad}
+- r28 EBITDA / gross product;
+- r30 available income / gross product;
+- r32 (EBITDA - financial expenses) / gross product;
+:::
+
+## Desbois case study{.smaller}
+### Productive activity ratios
+
+:::{.extrapad}
+- r36 immobilized assets / gross product;
+- r37 gross product / total assets.
+:::
+
+## Desbois case study{.smaller}
+### Your turn to play
+
+Using the data set at hand, try to retrieve some findings of the Desbois case study. 
+
+You might need `R` packages `FactoMineR`, `ROCR` and `MASS::lda` function to perform the tasks ("YOUR CODE HERE") described in the following slides. 
+
+Each time I show an example of what is expected.
+
+I suggest that you start using `Quarto` (setup [here](https://quarto.org/docs/get-started/)) to code and track/publish your results. It will be requested for your projects (it is very similar to `RMarkdown`). It integrates perfectly with `RStudio`.
+
+
+## Desbois case study{.smaller}
+### Principal Component Analysis (PCA) of financial ratios
+
+First perform PCA on financial ratios (use for example package [FactoMineR](http://factominer.free.fr/factomethods/principal-components-analysis.html)), then display correlations between ratios and the two first principal components :
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+
+```{r}
+#| code-fold: true
+# More details here http://factominer.free.fr/factomethods/principal-components-analysis.html
+res.pca = FactoMineR::PCA(don_desbois,
+                          scale.unit = TRUE,
+                          quanti.sup = c(4, 7), # HECTARE / AGE excluded from Desbois analysis
+                          quali.sup = c(1, 2, 3, 5, 6, 8), 
+                          ncp = 5,
+                          graph=FALSE)
+plot(res.pca, choix = "var")
+# FactoMineR::dimdesc(res.pca, axes=c(1,2))
+```
+
+
+## Desbois case study{.smaller}
+### To be compared with article Figure 1
+
+
+![](images/desbois_pca_projection_pc1_pc2.png){.r-stretch}
+
+## Desbois case study{.smaller .scrollable}
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+Following Desbois path, visualize the farm holdings in data set as a bivariate plot on the first two components of PCA (based on financial ratios), use variable Y (0=”healthy”; 1=”failing”) to colour your observations:
+
+```{r}
+#| code-fold: true
+# Similar to Desbois Fig 2. 
+# Plot of the farm holdings in the first factorial plane of the normalized PCA based on financial ratios
+# with illustrative variable Y (0=”healthy”; 1=”failing”)
+FactoMineR::plot.PCA(res.pca, axes=c(1, 2), choix="ind", habillage=1, invisible = c("quali"))
+
+# FactoMineR::plot.PCA(res.pca, axes=c(1, 2), choix="ind", habillage=1, invisible = c("ind"))
+```
+
+## Desbois case study{.smaller}
+### To be compared with article Figure 2
+
+It strikes Desbois that the PCA (even if not a discriminative/scoring procedure), seems to do a rather good job identifying defaulting farms on the training set.
+
+Disclaimer: in general it won't be necessarily the case as PCA operates only on the predictors without "knowledge" of target variable. 
+
+![](images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
+
+
+## Desbois case study{.smaller}
+
+As suggested by Desbois, extract the first principal component (some help [here](https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i)), and use it as a Scoring function.
+
+Today it will allow us to use a first Scoring function without introducing the Logistic Regression that you have not yet studied in class.
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+```{r}
+# https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i
+# https://stats.stackexchange.com/questions/494866/how-to-explain-the-numerical-discrepancy-between-factominerpca-and-the-svd
+# https://stats.stackexchange.com/questions/134282/relationship-between-svd-and-pca-how-to-use-svd-to-perform-pca
+
+# Extracting first five Principal components from FactomineR object 
+# Using FactomineR 'notation' (U,sv,V)
+# (X nxp matrix of Desbois observations (only r1...r37), SVD decomposition X = U %*% diag(vs) %*% t(V), 
+# where U: unitary matrix of left-singular vectors, vs: singular values, V: unitary matrix of left-singular vectors)
+
+# SVD object from FactomineR res.pca$svd
+
+# Principal components X %*% V = U %*% diag(vs) %*% t(V) %*% V = U %*% diag(vs) 
+principal_components_1 <- res.pca$svd$U %*% diag(res.pca$svd$vs[1:5])
+
+# Can also be directly extracted from:
+principal_components_2 <- res.pca$ind$coord
+
+# Or using PC = X %*% V (where X has been centered and scaled
+# base R 'scale' uses a different scaling factor than FactomineR hence sqrt(n / n-1) correction)
+X_for_PCA <- don_desbois %>% select(r1:r37) %>% as.matrix()
+principal_components_3 <- sqrt(nrow(X_for_PCA) / (nrow(X_for_PCA) - 1)) * scale(X_for_PCA) %*% res.pca$svd$V
+```
+Below the score for each observation is the x-axis or first principal component:
+
+```{r}
+naive_score <-  bind_cols(don_desbois, as_tibble(principal_components_2))
+ggplot(naive_score) +
+    geom_point(aes(x = Dim.1, y = Dim.2, col = Y)) +
+    scale_colour_manual(values = c("dodgerblue", "orange"))
+  
+```
+
+## Desbois case study{.smaller}
+
+Looking at this plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate (setting a threshold at $PC_1 > 0.02$):
+
+![](images/desbois_pca_rule.png){.r-stretch}
+
+## Desbois case study{.smaller}
+
+Going further than Desbois and for illustrative purposes only, use $PC_1$ as a very naive Scoring function. 
+
+Plot below the ROC curve as defined in the Scoring part of the presentation (you can use package `ROCR`, but a simple for-loop for different cutoff values $s$ will do the job):
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+```{r}
+library("ROCR")    
+
+# naive score
+pred <- prediction(naive_score$Dim.1, naive_score$Y)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, main="ROC curve", xlab="Specificity",
+     ylab="Sensitivity", col = "darkorange", 
+     print.cutoffs.at = c(-2.5,-1,0.00,1,5), 
+     cutoff.label.function = function(x) {paste0("              s = ",round(x,2))})
+abline(0, 1) #add a 45 degree line
+```
+
+We follow closely the case study, but we will see that ROC curves are usually evaluated on a hold-out data set.
+
+## Desbois case study{.smaller .scrollable}
+
+Then compare with a Scoring function obtained with Linear Discriminant Analysis (LDA). 
+For a reminder on LDA see for example @hastie2009[chap. 4.3 LDA, p. 103-111].
+
+You can use Desbois variables selected in the article by a stepwise procedure (using Wilk's lambda[^6]). Selected variables are: 
+
+[^6]:We won’t describe the procedure here. A SPSS script is given in the article. It is not straightforward to reproduce it with R. I tried scripting manually the procedure and it works but is not very interesting. 
+
+
+
+![](images/desbois_lda_stepwise.png){.r-stretch}
+
+So basically you can fit LDA with `r2+r3+r7+r14+r17+r18+r21+r32+r36` as predictors (I use `R` formula notation to ease your copy-paste).
+
+## Desbois case study{.smaller}
+
+Fit LDA (`MASS::lda`) with model specification of your choice. Then display model coefficients:
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+:::: {.columns}
+
+::: {.column width="60%"}
+Using `r2+r3+r7+r14+r17+r18+r21+r32+r36`, we obtain:
+
+```{r}
+lda_desbois <- MASS::lda(Y~r2+r3+r7+r14+r17+r18+r21+r32+r36, data=don_desbois)
+round(lda_desbois$scaling,3)
+```
+:::
+
+::: {.column width="40%"}
+Similar[^5] to what Desbois obtains:
+
+![](images/desbois_lda_score.png)
+:::
+
+::::
+
+[^5]: `R` does not provide [constant](https://stats.stackexchange.com/questions/166942/why-are-discriminant-analysis-results-in-r-lda-and-spss-different-constant-t) for LDA which won't affect Scoring function ordering.
+
+
+
+## Desbois case study{.smaller .scrollable}
+
+Now compare the LDA Scoring function with the naive Score built with first component of PCA using a ROC curve (on training set):
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+```{r}
+# for ROCR
+labels_desbois <- don_desbois$Y
+
+# naive score
+predictions_naive_score <- naive_score$Dim.1
+
+naive_score_group <- naive_score %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(Dim.1), n = n())
+
+cutoff_naive <- mean(naive_score_group$mean_score)
+
+pred <- prediction(predictions_naive_score, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "darkolivegreen", 
+     print.cutoffs.at = c(cutoff_naive), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+abline(0, 1) #add a 45 degree line
+
+# lda
+predictions_lda <- predict(lda_desbois)$x
+
+lda_score_group <- bind_cols(don_desbois, predictions_lda) %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(LD1), n = n())
+
+cutoff_lda <- mean(lda_score_group$mean_score)
+
+pred <- prediction(predictions_lda, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, add = TRUE, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "plum4",
+     print.cutoffs.at = c(cutoff_lda), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+legend(0.6,0.6,
+       c('naive - PCA', 'LDA'),
+       col=c("darkolivegreen", "plum4"),lwd=3)
+```
+
+## Desbois case study{.smaller .scrollable}
+
+As a very soft and intuitive introduction to logistic regression. First discretize a ratio $r$ of your choice.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+- Compute proportion of defaults among each class. 
+For example using $0.01$ steps for ratio $r17$:
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+```{r, warning = FALSE, message = FALSE}
+#| code-fold: true
+class_width <- 0.01
+don_desbois_binned <- don_desbois %>%
+    mutate(r17_bins = cut(r17, breaks = seq(0, 0.2, class_width),
+                              right = FALSE, dig.lab = 4, include.lowest = TRUE),
+           min = floor(r17 / class_width) * class_width,
+           max = if_else(r17 == 0 , 1, 
+                         # customers with 0$ balance should belong to [0, width) class
+                         # or be excluded
+                         ceiling(r17 / class_width))  * class_width,
+           max = if_else(min==max, (ceiling(r17 / class_width) + 1)  * class_width, max)) %>% 
+    group_by(r17_bins, min, max, Y) %>% 
+    summarize(n=n()) %>% 
+    ungroup() %>% 
+    pivot_wider(names_from = Y, values_from = n) %>%
+    replace_na(list(`0` = 0, `1` = 0)) %>% 
+    mutate(`Mean(Y)` = round(`1` / (`1` + `0`), 4))
+cat(simplermarkdown::md_table(don_desbois_binned %>% select(r17_class=r17_bins, `0`, `1`,`Mean(Y)` )))
+```
+
+:::
+
+::: {.column width="50%"}
+
+- Then using this table, plot an empirical conditional distribution of default given $r$ classes: 
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+```{r}
+#| code-fold: true
+(default_occurrence <- 
+ ggplot(don_desbois %>% mutate(Y = if_else(Y == "1", 1, 0)), aes(x=r17, y=Y)) +
+ geom_jitter(alpha=0.2, height=0.1) +
+ geom_segment(data = don_desbois_binned,
+              aes(x = min, xend = max, y = `Mean(Y)`, yend = `Mean(Y)`),
+              color = 'coral',
+              linewidth=1.25)) +
+ scale_y_continuous(breaks = c(0, 1))
+```
+:::
+::::
+
+## Desbois case study{.smaller .scrollable}
+
+```{r}
+#| code-fold: true
+(default_occurrence <- 
+ ggplot(don_desbois %>% mutate(Y = if_else(Y == "1", 1, 0)), aes(x=r17, y=Y)) +
+ geom_jitter(alpha=0.2, height=0.1) +
+ geom_smooth(method = "glm", 
+             formula = y ~ x,
+             method.args = list(family = "binomial"), 
+             se = FALSE,
+             col = "dodgerblue",
+             linetype = "dotted") +
+ geom_segment(data = don_desbois_binned,
+              aes(x = min, xend = max, y = `Mean(Y)`, yend = `Mean(Y)`),
+              color = 'coral',
+              linewidth=1.25)) +
+ scale_y_continuous(breaks = c(0, 1))
+```
+We notice that the mean default occurrence with respect to $r_{17}$ classes follows a kind of "S"-shaped curve or **sigmoid** function.
+Note that the shape depends on classes width and might change.
+We "fitted" (blue-dotted) $\sigma: x \to\sigma(x)=\frac{e^{x}} { 1 + e^{x} }$ also known as logistic function to the mean default occurences (orange segments).
+
+
+## Desbois case study{.smaller}
+This roughly corresponds to the intuitive introduction to the logistic regression model given in @hosmer2013 using a Coronary Heart Disease (CHD) event as $Y$ and AGE as $X$:
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](images/hosmer_lemeshow_chd3.png)
+:::
+
+::: {.column width="50%"}
+
+![](images/hosmer_lemeshow_chd4.png)
+:::
+
+::::
+
+## References
+::: {#refs}
+:::

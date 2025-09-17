@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="0_scoring_files/libs/clipboard/clipboard.min.js"></script>
+<script src="0_scoring_files/libs/quarto-html/tabby.min.js"></script>
+<script src="0_scoring_files/libs/quarto-html/popper.min.js"></script>
+<script src="0_scoring_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="0_scoring_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="0_scoring_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="0_scoring_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="0_scoring_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.3.450">
+
+  <meta name="author" content="Louis Olive">
+  <meta name="dcterms.date" content="2025-09-10">
+  <title>Scoring</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="0_scoring_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="0_scoring_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="0_scoring_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="0_scoring_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="0_scoring_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="0_scoring_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="0_scoring_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Scoring</h1>
+  <p class="subtitle">M2 D3S/EGR 2025-2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Louis Olive 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:louis.olive@gmail.com / louis.olive@ut-capitole.fr">louis.olive@gmail.com / louis.olive@ut-capitole.fr</a>
+</div>
+</div>
+</div>
+
+  <p class="date">September 10, 2025</p>
+</section>
+<section>
+<section id="outline" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Outline</h1>
+<!-- Quick and dirty -->
+<!-- Lightbox Figures not working with Revealjs / https://quarto.org/docs/output-formats/html-lightbox-figures.html -->
+<!-- https://stackoverflow.com/questions/56361986/zoom-function-in-rmarkdown-html-plot/59401761#59401761 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" "=""></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').prepend('<div class=\"zoomDiv\"><img src=\"\" class=\"zoomImg\"></div>');
+    // onClick function for all plots (img's)
+    $('img:not(.zoomImg)').click(function() {
+      $('.zoomImg').attr('src', $(this).attr('src')).css({width: '100%'});
+      $('.zoomDiv').css({opacity: '1', width: 'auto', border: '1px solid white', borderRadius: '5px', position: 'fixed', top: '50%', left: '50%', marginRight: '-50%', transform: 'translate(-50%, -50%)', boxShadow: '0px 0px 50px #888888', zIndex: '50', overflow: 'auto', maxHeight: '100%'});
+    });
+    // onClick function for zoomImg
+    $('img.zoomImg').click(function() {
+      $('.zoomDiv').css({opacity: '0', width: '0%'}); 
+    });
+  });
+</script>
+</section>
+<section id="outline-1" class="slide level2">
+<h2>Outline</h2>
+<div class="extrapad">
+<ul>
+<li><p>Course logistics</p></li>
+<li><p>Corporate bankruptcies</p></li>
+<li><p>Scoring</p></li>
+<li><p>(Warm Up) Desbois case study</p></li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="course-logistics" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Course logistics</h1>
+
+</section>
+<section id="course-logistics-1" class="slide level2 smaller">
+<h2>Course logistics</h2>
+<h3 id="logisticsprerequisites">Logistics/Prerequisites</h3>
+<div class="extrapad">
+<ul>
+<li><p>Material available/uploaded at <a href="https://github.com/louis-olive/teaching_Scoring">https://github.com/louis-olive/teaching_Scoring</a> and partially on Moodle</p></li>
+<li><p>Email: louis.olive@gmail.com / louis.olive@ut-capitole.fr (copy both with [TSE - SCORING] as object)</p></li>
+<li><p>Personal laptop or university desktop / Running RStudio using <a href="https://quarto.org/docs/get-started/hello/rstudio.html">Quarto</a> or <a href="https://rmarkdown.rstudio.com">R Markdown</a> for reports</p></li>
+<li><p>Basic knowledge of math, statistics / Good command of R (if not you’ll have to learn it throughout the course)</p></li>
+</ul>
+</div>
+</section>
+<section id="course-logistics-2" class="slide level2 smaller">
+<h2>Course logistics</h2>
+<h3 id="agenda">Agenda</h3>
+<div class="extrapad">
+<ul>
+<li><p>Part 1 (9h): Methods</p>
+<p>Wed 10 Sep / Tue 16 Sep / Wed 24 Sep / Wed 1 Oct / Mon 6 Oct / Wed 8 Oct</p></li>
+<li><p>Part 2 (15h): Case study / project by group of students</p>
+<p>Mon 13 Oct / Wed 15 Oct / Mon 27 Oct / Wed 29 Oct / Mon 3 Nov / Wed 5 Nov / Wed 12 Nov / Mon 17 Nov / Wed 19 Nov / Wed 26 Nov</p></li>
+</ul>
+<p>Throughout the course, the emphasis is put on numerical examples with a hands on / code from scratch approach.</p>
+<p>Codes are given in R.</p>
+</div>
+</section>
+<section id="course-logistics-3" class="slide level2 smaller">
+<h2>Course logistics</h2>
+<h3 id="grading">Grading</h3>
+<div class="extrapad">
+<ul>
+<li><p>Part 1 (8 Oct: 1.5 hour in-class exam / additional take home due 19 Oct):</p>
+<p>In-class data analysis on a real data set including data exploration and applications from the course, followed by a take-home assignment with additional tasks (report with text + R code, 40%).</p></li>
+<li><p>Part 2 (19 Oct group composition / 26 Nov: in-class presentation of your project progress, should be almost finished / final report due date: TBD but before Christmas):</p>
+<p>Case study / project per group of students (in-class presentation + report, 60%).</p></li>
+</ul>
+</div>
+</section>
+<section id="course-logistics-4" class="slide level2 smaller">
+<h2>Course logistics</h2>
+<h3 id="agenda---part-1-9h-methods">Agenda - Part 1 (9h): Methods</h3>
+<div class="extrapad">
+<ul>
+<li><p>Statistical learning goals and vocabulary are defined in the context of scoring and classification (10 Sep).</p></li>
+<li><p>Introduction and study of two workhorses:</p>
+<ul>
+<li><p>Logistic Regression: model fit, inference, selection, penalization (16/24 Sep);</p></li>
+<li><p>Decision Trees for Classification / (Gradient) Boosting (1/6 Oct).</p></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="course-logistics-5" class="slide level2 smaller">
+<h2>Course logistics</h2>
+<h3 id="agenda---part-2-15h-case-study-project-by-group">Agenda - Part 2 (15h): Case study / project by group</h3>
+<ul>
+<li><p>Credit risk is one of the various application of scoring.</p></li>
+<li><p>Case study using a real life data set, you will be given a set of tasks to perform in group:</p>
+<ul>
+<li><p>Defining the problem / Building the data set [Getting/Cleansing/Enriching Data] / Exploration / Baseline model / Model evaluation pipeline</p></li>
+<li><p>Implementing Logistic Regression and Tree based methods</p></li>
+<li><p>“Expert” approach: Implementing ideas from academic literature on credit risk (involving in particular feature engineering)</p></li>
+<li><p>“Off the shelf” approach: lasso for variable selection, gradient boosting</p></li>
+<li><p>(Optionnal/Time permitting) more advanced topics: dealing with data imbalance, model calibration, interpretable ML (SHAP/PDP)</p></li>
+</ul></li>
+<li><p>A final presentation (group/one-to-one short meeting sketching the highlights your project, 26 Nov). The writing of a final report implementing/documenting your analysis (due date, TBD before Christmas).</p></li>
+</ul>
+</section>
+<section id="course-logistics-6" class="slide level2 smaller">
+<h2>Course logistics</h2>
+<h3 id="material">Material</h3>
+<ul>
+<li><p><strong>Logistic regression/Scoring:</strong></p>
+<p>Hosmer D.W., Lemeshow S. and Sturdivant R.X. (2013). Applied Logistic Regression, Wiley.</p>
+<p>Cornillon P.A., Matzner-Løber E., Rouvière L. (2019). Régression avec R, Springer (in French). I borrow a lot from this one.</p></li>
+<li><p><strong>Statistical Learning/Decision Trees/Boosting:</strong></p>
+<p>Hastie T., Tibshirani R. and Friedman. J. (2009). The Elements of Statistical Learning: Data Mining, Inference and Prediction, Springer. <a href="https://hastie.su.domains/ElemStatLearn/printings/ESLII_print12_toc.pdf">available here</a></p>
+<p>Lindholm, A. and Wahlström, N., Lindsten, F. and Schön, T. (2022). Machine Learning - A First Course for Engineers and Scientists, Cambridge University Press. <a href="https://smlbook.org/book/sml-book-draft-latest.pdf">latest draft available here</a></p>
+<p>Murphy, K. P. (2022). Probabilistic Machine Learning: An introduction, MIT Press. <a href="https://github.com/probml/pml-book/releases/latest/download/book1.pdf">available here</a> or <a href="https://probml.github.io/pml-book/book1.html">here</a></p></li>
+</ul>
+</section></section>
+<section>
+<section id="corporate-bankruptcies" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Corporate bankruptcies</h1>
+
+</section>
+<section id="corporate-bankruptcies---us---2024" class="slide level2 smaller">
+<h2>Corporate bankruptcies - US - 2024</h2>
+<h3 id="newspaper-headline">Newspaper headline</h3>
+<img data-src="images/news_us_bankruptcies_ft.png" class="r-stretch">
+<p>Source: <a href="https://www.ft.com/content/ac3c1e2f-c9bc-417e-a686-7170e1bf8533">Financial Times</a>, January 7 2025</p>
+</section>
+<section id="corporate-bankruptcies---us---2024-1" class="slide level2 smaller">
+<h2>Corporate bankruptcies - US - 2024</h2>
+<h3 id="newspaper-headline-1">Newspaper headline</h3>
+<img data-src="images/news_us_bankruptcies_echos.png" class="r-stretch">
+<p>Source: <a href="https://www.lesechos.fr/monde/etats-unis/aux-etats-unis-les-faillites-dentreprises-a-leur-plus-haut-depuis-2010-2140819">Les Echos</a>, January 7 2025</p>
+</section>
+<section id="corporate-bankruptcies---us---2024-2" class="slide level2 smaller">
+<h2>Corporate bankruptcies - US - 2024</h2>
+<h3 id="newspaper-source">Newspaper source</h3>
+<img data-src="images/news_us_bankruptcies_s&amp;p.png" class="r-stretch">
+<p>Source: <a href="https://www.spglobal.com/marketintelligence/en/news-insights/latest-news-headlines/us-corporate-bankruptcies-soar-to-14-year-high-in-2024-61-filings-in-december-87008718">S&amp;P Global Market</a>, January 7 2025</p>
+</section>
+<section id="corporate-bankruptcies---us---2025-ytd" class="slide level2 smaller">
+<h2>Corporate bankruptcies - US - 2025 YTD</h2>
+<h3 id="update">Update</h3>
+<img data-src="images/news_us_bankruptcies_s&amp;p_jul25.png" class="r-stretch">
+<p>Source: <a href="https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/7/63-us-corporate-bankruptcies-in-june-set-up-2025-for-highest-pace-since-2010-91441423">S&amp;P Global Market</a>, July 8 2025</p>
+</section>
+<section id="corporate-bankruptcies---us---2025-ytd-1" class="slide level2 smaller">
+<h2>Corporate bankruptcies - US - 2025 YTD</h2>
+<h3 id="update-1">Update</h3>
+<img data-src="images/news_us_bankruptcies_s&amp;p_aug25.png" class="r-stretch">
+<p>Source: <a href="https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/8/july-us-corporate-bankruptcy-filings-hit-highest-monthly-total-in-5-years-91873904">S&amp;P Global Market</a>, August 6 2025</p>
+</section>
+<section id="corporate-bankruptcies---us---2025-ytd-2" class="slide level2 smaller">
+<h2>Corporate bankruptcies - US - 2025 YTD</h2>
+<h3 id="update-2">Update</h3>
+<img data-src="images/news_us_bankruptcies_s&amp;p_aug25_graph.png" class="r-stretch">
+<p>Source: <a href="https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/8/july-us-corporate-bankruptcy-filings-hit-highest-monthly-total-in-5-years-91873904">S&amp;P Global Market</a>, August 6 2025</p>
+</section>
+<section id="corporate-bankruptcies---fr---2024" class="slide level2 smaller">
+<h2>Corporate bankruptcies - FR - 2024</h2>
+<h3 id="newspaper-headline-2">Newspaper headline</h3>
+<img data-src="images/news_fr_bankruptcies_echos.png" class="r-stretch">
+<p>Source: <a href="https://www.lesechos.fr/economie-france/conjoncture/record-de-defaillances-dentreprises-en-france-pas-declaircie-en-vue-2141233">Les Echos</a>, January 8 2025</p>
+</section>
+<section id="corporate-bankruptcies---fr---2024-1" class="slide level2 smaller">
+<h2>Corporate bankruptcies - FR - 2024</h2>
+<h3 id="newspaper-source-1">Newspaper source</h3>
+<img data-src="images/news_fr_bankruptcies_bpce.png" class="r-stretch">
+<p>Source: <a href="https://newsroom.groupebpce.fr/actualites/etude-defaillances-dentreprises-en-france-les-defaillances-de-pme-eti-au-plus-haut-en-2024-b0b3d-7b707.html">BPCE L’Observatoire</a>, January 8 2025</p>
+</section>
+<section id="corporate-bankruptcies---fr---2024-2" class="slide level2 smaller">
+<h2>Corporate bankruptcies - FR - 2024</h2>
+<h3 id="alternative-source">Alternative source</h3>
+<img data-src="images/news_en_bankruptcies_bdf_lt.png" class="r-stretch">
+<p>Source: <a href="https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12">Banque de France</a>, January 17 2025</p>
+</section>
+<section id="corporate-bankruptcies---fr---2024-3" class="slide level2 smaller">
+<h2>Corporate bankruptcies - FR - 2024</h2>
+<h3 id="alternative-source-1">Alternative source</h3>
+<img data-src="images/news_en_bankruptcies_bdf.png" class="r-stretch">
+<p>Source: <a href="https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12">Banque de France</a>, January 17 2025</p>
+</section>
+<section id="corporate-bankruptcies---fr---2024-4" class="slide level2 smaller">
+<h2>Corporate bankruptcies - FR - 2024</h2>
+<h3 id="alternative-source-2">Alternative source</h3>
+<img data-src="images/news_en_bankruptcies_bdf_sector.png" class="r-stretch">
+<p>Source: <a href="https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12">Banque de France</a>, January 17 2025</p>
+</section>
+<section id="corporate-bankruptcies---fr---2025-ytd" class="slide level2 smaller">
+<h2>Corporate bankruptcies - FR - 2025 YTD</h2>
+<h3 id="alternative-source-3">Alternative source</h3>
+<img data-src="images/news_en_bankruptcies_bdf_lt_ytd205.png" class="r-stretch">
+<p>Source: <a href="https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2025-07">Banque de France</a>, September 5 2025</p>
+</section>
+<section id="corporate-bankruptcies---fr---2025-ytd-1" class="slide level2 smaller">
+<h2>Corporate bankruptcies - FR - 2025 YTD</h2>
+<h3 id="alternative-source-4">Alternative source</h3>
+<img data-src="images/news_en_bankruptcies_bdf_ytd205.png" class="r-stretch">
+<p>Source: <a href="https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2025-07">Banque de France</a>, September 5 2025</p>
+</section>
+<section id="corporate-bankruptcies-1" class="slide level2 smaller">
+<h2>Corporate bankruptcies</h2>
+<h3 id="some-definitions">Some definitions</h3>
+<p>FR: <a href="https://www.insee.fr/fr/metadonnees/definition/c1617">“défaillance”</a></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/insee_defaillance_fr.png"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/insee_bankruptcy_us.png"></p>
+</div>
+</div>
+<p>US: <a href="https://en.wikipedia.org/wiki/Chapter_11,_Title_11,_United_States_Code">Chapter 11</a> bankruptcy / <a href="https://en.wikipedia.org/wiki/Chapter_7,_Title_11,_United_States_Code">Chapter 7</a> bankruptcy</p>
+</section>
+<section id="corporate-bankruptcies-2" class="slide level2 smaller">
+<h2>Corporate bankruptcies</h2>
+<h3 id="a-complex-phenomenon">A complex phenomenon</h3>
+<img data-src="images/bardos_scoring_lda.png" class="r-stretch">
+<p>Source: <span class="citation" data-cites="bardos2007">(<a href="#/references" role="doc-biblioref" onclick="">Bardos, 2007</a>)</span></p>
+</section></section>
+<section>
+<section id="scoring" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Scoring</h1>
+
+</section>
+<section id="scoring-1" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="supervised-learning---a-reminder">Supervised learning - a reminder</h3>
+<p>This an informal and very rapid overview of Statistical Learning, where we introduce concepts and definitions.</p>
+<p>For a rigorous introduction see for example the dedicated lesson from <a href="https://perso.math.univ-toulouse.fr/gadat/files/2012/12/Intro_Stat_Learning.pdf">Sébastien Gadat - M1 course on Mathematical Statistics</a> or the book by <a href="https://www.di.ens.fr/%7Efbach/ltfp_book.pdf">Francis Bach - Learning Theory from First Principles</a>.</p>
+</section>
+<section id="scoring-2" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="supervised-learning---inputs-outputs">Supervised learning - Inputs-Outputs</h3>
+<p>We follow here the terminology of <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#/references" role="doc-biblioref" onclick="">2009</a>)</span>.</p>
+<p>The problem: we are given a data set where some variables, denoted as <strong>inputs</strong><sup>1</sup>, have some influence on one or more <strong>output(s)</strong><sup>2</sup>.</p>
+<p>We will denote inputs by the symbol <span class="math inline">\(X\)</span> having values in <span class="math inline">\(\mathrm{X}\)</span> (to explicit things we will consider <span class="math inline">\(\mathrm X\)</span> is <span class="math inline">\(\mathbb R^p\)</span>).</p>
+<p>If <span class="math inline">\(X\)</span> is a vector, its components can be accessed by subscripts <span class="math inline">\(X_j\)</span>, <span class="math inline">\(j = 1, . . . , p\)</span>.</p>
+<p>Outputs will be denoted by <span class="math inline">\(Y\)</span> having value in <span class="math inline">\(\mathrm Y\)</span>.</p>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>In statistics, inputs are often called the predictors, factors or the independent variables. In machine learning the term features is also used.</p></li><li id="fn2"><p>The outputs are also called responses, labels or dependent variables.</p></li></ol></aside></section>
+<section id="scoring-3" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="supervised-learning---framework">Supervised learning - Framework</h3>
+<p>Outputs are denoted by <span class="math inline">\(Y\)</span> having value in <span class="math inline">\(\mathrm Y\)</span>:</p>
+<ul>
+<li><p>When <span class="math inline">\(\mathrm Y\)</span> is <span class="math inline">\(\mathbb R\)</span>, it is a <strong>regression problem</strong>;</p></li>
+<li><p>When <span class="math inline">\(\mathrm Y\)</span> is a discrete set, it is a <strong>classification problem</strong> (for example <span class="math inline">\(\mathrm Y\)</span> is <span class="math inline">\(\{0,1\}\)</span> for binary classification). In this course we will restrict to the case of <strong>binary classification</strong>.</p></li>
+</ul>
+<p>We need data to construct predictions or classifications. We suppose we have available a set of observed data:</p>
+<p><span class="math inline">\((x_i, y_i) \in \mathrm X \times \mathrm Y\)</span> , <span class="math inline">\(i = 1, \cdots ,n\)</span>, known as the <strong>learning</strong> or <strong>training</strong> set, with which to construct our prediction.</p>
+<p>We assume <span class="math inline">\((x_i, y_i) \in \mathrm X \times \mathrm Y\)</span> are generated i.i.d. from <span class="math inline">\(\mathbf P_{\mathrm X \times \mathrm Y}\)</span> where we denote <span class="math inline">\(\mathbf P_{\mathrm X \times \mathrm Y}\)</span>, the data generating distribution (or underlying probability distribution or joint law) which is unknown.</p>
+<p>The main goal of supervised learning will be to predict unobserved outputs <span class="math inline">\(y\)</span> given unobserved inputs <span class="math inline">\(x\)</span> using the learning set.</p>
+<p>Such new or unobserved data is referred as the <strong>testing</strong> set.</p>
+</section>
+<section id="scoring-4" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="supervised-learning---loss">Supervised learning - Loss</h3>
+<p>To achieve that goal we try to find a “best” or optimal <strong>classifier</strong> (or prediction function in general):</p>
+<p><span class="math display">\[
+f: \mathrm X \to \mathrm Y
+\]</span></p>
+<p>We first must define some criterion to assess the classifier performance (what is optimal?).</p>
+<p>For that purpose we consider a <strong>loss</strong> function <span class="math inline">\(\ell: \mathrm Y \times \mathrm Y \to \mathbb R^+\)</span>:</p>
+<p><span class="math display">\[
+\left\{ \begin{array}{ll}
+    \ell(y,z) &gt; 0 &amp;  \mbox{if } y \neq z\cr
+    \ell(y,z) = 0 &amp;  \mbox{if } y = z\cr
+\end{array} \right.
+\]</span></p>
+<p><span class="math inline">\(\ell(y,f(x))\)</span> is the loss or cost of predicting <span class="math inline">\(f(x)\)</span> while the true output is <span class="math inline">\(y\)</span>.</p>
+<p>In the context of binary classification a natural selection for loss is the 0-1 loss:</p>
+<p><span class="math display">\[
+\ell(y,z)=\mathbf 1_{y \neq z}
+\]</span></p>
+<p>We will see later in the course that other losses are used.</p>
+</section>
+<section id="scoring-5" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="supervised-learning---risk">Supervised learning - Risk</h3>
+<p>We then define the expected <strong>risk</strong> of a prediction function <span class="math inline">\(f\)</span> given the loss <span class="math inline">\(\ell\)</span> as:</p>
+<p><span class="math display">\[
+\mathrm R(f) = \mathbb{E}[\ell(Y,f(X))]
+\]</span> In the context of binary classification <span class="math inline">\(Y \in \{0,1\}\)</span> and 0-1 loss, we have:</p>
+<p><span class="math display">\[
+\mathrm R(f) = \mathbb{P}[Y\neq f(X))]
+\]</span></p>
+<p>Given a data set <span class="math inline">\((x_i, y_i) \in \mathrm X \times \mathrm Y\)</span>, we also define the empirical risk of a classifier <span class="math inline">\(f\)</span> as:</p>
+<p><span class="math display">\[
+\hat{\mathrm R}(f) = \frac{1}{n} \sum_i \ell(y_i,f(x_i))
+\]</span></p>
+</section>
+<section id="scoring-6" class="slide level2 smaller scrollable">
+<h2>Scoring</h2>
+<h3 id="supervised-learning---bayes-classifier">Supervised learning - Bayes classifier</h3>
+<p>We now define the <strong>Bayes(ian) classifier</strong><sup>1</sup> <span class="math inline">\(f^*: \mathrm X \to \mathrm Y\)</span> as a function that achieves the minimal expected risk among all possible functions:</p>
+<p><span class="math display">\[
+\underset{f}{\operatorname{argmin}}\mathrm R(f)
+\]</span></p>
+<p>The Bayes classifier depends on <span class="math inline">\(\ell\)</span> and <span class="math inline">\(\mathbf P_{\mathrm X \times \mathrm Y}\)</span> which is generally unknown (otherwise the job would be easy).</p>
+<p>The Bayes classifier for the 0-1 loss is:</p>
+<p><span class="math display">\[
+f^*(x)=\left\{ \begin{array}{ll}
+    1 &amp;  \mbox{if } \eta(x)\geq \frac{1}{2}\cr
+    0 &amp;  \mbox{otherwise}\cr
+\end{array} \right.
+\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[
+\eta(x)=\mathbb{P}[Y=1|X=x)] = \mathbb{E}[Y=1|X=x)]
+\]</span></p>
+<p><span class="math inline">\(\eta(x)\)</span> is called the regression function.</p>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>It is sometimes designed as oracle in the literature.</p></li></ol></aside></section>
+<section id="scoring-7" class="slide level2 smaller scrollable">
+<h2>Scoring</h2>
+<h3 id="supervised-learning---theory-vs-practice">Supervised learning - Theory vs practice</h3>
+<p>In practice <span class="math inline">\(\mathbf P_{\mathrm X \times \mathrm Y}\)</span> is unknown. What we have is the learning set. The Bayes classifier minimizes the expected risk but is not a function of the learning set. What to do? Conceptually two approaches are used<sup>1</sup>:</p>
+<ul>
+<li><p>the “probabilistic” approach: we estimate the regression function <span class="math inline">\(\eta(x)\)</span> and use/plug this estimate “inside” the Bayes classifier (Plugin); within this approach mainly two sub-approaches:</p>
+<ul>
+<li><p>the “discriminative” approach: we directly model or make an assumption on <span class="math inline">\(\eta(X)=\mathbf P_{\mathrm Y | \mathrm X}\)</span> and estimate it; for example we can make the assumption that <span class="math inline">\(\eta(x)\)</span> is a function of a particular form.</p></li>
+<li><p>the “generative” approach: we model the conditional distribution <span class="math inline">\(\mathbf P_{\mathrm X | \mathrm Y}\)</span> and use Bayes formula to get: <span class="math inline">\(\eta(X)=\frac{\mathbb{P}[X|Y=1)]\mathbb{P}[Y=1)]}{\mathbb{P}[X]}=\frac{\mathbb{P}[X|Y=1)]\mathbb{P}[Y=1)]}{\mathbb{P}[X|Y=1)]\mathbb{P}[Y=1)]+\mathbb{P}[X|Y=0)]\mathbb{P}[Y=0)]}\)</span></p></li>
+</ul></li>
+<li><p>the optimization or “machine learning” approach: finding <span class="math inline">\(f\)</span> minimizing the empirical risk; optimization algorithm or heuristics are used to estimate <span class="math inline">\(f\)</span>; the 0-1 loss is not convex so usually it is replaced by a convex surrogate loss or upper bound; usually re-sampling methods are used to compute empirical risk (<span class="math inline">\(f\)</span> is trained on a training set and empirical risk evaluated on the testing set, <span class="math inline">\(f\)</span> is chosen to minimize empirical risk).</p></li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn4"><p>See Sébastien Gadat - TSE - Maths of Deep and Machine Learning course <a href="https://perso.math.univ-toulouse.fr/gadat/files/2012/12/Note-25-oct.-2022.pdf">here</a>. Other very good references are Philippe Rigollet - MIT - 18.657: Mathematics of Machine Learning <a href="https://ocw.mit.edu/courses/18-657-mathematics-of-machine-learning-fall-2015/81406c87dccb9e873cfafa876a4d69c3_MIT18_657F15_LecNote.pdf">here</a> or Erwan Le Pennec - Polytechnique - Introduction to Machine Learning (M2 MSV) <a href="http://www.cmap.polytechnique.fr/~lepennec/files/MSV/MLMethods_Adv%20-%20MSV%20-%2023.pdf">slides here</a>. We will see in another course that in the context of the Logistic Regression the two approaches are strongly linked: it can be seen as a probabilistic|discriminative approach or an optimization approach.</p></li></ol></aside></section>
+<section id="scoring-8" class="slide level2 smaller scrollable">
+<h2>Scoring</h2>
+<h3 id="toy-example---the-mixture-data">Toy example - the Mixture data</h3>
+<p>To illustrate what we have seen we use the <strong>Mixture</strong> data set described in <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#/references" role="doc-biblioref" onclick="">2009, pp. 12–16</a>)</span>.</p>
+<p>The data set is generated as follows (p.&nbsp;16):</p>
+<ul>
+<li><p>First the authors generate 10 “means” <span class="math inline">\(m_k\)</span> in <span class="math inline">\(\mathbb R^2\)</span> from a bivariate Gaussian distribution <span class="math inline">\(\mathcal{N}((1,0),I)\)</span> and label this class <em>BLUE</em>.</p></li>
+<li><p>Similarly, 10 more are drawn from <span class="math inline">\(\mathcal{N}((0,1),I)\)</span> and labeled <em>ORANGE</em>.</p></li>
+<li><p>Then for each class authors generate 100 observations as follows: for each observation, <span class="math inline">\(m_k\)</span> is picked at random with probability <span class="math inline">\(\frac{1}{10}\)</span> and used to generate a <span class="math inline">\(\mathcal{N}(m_k,I/5)\)</span>, thus leading to a mixture of Gaussian clusters for each class. They generate similarly an additional data set of 5k observations per class for testing purposes.</p></li>
+</ul>
+<p>The task is to create a classifier that, based on the coordinates <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>, determines whether the point is <em>ORANGE</em> or <em>BLUE</em>.</p>
+</section>
+<section id="scoring-9" class="slide level2 smaller scrollable">
+<h2>Scoring</h2>
+<h3 id="toy-example---the-mixture-data-1">Toy example - the Mixture data</h3>
+<p>First we load the data set and plot the “means”:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="scoring-10" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---the-mixture-data-2">Toy example - the Mixture data</h3>
+<p>Then the training set together with the “means”:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="scoring-11" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---the-mixture-data-3">Toy example - the Mixture data</h3>
+<p>Knowing the generative distribution, we generate a testing set of size 10k (half BLUE, half ORANGE).</p>
+<p>We plot the first 250 new observations of each class from the generated testing set:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section id="scoring-12" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---the-mixture-data-4">Toy example - the Mixture data</h3>
+<p>Knowing the generating distribution we can derive the Bayes classifier (exercise 2.2 <span class="citation" data-cites="hastie2009">(<a href="#/references" role="doc-biblioref" onclick="">Hastie et al., 2009</a>)</span>).</p>
+<p>We plot the boundary decision in grey:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="scoring-13" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---the-mixture-data-5">Toy example - the Mixture data</h3>
+<p>We estimate Bayes risk on the testing data set simulated before (10k BLUE/ORANGE dots) using the data generating process <span class="math inline">\(\mathbf P_{\mathrm X \times \mathrm Y}\)</span>.</p>
+<p>We get a value of 0.213 for the “estimated” Bayes risk, which is in line with <span class="citation" data-cites="hastie2009">(<a href="#/references" role="doc-biblioref" onclick="">Hastie et al., 2009, Figure 13.4</a>)</span>, see below:</p>
+
+<img data-src="images/bayeserror_mixture.png" width="700" class="r-stretch quarto-figure-center"></section>
+<section id="scoring-14" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---a-brief-tour">Toy example - A brief tour</h3>
+<p>We give a brief tour showing the decision boundary of common classifiers for the Mixture data set.</p>
+</section>
+<section id="scoring-15" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---logistic-regression-classifier">Toy example - Logistic Regression classifier</h3>
+<p>We plot below the linear decision boundary given by a Logistic Regression classifier vs Bayes classifier, we only display the training set:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><p>The empirical risk on testing set is 0.291.</p>
+</section>
+<section id="scoring-16" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---logistic-regression-classifier---binning">Toy example - Logistic Regression classifier - binning</h3>
+<p>It is usual, for example in the context of credit scoring or banking, to discretize or categorize numerical variables (a.k.a binning). We use a simple decile binning on <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"><p>The empirical risk on testing set is 0.265.</p>
+</section>
+<section id="scoring-17" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---logistic-regression-classifier---splines">Toy example - Logistic Regression classifier - splines</h3>
+<p>A popular method to move beyond linearity is to transform variables, for example using splines <span class="citation" data-cites="hastie2009">(<a href="#/references" role="doc-biblioref" onclick="">Hastie et al., 2009, p. 5.6</a> Nonparametric Logistic Regression, p161-164)</span>.</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><p>The empirical risk on testing set is 0.29.</p>
+</section>
+<section id="scoring-18" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---k-nearest-neighbors-algorithm---k-15">Toy example - k-Nearest Neighbors Algorithm - <span class="math inline">\(k = 15\)</span></h3>
+<p>k-NN is a non-parametric algorithm. Given a new observation, it finds in the training set the k closest points (given a certain distance) and predicts using a majority vote. Below the boundary decision for <span class="math inline">\(k=15\)</span>:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>The empirical risk on testing set is 0.25.</p>
+</section>
+<section id="scoring-19" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---k-nearest-neighbors-algorithm---k-7">Toy example - k-Nearest Neighbors Algorithm - <span class="math inline">\(k = 7\)</span></h3>
+<p>We show below the boundary decision for <span class="math inline">\(k=7\)</span>:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"><p>The empirical risk on testing set is 0.227.</p>
+</section>
+<section id="scoring-20" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---k-nearest-neighbors-algorithm---k-7-1">Toy example - k-Nearest Neighbors Algorithm - <span class="math inline">\(k = 7\)</span></h3>
+<p>To be compared with <span class="citation" data-cites="hastie2009">(<a href="#/references" role="doc-biblioref" onclick="">Hastie et al., 2009, Figure 13.4</a>)</span>:</p>
+
+<img data-src="images/bayeserror_mixture.png" width="700" class="r-stretch quarto-figure-center"></section>
+<section id="scoring-21" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---k-nearest-neighbors-algorithm---varying-k">Toy example - k-Nearest Neighbors Algorithm - varying <span class="math inline">\(k\)</span></h3>
+<p>We vary <span class="math inline">\(k\)</span> and show the empirical risks on training and testing sets together with Bayes risk:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<section id="scoring-22" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---k-nearest-neighbors-algorithm---varying-k-1">Toy example - k-Nearest Neighbors Algorithm - varying <span class="math inline">\(k\)</span></h3>
+<p>To be compared with <span class="citation" data-cites="hastie2009">(<a href="#/references" role="doc-biblioref" onclick="">Hastie et al., 2009, Figure 2.4</a>)</span>:</p>
+
+<img data-src="images/bayes_error_mixture_k.png" class="r-stretch"></section>
+<section id="scoring-23" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---decision-trees">Toy example - Decision Trees</h3>
+<p>To finish our tour, we show the result of a recursive partition of the plan using Decision Trees techniques:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
+<section id="scoring-24" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="toy-example---decision-trees-1">Toy example - Decision Trees</h3>
+<p>We show below the boundary decision for the previously fitted tree:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"><p>The empirical risk on testing set is 0.247.</p>
+</section>
+<section id="scoring-25" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="if-you-like-boundary-decision-plots">If you like boundary decision plots</h3>
+<p>To play further and make nicer animated 2D decision boundaries for binary classifiers see these two blogs <a href="https://mathformachines.com/posts/decision/">here</a> and <a href="https://paulvanderlaken.com/2020/01/20/animated-machine-learning-classifiers/">here</a>.</p>
+<p>Please also note that the <code>scikit-learn</code> <code>Python</code> library implements methods to display <a href="https://scikit-learn.org/stable/modules/generated/sklearn.inspection.DecisionBoundaryDisplay.html">decision boundaries for classifiers</a>.</p>
+</section>
+<section id="scoring-26" class="slide level2 smaller">
+<h2>Scoring</h2>
+<p>At last we come to the subject of our course!</p>
+<p>We remind we are in the context of binary classification.</p>
+<p>Often we (and the business) are more interested in estimating the probabilities that <span class="math inline">\(Y\)</span> belongs to each class.</p>
+<p>Quoting Trevor Hastie: “For example, it is more valuable to have an estimate of the probability that an insurance claim is fraudulent, than a classification fraudulent or not.”</p>
+</section>
+<section id="scoring-27" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="scoring-function">Scoring function</h3>
+<p>As introduced in <span class="citation" data-cites="cornillon2019">Cornillon et al. (<a href="#/references" role="doc-biblioref" onclick="">2019, Chapter 11.6</a> “Prévision - scoring”)</span>:</p>
+<ul>
+<li><p>The aim of Scoring: find a Scoring function or Score <span class="math inline">\(S: \mathbb R^p \to \mathbb R\)</span> that is “high” in case <span class="math inline">\(\mathbb{P}[Y=1|X=x)\)</span> is “high” and “low” in case <span class="math inline">\(\mathbb{P}[Y=0|X=x)\)</span> is “high”.</p></li>
+<li><p>We say that <span class="math inline">\(S(x)\)</span> is the score of the observation <span class="math inline">\(x \in \mathbb R^p\)</span>.</p></li>
+<li><p>The notions of Score and classifier are closely linked. Given a Score <span class="math inline">\(S\)</span> and a cutoff <span class="math inline">\(s \in \mathbb R\)</span> we obtain the following classifier:</p></li>
+</ul>
+<p><span class="math display">\[
+f_s(x)=\left\{ \begin{array}{ll}
+    1 &amp;  \mbox{if } S(x)\geq s\cr
+    0 &amp;  \mbox{otherwise}\cr
+\end{array} \right.
+\]</span></p>
+<ul>
+<li>The values taken by <span class="math inline">\(S(x)\)</span> are less important than the way they will order a set of observation <span class="math inline">\(x_1,...x_n\)</span>. For any <span class="math inline">\(\phi: \mathbb R \to \mathbb R\)</span> bijective and increasing function, we say that the scores <span class="math inline">\(S\)</span> and <span class="math inline">\(\phi \circ S\)</span> are equivalent.</li>
+</ul>
+</section>
+<section id="scoring-28" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="first-example">First example</h3>
+<p>We show below a simplified example of a credit scorecard that were typically used by banks to assess the creditworthiness of consumer loans applicants (as shown in <span class="citation" data-cites="scoringThomas">(<a href="#/references" role="doc-biblioref" onclick="">Thomas et al., 2002</a>)</span>):</p>
+<img data-src="images/scoring_scorecard.png" class="r-stretch">
+</section>
+<section id="scoring-29" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="first-example-1">First example</h3>
+<img data-src="images/scoring_scorecard.png" class="r-stretch">
+<ul>
+<li><p>a 35-year-old owner wishing to borrow money for home improvement and that has never had a county court judgement (CCJ) will score <span class="math inline">\(129 = (36+25+36+32)\)</span>,</p></li>
+<li><p>a 20-year-old living with his parents borrowing for holiday and having more than £1200 of CCJ will score <span class="math inline">\(38=(22+14+19-17)\)</span>.</p></li>
+</ul>
+</section>
+<section id="scoring-30" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="the-regression-function-a-scoring-function">The regression function, a Scoring function</h3>
+<p>We defined above, in the context of supervised learning, the regression function <span class="math inline">\(\eta(x)=\mathbb{P}[Y=1|X=x)]\)</span>.</p>
+<p>It is a natural candidate for a Scoring function.</p>
+<p>The related Bayes classifier uses <span class="math inline">\(s=\frac{1}{2}\)</span> as cutoff.</p>
+<p>As we have just seen in the last sections, <span class="math inline">\(\eta(x)\)</span> is unknown and we will have to approximate or estimate this regression function using the training set.</p>
+</section>
+<section id="scoring-31" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="evaluating-a-score">Evaluating a Score</h3>
+<p>We first define the <strong>confusion matrix</strong>:</p>
+<table class="table-bordered">
+<caption></caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;"><span class="math inline">\(f_s(X)=0\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(f_s(X)=1\)</span></th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(Y=0\)</span></td>
+<td style="text-align: center;">TN</td>
+<td style="text-align: center;">FP</td>
+<td style="text-align: center;">N</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(Y=1\)</span></td>
+<td style="text-align: center;">FN</td>
+<td style="text-align: center;">TP</td>
+<td style="text-align: center;">P</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a> is a contingency table which cross-tabulates <span class="math inline">\(Y\)</span> with the predicted one <span class="math inline">\(f_s(X)\)</span>.</p>
+<p>It can be evaluated on the learning set as well as on the testing set.</p>
+<p>The following vocabulary originates from medical applications:</p>
+<ul>
+<li><p>true positive (TP)</p></li>
+<li><p>true negative (TN),</p></li>
+<li><p>false positive (FP), also Type I error</p></li>
+<li><p>false negative (FN), also Type II error</p></li>
+</ul>
+</section>
+<section id="scoring-32" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="evaluating-a-score-1">Evaluating a Score</h3>
+<p>More formally we define for a given cutoff <span class="math inline">\(s\)</span>:</p>
+<p><span class="math display">\[
+\alpha(s)=\mathbf P(f_s(X)=1|Y=0)=P(S(X) \geq s|Y=0)
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\beta(s)=\mathbf P(f_s(X)=0|Y=1)=P(S(X) &lt; s|Y=1)
+\]</span></p>
+<p><span class="math inline">\(\alpha(s)\)</span> is called <strong>false positive</strong> rate and <span class="math inline">\(\beta(s)\)</span> <strong>false negative</strong> rate. Similarly <strong>specificity</strong> and <strong>sensitivity</strong> are defined:</p>
+<p><span class="math display">\[
+sp(s)=P(S(X) &lt; s|Y=0) = 1 - \alpha(s)
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+se(s)=P(S(X) \geq s|Y=1) = 1 - \beta(s)
+\]</span></p>
+</section>
+<section id="scoring-33" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="the-receiver-operating-characteristic-roc-curve">The Receiver Operating Characteristic (ROC) curve</h3>
+<p>The ROC (Receiver Operating Characteristic) curve allows to visualize <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> on a same graph for all <span class="math inline">\(s\)</span> allowing to choose the cutoff and compare different Scores.</p>
+<p>Precisely, the ROC curve of a Score <span class="math inline">\(S\)</span> is a parametric curve of the variable <span class="math inline">\(s\)</span>:</p>
+<p><span class="math display">\[
+\begin{array}{ll}
+    ROC:&amp;\mathbb R \to [0,1]^2 \cr
+        &amp; s \to (x(s)=\alpha(s),y(s)=1-\beta(s))\cr
+\end{array}
+\]</span></p>
+<p>For a given Score <span class="math inline">\(S\)</span>, the ROC curve passes through the points <span class="math inline">\((0,0)\)</span> and <span class="math inline">\((1,1)\)</span>, which corresponds to classifying all observations as <span class="math inline">\(0\)</span> (<span class="math inline">\(s\to \infty\)</span>) or <span class="math inline">\(1\)</span> (<span class="math inline">\(s\to -\infty\)</span>).</p>
+</section>
+<section id="scoring-34" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="the-receiver-operating-characteristic-roc-curve-1">The Receiver Operating Characteristic (ROC) curve</h3>
+<p>A Score <span class="math inline">\(S\)</span> is said to be <strong>perfect</strong> if <span class="math inline">\(s^*\)</span> exists such that:</p>
+<p><span class="math display">\[
+P(Y=1|S(X) \geq s^*) = 1
+\]</span> and <span class="math display">\[
+P(Y=0|S(X) &lt; s^*) = 1
+\]</span></p>
+<p>It corresponds to <span class="math inline">\(x(s^*)=0\)</span> and <span class="math inline">\(y(s^*)=1\)</span> (using the preceding definitions and Bayes rule).</p>
+<p>For example:</p>
+<p><span class="math display">\[
+x(s^*)=P(S(X) \geq s^*|Y=0)=\frac{P(Y=0|S(X) \geq s^*)P(S(X) \geq s^*)}{P(Y=0)}=0
+\]</span></p>
+<p>Similarly: for <span class="math inline">\(s \leq s^*\)</span> we have <span class="math inline">\(x(s)=0\)</span> and for <span class="math inline">\(s &gt; s^*\)</span> we have <span class="math inline">\(y(s)=1\)</span>.</p>
+</section>
+<section id="scoring-35" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="the-receiver-operating-characteristic-roc-curve-2">The Receiver Operating Characteristic (ROC) curve</h3>
+<p>A score <span class="math inline">\(S\)</span> is said to be <strong>random</strong> if <span class="math inline">\(S(X)\)</span> and <span class="math inline">\(Y\)</span> are independent. In such case:</p>
+<p><span class="math display">\[
+x(s)=P(S(X) \geq s|Y=0)=P(S(X))=P(S(X) \geq s|Y=1)=y(s)
+\]</span></p>
+<p>The ROC curve for a random score is the first bisector <span class="math inline">\((0,0)\)</span> to <span class="math inline">\((1,1)\)</span>.</p>
+</section>
+<section id="scoring-36" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="the-receiver-operating-characteristic-roc-curve-3">The Receiver Operating Characteristic (ROC) curve</h3>
+<p><a href="#/fig-roc-perfect-random">Figure&nbsp;1</a> shows the two curves.</p>
+
+<img data-src="0_scoring_files/figure-revealjs/fig-roc-perfect-random-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;1: ROC curves of a perfect Score (solid, blue) and a random Score (dashed, orange)</p></section>
+<section id="scoring-37" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="the-receiver-operating-characteristic-roc-curve-4">The Receiver Operating Characteristic (ROC) curve</h3>
+<p>The ROC curves can be summarized to generate numeric criteria such as the AUC (Area Under Curve).</p>
+<p>The AUC will be <span class="math inline">\(1\)</span> for the perfect Score and <span class="math inline">\(0.5\)</span> for the random Score and can be used to rapidly compare two Scores.</p>
+<p>It is considered better than other point-wise criteria.</p>
+<p>However we must keep in mind that the AUC as a summary criterion presents some drawbacks since two Scores can have the same AUC but behave very differently in the plane.</p>
+</section>
+<section id="scoring-38" class="slide level2 smaller">
+<h2>Scoring</h2>
+<h3 id="the-receiver-operating-characteristic-roc-curve-5">The Receiver Operating Characteristic (ROC) curve</h3>
+<p>In practice, we do not know <span class="math inline">\(x(s)\)</span> and <span class="math inline">\(y(s)\)</span> to define the ROC curve.</p>
+<p>Usually, a training set will be used to learn a Score <span class="math inline">\(S\)</span> and a testing set to estimate the ROC curve <span class="math inline">\(x(s)\)</span> and <span class="math inline">\(y(s)\)</span> for a range of <span class="math inline">\(s\)</span>.</p>
+<p>In the rest of the course/project we will be equally interested in binary classification and scoring which are closely linked.</p>
+<p>Throughout the course/project, we will focus on two fundamental and complementary models: the Logistic Regression model and Decision Trees, for which we have shown examples of decision boundaries on the Mixture data set.</p>
+<p>Let’s warm up and apply what we have seen on a first data set.</p>
+</section></section>
+<section>
+<section id="desbois-case-study" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Desbois case study</h1>
+
+</section>
+<section id="desbois-case-study-1" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="financial-problems-of-farm-holdings">Financial problems of farm holdings</h3>
+<p>The article from <span class="citation" data-cites="desbois2008">Desbois (<a href="#/references" role="doc-biblioref" onclick="">2008</a>)</span> (available <a href="https://csbigs.fr/index.php/csbigs/article/view/351">here</a> together with a sample data set) shows a complete case study around the detection of financial risks applicable to farm holdings.</p>
+<p>Among others, Linear Discriminant Analysis and Logistic Regression (plus stepwise variable selection procedure) are used.</p>
+<p>ROC curves are then provided to compare the two methods.</p>
+<p>The original data set uses a format specific to the SPSS software, but is readable from R using the <code>foreign</code> package.</p>
+<p>The case study by Desbois will be partly reproduced today and in the next lessons to quickly apply scoring techniques.</p>
+</section>
+<section id="desbois-case-study-2" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<p>Loading Desbois data and first glimpse at it:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># package used to import spss file</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(foreign)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>don_desbois <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"presentation_data/Agriculture Farm Lending/desbois.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">glimpse</span>(don_desbois)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,260
+Columns: 30
+$ CNTY    &lt;fct&gt; Eure, Eure, Eure, Eure, Eure, Eure, Eure, Eure, Eure, Eure, Eu…
+$ DIFF    &lt;fct&gt; healthy, healthy, healthy, healthy, healthy, healthy, healthy,…
+$ STATUS  &lt;fct&gt; Entreprise individuelle, Entreprise individuelle, Entreprise i…
+$ HECTARE &lt;dbl&gt; 166, 101, 138, 166, 137, 107, 100, 69, 176, 177, 108, 123, 87,…
+$ ToF     &lt;fct&gt; cereals, cereals, dairy farm, cereals, mixed livestock, cereal…
+$ OWNLAND &lt;fct&gt; yes, no, yes, yes, yes, yes, no, yes, yes, yes, yes, yes, yes,…
+$ AGE     &lt;dbl&gt; 35, 35, 42, 50, 33, 45, 34, 30, 44, 39, 40, 40, 40, 52, 49, 44…
+$ HARVEST &lt;fct&gt; 1988, 1988, 1988, 1988, 1988, 1988, 1988, 1988, 1988, 1988, 19…
+$ r1      &lt;dbl&gt; 0.449, 0.450, 0.332, 0.363, 0.440, 0.306, 0.717, 0.566, 0.145,…
+$ r2      &lt;dbl&gt; 0.622, 0.617, 0.819, 0.733, 0.650, 0.755, 0.320, 0.465, 0.881,…
+$ r3      &lt;dbl&gt; 0.25500, 0.24110, 0.55680, 0.35960, 0.31420, 0.26350, 0.16280,…
+$ r4      &lt;dbl&gt; 0.11450, 0.10840, 0.18510, 0.13050, 0.13820, 0.08055, 0.11680,…
+$ r5      &lt;dbl&gt; 0.334, 0.341, 0.147, 0.232, 0.302, 0.225, 0.601, 0.499, 0.115,…
+$ r6      &lt;dbl&gt; 0.785, 0.518, 0.700, 0.773, 0.846, 0.709, 0.894, 0.863, 0.439,…
+$ r7      &lt;dbl&gt; 0.585, 0.393, 0.310, 0.495, 0.580, 0.523, 0.748, 0.761, 0.348,…
+$ r8      &lt;dbl&gt; 0.20020, 0.12500, 0.38950, 0.27790, 0.26580, 0.18700, 0.14550,…
+$ r11     &lt;dbl&gt; 0.6628, 0.7098, 0.4142, 0.4661, 0.7715, 0.8178, 0.6598, 0.6619…
+$ r12     &lt;dbl&gt; 1.3698, 1.2534, 0.6370, 1.0698, 1.4752, 1.4682, 1.1018, 1.2360…
+$ r14     &lt;dbl&gt; 0.23200, 0.14970, 0.48470, 0.37350, 0.25630, 0.18610, 0.18070,…
+$ r17     &lt;dbl&gt; 0.0884, 0.0671, 0.0445, 0.0621, 0.0489, 0.0243, 0.0352, 0.0879…
+$ r18     &lt;dbl&gt; 0.0694, 0.0348, 0.0311, 0.0480, 0.0414, 0.0173, 0.0315, 0.0758…
+$ r19     &lt;dbl&gt; 0.1660, 0.1360, 0.1030, 0.1080, 0.1270, 0.0652, 0.1290, 0.2400…
+$ r21     &lt;dbl&gt; 0.1340, 0.0802, 0.0890, 0.0851, 0.0838, 0.0390, 0.0784, 0.1630…
+$ r22     &lt;dbl&gt; 0.3219, 0.3133, 0.2945, 0.1909, 0.2567, 0.1472, 0.3211, 0.5170…
+$ r24     &lt;dbl&gt; 0.295, 0.365, 0.166, 0.265, 0.257, 0.191, 0.322, 0.305, 0.180,…
+$ r28     &lt;dbl&gt; 0.475, 0.434, 0.350, 0.475, 0.475, 0.443, 0.401, 0.464, 0.475,…
+$ r30     &lt;dbl&gt; 0.35000, 0.29780, 0.24680, 0.37590, 0.36690, 0.37590, 0.27240,…
+$ r32     &lt;dbl&gt; 0.4313, 0.3989, 0.3187, 0.4313, 0.4313, 0.4257, 0.3697, 0.3886…
+$ r36     &lt;dbl&gt; 0.886, 0.351, 1.300, 1.385, 0.886, 1.316, 0.441, 0.761, 2.147,…
+$ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.359,…</code></pre>
+</div>
+</div>
+</section>
+<section id="desbois-case-study-3" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<p>Replacing for convenience <code>DIFF</code> target by factor <code>Y</code> with <code>O</code> (healthy) or <code>1</code> (failing):</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>don_desbois <span class="ot">&lt;-</span> don_desbois <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">as.factor</span>(<span class="fu">if_else</span>(DIFF<span class="sc">==</span><span class="st">'healthy'</span>, <span class="dv">0</span>, <span class="dv">1</span>)), <span class="at">DIFF =</span> <span class="cn">NULL</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>           <span class="at">.before =</span> <span class="fu">everything</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>We give in the following slides the definitions of Desbois ratio <span class="math inline">\(r_1,...,r_{37}\)</span>, that we will use today, as found in the article.</p>
+<p>They might give you inspiration to create new predictors/features for the project to come.</p>
+</section>
+<section id="desbois-case-study-4" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="capitalization-ratios">Capitalization ratios</h3>
+<div class="extrapad">
+<ul>
+<li>r1 total debt / total assets;</li>
+<li>r2 stockholders’ equity / invested capital;</li>
+<li>r3 short term debt / total debt;</li>
+<li>r4 short term debt / total assets;</li>
+<li>r5 long and medium term debt / total assets;</li>
+</ul>
+</div>
+</section>
+<section id="desbois-case-study-5" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="weight-of-the-debt-ratios">Weight of the debt ratios</h3>
+<div class="extrapad">
+<ul>
+<li>r6 total debt / gross product;</li>
+<li>r7 long and medium term debt / gross product;</li>
+<li>r8 short term debt / gross product;</li>
+</ul>
+</div>
+</section>
+<section id="desbois-case-study-6" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="liquidity-ratios">Liquidity ratios</h3>
+<div class="extrapad">
+<ul>
+<li>r11 working capital / gross product;</li>
+<li>r12 working capital / (real inputs - financial expenses);</li>
+<li>r14 short term debt / circulating assets;</li>
+</ul>
+</div>
+</section>
+<section id="desbois-case-study-7" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="debt-servicing-ratios">Debt servicing ratios</h3>
+<div class="extrapad">
+<ul>
+<li>r17 financial expenses / total debt;</li>
+<li>r18 financial expenses / gross product;</li>
+<li>r19 (financial expenses + refunding of long and medium term capital) / gross product;</li>
+<li>r21 financial expenses / EBITDA;</li>
+<li>r22 (financial expenses + refunding of long and medium term capital) / EBITDA;</li>
+</ul>
+</div>
+</section>
+<section id="desbois-case-study-8" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="capital-profitability-ratio">Capital profitability ratio</h3>
+<ul>
+<li>r24 EBITDA / total assets;</li>
+</ul>
+</section>
+<section id="desbois-case-study-9" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="earnings-ratios">Earnings ratios</h3>
+<div class="extrapad">
+<ul>
+<li>r28 EBITDA / gross product;</li>
+<li>r30 available income / gross product;</li>
+<li>r32 (EBITDA - financial expenses) / gross product;</li>
+</ul>
+</div>
+</section>
+<section id="desbois-case-study-10" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="productive-activity-ratios">Productive activity ratios</h3>
+<div class="extrapad">
+<ul>
+<li>r36 immobilized assets / gross product;</li>
+<li>r37 gross product / total assets.</li>
+</ul>
+</div>
+</section>
+<section id="desbois-case-study-11" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="your-turn-to-play">Your turn to play</h3>
+<p>Using the data set at hand, try to retrieve some findings of the Desbois case study.</p>
+<p>You might need <code>R</code> packages <code>FactoMineR</code>, <code>ROCR</code> and <code>MASS::lda</code> function to perform the tasks (“YOUR CODE HERE”) described in the following slides.</p>
+<p>Each time I show an example of what is expected.</p>
+<p>I suggest that you start using <code>Quarto</code> (setup <a href="https://quarto.org/docs/get-started/">here</a>) to code and track/publish your results. It will be requested for your projects (it is very similar to <code>RMarkdown</code>). It integrates perfectly with <code>RStudio</code>.</p>
+</section>
+<section id="desbois-case-study-12" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="principal-component-analysis-pca-of-financial-ratios">Principal Component Analysis (PCA) of financial ratios</h3>
+<p>First perform PCA on financial ratios (use for example package <a href="http://factominer.free.fr/factomethods/principal-components-analysis.html">FactoMineR</a>), then display correlations between ratios and the two first principal components :</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
+<section id="desbois-case-study-13" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="to-be-compared-with-article-figure-1">To be compared with article Figure 1</h3>
+<img data-src="images/desbois_pca_projection_pc1_pc2.png" class="r-stretch">
+</section>
+<section id="desbois-case-study-14" class="slide level2 smaller scrollable">
+<h2>Desbois case study</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Following Desbois path, visualize the farm holdings in data set as a bivariate plot on the first two components of PCA (based on financial ratios), use variable Y (0=”healthy”; 1=”failing”) to colour your observations:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"></section>
+<section id="desbois-case-study-15" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<h3 id="to-be-compared-with-article-figure-2">To be compared with article Figure 2</h3>
+<p>It strikes Desbois that the PCA (even if not a discriminative/scoring procedure), seems to do a rather good job identifying defaulting farms on the training set.</p>
+<p>Disclaimer: in general it won’t be necessarily the case as PCA operates only on the predictors without “knowledge” of target variable.</p>
+<img data-src="images/desbois_pca_individuals_pc1_pc2.png" class="r-stretch">
+</section>
+<section id="desbois-case-study-16" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<p>As suggested by Desbois, extract the first principal component (some help <a href="https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i">here</a>), and use it as a Scoring function.</p>
+<p>Today it will allow us to use a first Scoring function without introducing the Logistic Regression that you have not yet studied in class.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Below the score for each observation is the x-axis or first principal component:</p>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-32-1.png" width="960" class="r-stretch"></section>
+<section id="desbois-case-study-17" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<p>Looking at this plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate (setting a threshold at <span class="math inline">\(PC_1 &gt; 0.02\)</span>):</p>
+<img data-src="images/desbois_pca_rule.png" class="r-stretch">
+</section>
+<section id="desbois-case-study-18" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<p>Going further than Desbois and for illustrative purposes only, use <span class="math inline">\(PC_1\)</span> as a very naive Scoring function.</p>
+<p>Plot below the ROC curve as defined in the Scoring part of the presentation (you can use package <code>ROCR</code>, but a simple for-loop for different cutoff values <span class="math inline">\(s\)</span> will do the job):</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-34-1.png" width="960" class="r-stretch"><p>We follow closely the case study, but we will see that ROC curves are usually evaluated on a hold-out data set.</p>
+</section>
+<section id="desbois-case-study-19" class="slide level2 smaller scrollable">
+<h2>Desbois case study</h2>
+<p>Then compare with a Scoring function obtained with Linear Discriminant Analysis (LDA). For a reminder on LDA see for example <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#/references" role="doc-biblioref" onclick="">2009, Chapter 4.3</a> LDA, p.&nbsp;103-111)</span>.</p>
+<p>You can use Desbois variables selected in the article by a stepwise procedure (using Wilk’s lambda<sup>1</sup>). Selected variables are:</p>
+<img data-src="images/desbois_lda_stepwise.png" class="r-stretch">
+<p>So basically you can fit LDA with <code>r2+r3+r7+r14+r17+r18+r21+r32+r36</code> as predictors (I use <code>R</code> formula notation to ease your copy-paste).</p>
+<aside><ol class="aside-footnotes"><li id="fn5"><p>We won’t describe the procedure here. A SPSS script is given in the article. It is not straightforward to reproduce it with R. I tried scripting manually the procedure and it works but is not very interesting.</p></li></ol></aside></section>
+<section id="desbois-case-study-20" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<p>Fit LDA (<code>MASS::lda</code>) with model specification of your choice. Then display model coefficients:</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Using <code>r2+r3+r7+r14+r17+r18+r21+r32+r36</code>, we obtain:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>       LD1
+r2  -2.542
+r3   2.398
+r7   1.099
+r14  0.604
+r17 18.702
+r18 -6.798
+r21 -0.622
+r32 -4.163
+r36  0.192</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p>Similar<sup>1</sup> to what Desbois obtains:</p>
+<p><img data-src="images/desbois_lda_score.png"></p>
+</div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn6"><p><code>R</code> does not provide <a href="https://stats.stackexchange.com/questions/166942/why-are-discriminant-analysis-results-in-r-lda-and-spss-different-constant-t">constant</a> for LDA which won’t affect Scoring function ordering.</p></li></ol></aside></section>
+<section id="desbois-case-study-21" class="slide level2 smaller scrollable">
+<h2>Desbois case study</h2>
+<p>Now compare the LDA Scoring function with the naive Score built with first component of PCA using a ROC curve (on training set):</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"></section>
+<section id="desbois-case-study-22" class="slide level2 smaller scrollable">
+<h2>Desbois case study</h2>
+<p>As a very soft and intuitive introduction to logistic regression. First discretize a ratio <span class="math inline">\(r\)</span> of your choice.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Compute proportion of defaults among each class. For example using <span class="math inline">\(0.01\)</span> steps for ratio <span class="math inline">\(r17\)</span>:</li>
+</ul>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>|r17_class  |0  |1 |Mean(Y)|
+|-----------|---|--|-------|
+|[0,0.01)   |  2| 0|0.0000 |
+|[0.01,0.02)|  4| 2|0.3333 |
+|[0.02,0.03)| 65|14|0.1772 |
+|[0.03,0.04)|106|38|0.2639 |
+|[0.04,0.05)|112|64|0.3636 |
+|[0.05,0.06)|104|77|0.4254 |
+|[0.06,0.07)| 88|93|0.5138 |
+|[0.07,0.08)| 63|83|0.5685 |
+|[0.08,0.09)| 49|66|0.5739 |
+|[0.09,0.1) | 27|71|0.7245 |
+|[0.1,0.11) | 14|42|0.7500 |
+|[0.11,0.12)| 12|42|0.7778 |
+|[0.12,0.13)|  7|14|0.6667 |
+|[0.19,0.2] |  0| 1|1.0000 |</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Then using this table, plot an empirical conditional distribution of default given <span class="math inline">\(r\)</span> classes:</li>
+</ul>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-42-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="desbois-case-study-23" class="slide level2 smaller scrollable">
+<h2>Desbois case study</h2>
+
+<img data-src="0_scoring_files/figure-revealjs/unnamed-chunk-43-1.png" width="960" class="r-stretch"><p>We notice that the mean default occurrence with respect to <span class="math inline">\(r_{17}\)</span> classes follows a kind of “S”-shaped curve or <strong>sigmoid</strong> function. Note that the shape depends on classes width and might change. We “fitted” (blue-dotted) <span class="math inline">\(\sigma: x \to\sigma(x)=\frac{e^{x}} { 1 + e^{x} }\)</span> also known as logistic function to the mean default occurences (orange segments).</p>
+</section>
+<section id="desbois-case-study-24" class="slide level2 smaller">
+<h2>Desbois case study</h2>
+<p>This roughly corresponds to the intuitive introduction to the logistic regression model given in <span class="citation" data-cites="hosmer2013">Hosmer et al. (<a href="#/references" role="doc-biblioref" onclick="">2013</a>)</span> using a Coronary Heart Disease (CHD) event as <span class="math inline">\(Y\)</span> and AGE as <span class="math inline">\(X\)</span>:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/hosmer_lemeshow_chd3.png"></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/hosmer_lemeshow_chd4.png"></p>
+</div>
+</div>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-bardos2007" class="csl-entry" role="listitem">
+Bardos, M. (2007). What is at stake in the construction and use of credit scores? <em>Computational Economics</em>, <em>29</em>(2), 159–172. <a href="https://doi.org/10.1007/s10614-006-9083-x">https://doi.org/10.1007/s10614-006-9083-x</a>
+</div>
+<div id="ref-cornillon2019" class="csl-entry" role="listitem">
+Cornillon, P.-A., Matzner-Løber, E., Hengartner, N., &amp; Rouvière, L. (2019). <em>Régression avec r - 2e édition</em>. EDP Sciences.
+</div>
+<div id="ref-desbois2008" class="csl-entry" role="listitem">
+Desbois, D. (2008). <span class="nocase">Introduction to scoring methods: financial problems of farm holdings</span>. <em><span>Case Studies in Business, Industry and Government Statistics</span></em>, <em>2</em>(1), 56–76. <a href="https://hal.science/hal-01172847">https://hal.science/hal-01172847</a>
+</div>
+<div id="ref-hastie2009" class="csl-entry" role="listitem">
+Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The elements of statistical learning</em>. Springer New York.
+</div>
+<div id="ref-hosmer2013" class="csl-entry" role="listitem">
+Hosmer, D. W., Lemeshow, S., &amp; Sturdivant, R. X. (2013). Applied logistic regression. In <em>Wiley Series in Probability and Statistics</em>.
+</div>
+<div id="ref-scoringThomas" class="csl-entry" role="listitem">
+Thomas, L., Edelman, D., &amp; Crook, J. (2002). Credit scoring and its applications. In <em>Monographs on Mathematical Modeling &amp; Computation</em>.
+</div>
+</div>
+<div class="footer footer-default">
+
+</div>
+</section></section>
+
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="0_scoring_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="0_scoring_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="0_scoring_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="0_scoring_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="0_scoring_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="0_scoring_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="0_scoring_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="0_scoring_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="0_scoring_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="0_scoring_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
