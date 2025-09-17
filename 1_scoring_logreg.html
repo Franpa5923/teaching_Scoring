@@ -452,9 +452,9 @@ Louis Olive
 <h2>Outline</h2>
 <div class="extrapad">
 <ul>
-<li><p>(Warm Up) Desbois case study</p></li>
+<li><p>(Warm Up) Desbois case study - solutions</p></li>
 <li><p>Scoring - reminders</p></li>
-<li><p>Introduction to the Logistic Regression</p></li>
+<li><p>The Logistic Regression model</p></li>
 </ul>
 </div>
 </section></section>
@@ -684,6 +684,11 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
 <section id="desbois-case-study-18" class="slide level2 smaller">
 <h2>Desbois case study</h2>
+<p>Looking at the preceding plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate (setting a threshold at <span class="math inline">\(PC_1 &gt; 0.02\)</span>):</p>
+<img data-src="images/desbois_pca_rule.png" class="r-stretch">
+</section>
+<section id="desbois-case-study-19" class="slide level2 smaller">
+<h2>Desbois case study</h2>
 <p>As suggested by Desbois, extract the first principal component (some help <a href="https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i">here</a>), and use it as a Scoring function.</p>
 <p>Today it will allow us to use a first Scoring function without introducing the Logistic Regression that you have not yet studied in class.</p>
 <div class="cell">
@@ -695,8 +700,9 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <p>Below the score for each observation is the x-axis or first principal component:</p>
 
 <img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
-<section id="desbois-case-study-19" class="slide level2 smaller">
+<section id="desbois-case-study-20" class="slide level2 smaller">
 <h2>Desbois case study</h2>
+<p>We show below how to obtain the first five Principal components (Desbois only uses the first two):</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -729,9 +735,9 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 </details>
 </div>
 </section>
-<section id="desbois-case-study-20" class="slide level2 smaller">
+<section id="desbois-case-study-21" class="slide level2 smaller">
 <h2>Desbois case study</h2>
-<p>Below the score for each observation is the x-axis or first principal component:</p>
+<p>Below we define the score for each observation <span class="math inline">\(x\)</span> as the first principal component <span class="math inline">\(PC_1(x)\)</span> (x-coordinate below, with <span class="math inline">\(PC_2(x)\)</span> as y-coordinate):</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -740,57 +746,9 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <span id="cb10-3"><a href="#cb10-3"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Dim<span class="fl">.1</span>, <span class="at">y =</span> Dim<span class="fl">.2</span>, <span class="at">col =</span> Y)) <span class="sc">+</span></span>
 <span id="cb10-4"><a href="#cb10-4"></a>    <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"dodgerblue"</span>, <span class="st">"orange"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output-display">
-<p><img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+
 </div>
-</div>
-<p>As suggested by Desbois, extract the first principal component (some help <a href="https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i">here</a>), and use it as a Scoring function.</p>
-<p>Today it will allow us to use a first Scoring function without introducing the Logistic Regression that you have not yet studied in class.</p>
-<div class="cell">
-<details open="">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="co"># https://stats.stackexchange.com/questions/494866/how-to-explain-the-numerical-discrepancy-between-factominerpca-and-the-svd</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="co"># https://stats.stackexchange.com/questions/134282/relationship-between-svd-and-pca-how-to-use-svd-to-perform-pca</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="co"># Extracting first five Principal components from FactomineR object </span></span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="co"># Using FactomineR 'notation' (U,sv,V)</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="co"># (X nxp matrix of Desbois observations (only r1...r37), SVD decomposition X = U %*% diag(vs) %*% t(V), </span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="co"># where U: unitary matrix of left-singular vectors, vs: singular values, V: unitary matrix of left-singular vectors)</span></span>
-<span id="cb11-9"><a href="#cb11-9"></a></span>
-<span id="cb11-10"><a href="#cb11-10"></a><span class="co"># SVD object from FactomineR res.pca$svd</span></span>
-<span id="cb11-11"><a href="#cb11-11"></a></span>
-<span id="cb11-12"><a href="#cb11-12"></a><span class="co"># Principal components X %*% V = U %*% diag(vs) %*% t(V) %*% V = U %*% diag(vs) </span></span>
-<span id="cb11-13"><a href="#cb11-13"></a>principal_components_1 <span class="ot">&lt;-</span> res.pca<span class="sc">$</span>svd<span class="sc">$</span>U <span class="sc">%*%</span> <span class="fu">diag</span>(res.pca<span class="sc">$</span>svd<span class="sc">$</span>vs[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span>
-<span id="cb11-14"><a href="#cb11-14"></a></span>
-<span id="cb11-15"><a href="#cb11-15"></a><span class="co"># Can also be directly extracted from:</span></span>
-<span id="cb11-16"><a href="#cb11-16"></a>principal_components_2 <span class="ot">&lt;-</span> res.pca<span class="sc">$</span>ind<span class="sc">$</span>coord</span>
-<span id="cb11-17"><a href="#cb11-17"></a></span>
-<span id="cb11-18"><a href="#cb11-18"></a><span class="co"># Or using PC = X %*% V (where X has been centered and scaled</span></span>
-<span id="cb11-19"><a href="#cb11-19"></a><span class="co"># base R 'scale' uses a different scaling factor than FactomineR hence sqrt(n / n-1) correction)</span></span>
-<span id="cb11-20"><a href="#cb11-20"></a>X_for_PCA <span class="ot">&lt;-</span> don_desbois <span class="sc">%&gt;%</span> <span class="fu">select</span>(r1<span class="sc">:</span>r37) <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>()</span>
-<span id="cb11-21"><a href="#cb11-21"></a>principal_components_3 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">nrow</span>(X_for_PCA) <span class="sc">/</span> (<span class="fu">nrow</span>(X_for_PCA) <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> <span class="fu">scale</span>(X_for_PCA) <span class="sc">%*%</span> res.pca<span class="sc">$</span>svd<span class="sc">$</span>V</span>
-<span id="cb11-22"><a href="#cb11-22"></a></span>
-<span id="cb11-23"><a href="#cb11-23"></a><span class="co"># perform svd using base R on scaled matrix</span></span>
-<span id="cb11-24"><a href="#cb11-24"></a>s <span class="ot">&lt;-</span> <span class="fu">svd</span>(<span class="fu">scale</span>(X_for_PCA))</span>
-<span id="cb11-25"><a href="#cb11-25"></a><span class="co"># correct for negative signs</span></span>
-<span id="cb11-26"><a href="#cb11-26"></a>s<span class="sc">$</span>v[, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)] <span class="ot">&lt;-</span> s<span class="sc">$</span>v[, <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)] <span class="sc">*</span> <span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb11-27"><a href="#cb11-27"></a></span>
-<span id="cb11-28"><a href="#cb11-28"></a>V <span class="ot">&lt;-</span> s<span class="sc">$</span>v[,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb11-29"><a href="#cb11-29"></a>principal_components_4 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">nrow</span>(X_for_PCA) <span class="sc">/</span> (<span class="fu">nrow</span>(X_for_PCA) <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> <span class="fu">scale</span>(X_for_PCA) <span class="sc">%*%</span> V</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>Below the score for each observation is the x-axis or first principal component:</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
-</div>
-</div>
-</section>
-<section id="desbois-case-study-21" class="slide level2 smaller">
-<h2>Desbois case study</h2>
-<p>Looking at this plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate (setting a threshold at <span class="math inline">\(PC_1 &gt; 0.02\)</span>):</p>
-<img data-src="images/desbois_pca_rule.png" class="r-stretch">
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"><p>Defaulting farms or observations <span class="math inline">\(x\)</span> appear in orange, healthy in blue.</p>
 </section>
 <section id="desbois-case-study-22" class="slide level2 smaller">
 <h2>Desbois case study</h2>
@@ -799,31 +757,31 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 
-<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"><p>We follow closely the case study, but we will see that ROC curves are usually evaluated on a hold-out data set.</p>
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"><p>We follow closely the case study, but we will see that ROC curves are usually evaluated on a hold-out data set.</p>
 </section>
 <section id="desbois-case-study-23" class="slide level2 smaller">
 <h2>Desbois case study</h2>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(<span class="st">"ROCR"</span>)    </span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co"># naive score</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(naive_score<span class="sc">$</span>Dim<span class="fl">.1</span>, naive_score<span class="sc">$</span>Y)</span>
-<span id="cb13-5"><a href="#cb13-5"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
-<span id="cb13-6"><a href="#cb13-6"></a><span class="fu">plot</span>(perf, <span class="at">main=</span><span class="st">"ROC curve"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
-<span id="cb13-7"><a href="#cb13-7"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"darkorange"</span>, </span>
-<span id="cb13-8"><a href="#cb13-8"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.5</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="fl">0.00</span>,<span class="dv">1</span>,<span class="dv">5</span>), </span>
-<span id="cb13-9"><a href="#cb13-9"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"              s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
-<span id="cb13-10"><a href="#cb13-10"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="co">#add a 45 degree line</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(<span class="st">"ROCR"</span>)    </span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># naive score</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(naive_score<span class="sc">$</span>Dim<span class="fl">.1</span>, naive_score<span class="sc">$</span>Y)</span>
+<span id="cb12-5"><a href="#cb12-5"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="fu">plot</span>(perf, <span class="at">main=</span><span class="st">"ROC curve"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"darkorange"</span>, </span>
+<span id="cb12-8"><a href="#cb12-8"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.5</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="fl">0.00</span>,<span class="dv">1</span>,<span class="dv">5</span>), </span>
+<span id="cb12-9"><a href="#cb12-9"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"              s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="co">#add a 45 degree line</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
 <section id="desbois-case-study-24" class="slide level2 smaller scrollable">
 <h2>Desbois case study</h2>
 <p>Then compare with a Scoring function obtained with Linear Discriminant Analysis (LDA). For a reminder on LDA see for example <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#/references" role="doc-biblioref" onclick="">2009, Chapter 4.3</a> LDA, p.&nbsp;103-111)</span>.</p>
@@ -837,7 +795,7 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="columns">
@@ -868,8 +826,8 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>lda_desbois <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">lda</span>(Y<span class="sc">~</span>r2<span class="sc">+</span>r3<span class="sc">+</span>r7<span class="sc">+</span>r14<span class="sc">+</span>r17<span class="sc">+</span>r18<span class="sc">+</span>r21<span class="sc">+</span>r32<span class="sc">+</span>r36, <span class="at">data=</span>don_desbois)</span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">round</span>(lda_desbois<span class="sc">$</span>scaling,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>lda_desbois <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">lda</span>(Y<span class="sc">~</span>r2<span class="sc">+</span>r3<span class="sc">+</span>r7<span class="sc">+</span>r14<span class="sc">+</span>r17<span class="sc">+</span>r18<span class="sc">+</span>r21<span class="sc">+</span>r32<span class="sc">+</span>r36, <span class="at">data=</span>don_desbois)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">round</span>(lda_desbois<span class="sc">$</span>scaling,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       LD1
@@ -891,58 +849,58 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 
-<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
 <section id="desbois-case-study-28" class="slide level2 smaller scrollable">
 <h2>Desbois case study</h2>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># for ROCR</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>labels_desbois <span class="ot">&lt;-</span> don_desbois<span class="sc">$</span>Y</span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># naive score</span></span>
-<span id="cb19-5"><a href="#cb19-5"></a>predictions_naive_score <span class="ot">&lt;-</span> naive_score<span class="sc">$</span>Dim<span class="fl">.1</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a></span>
-<span id="cb19-7"><a href="#cb19-7"></a>naive_score_group <span class="ot">&lt;-</span> naive_score <span class="sc">%&gt;%</span></span>
-<span id="cb19-8"><a href="#cb19-8"></a>  <span class="fu">group_by</span>(Y) <span class="sc">%&gt;%</span></span>
-<span id="cb19-9"><a href="#cb19-9"></a>  <span class="fu">summarize</span>(<span class="at">mean_score =</span> <span class="fu">mean</span>(Dim<span class="fl">.1</span>), <span class="at">n =</span> <span class="fu">n</span>())</span>
-<span id="cb19-10"><a href="#cb19-10"></a></span>
-<span id="cb19-11"><a href="#cb19-11"></a>cutoff_naive <span class="ot">&lt;-</span> <span class="fu">mean</span>(naive_score_group<span class="sc">$</span>mean_score)</span>
-<span id="cb19-12"><a href="#cb19-12"></a></span>
-<span id="cb19-13"><a href="#cb19-13"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(predictions_naive_score, labels_desbois)</span>
-<span id="cb19-14"><a href="#cb19-14"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
-<span id="cb19-15"><a href="#cb19-15"></a><span class="fu">plot</span>(perf, <span class="at">main=</span><span class="st">"ROC curve Admissions"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
-<span id="cb19-16"><a href="#cb19-16"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"darkolivegreen"</span>, </span>
-<span id="cb19-17"><a href="#cb19-17"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(cutoff_naive), </span>
-<span id="cb19-18"><a href="#cb19-18"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"                s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
-<span id="cb19-19"><a href="#cb19-19"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="co">#add a 45 degree line</span></span>
-<span id="cb19-20"><a href="#cb19-20"></a></span>
-<span id="cb19-21"><a href="#cb19-21"></a><span class="co"># lda</span></span>
-<span id="cb19-22"><a href="#cb19-22"></a>predictions_lda <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_desbois)<span class="sc">$</span>x</span>
-<span id="cb19-23"><a href="#cb19-23"></a></span>
-<span id="cb19-24"><a href="#cb19-24"></a>lda_score_group <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(don_desbois, predictions_lda) <span class="sc">%&gt;%</span></span>
-<span id="cb19-25"><a href="#cb19-25"></a>  <span class="fu">group_by</span>(Y) <span class="sc">%&gt;%</span></span>
-<span id="cb19-26"><a href="#cb19-26"></a>  <span class="fu">summarize</span>(<span class="at">mean_score =</span> <span class="fu">mean</span>(LD1), <span class="at">n =</span> <span class="fu">n</span>())</span>
-<span id="cb19-27"><a href="#cb19-27"></a></span>
-<span id="cb19-28"><a href="#cb19-28"></a>cutoff_lda <span class="ot">&lt;-</span> <span class="fu">mean</span>(lda_score_group<span class="sc">$</span>mean_score)</span>
-<span id="cb19-29"><a href="#cb19-29"></a></span>
-<span id="cb19-30"><a href="#cb19-30"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(predictions_lda, labels_desbois)</span>
-<span id="cb19-31"><a href="#cb19-31"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
-<span id="cb19-32"><a href="#cb19-32"></a><span class="fu">plot</span>(perf, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">main=</span><span class="st">"ROC curve Admissions"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
-<span id="cb19-33"><a href="#cb19-33"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"plum4"</span>,</span>
-<span id="cb19-34"><a href="#cb19-34"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(cutoff_lda), </span>
-<span id="cb19-35"><a href="#cb19-35"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"                s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
-<span id="cb19-36"><a href="#cb19-36"></a><span class="fu">legend</span>(<span class="fl">0.6</span>,<span class="fl">0.6</span>,</span>
-<span id="cb19-37"><a href="#cb19-37"></a>       <span class="fu">c</span>(<span class="st">'naive - PCA'</span>, <span class="st">'LDA'</span>),</span>
-<span id="cb19-38"><a href="#cb19-38"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"darkolivegreen"</span>, <span class="st">"plum4"</span>),<span class="at">lwd=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># for ROCR</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>labels_desbois <span class="ot">&lt;-</span> don_desbois<span class="sc">$</span>Y</span>
+<span id="cb18-3"><a href="#cb18-3"></a></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="co"># naive score</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>predictions_naive_score <span class="ot">&lt;-</span> naive_score<span class="sc">$</span>Dim<span class="fl">.1</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a></span>
+<span id="cb18-7"><a href="#cb18-7"></a>naive_score_group <span class="ot">&lt;-</span> naive_score <span class="sc">%&gt;%</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>  <span class="fu">group_by</span>(Y) <span class="sc">%&gt;%</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a>  <span class="fu">summarize</span>(<span class="at">mean_score =</span> <span class="fu">mean</span>(Dim<span class="fl">.1</span>), <span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb18-10"><a href="#cb18-10"></a></span>
+<span id="cb18-11"><a href="#cb18-11"></a>cutoff_naive <span class="ot">&lt;-</span> <span class="fu">mean</span>(naive_score_group<span class="sc">$</span>mean_score)</span>
+<span id="cb18-12"><a href="#cb18-12"></a></span>
+<span id="cb18-13"><a href="#cb18-13"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(predictions_naive_score, labels_desbois)</span>
+<span id="cb18-14"><a href="#cb18-14"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
+<span id="cb18-15"><a href="#cb18-15"></a><span class="fu">plot</span>(perf, <span class="at">main=</span><span class="st">"ROC curve Admissions"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
+<span id="cb18-16"><a href="#cb18-16"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"darkolivegreen"</span>, </span>
+<span id="cb18-17"><a href="#cb18-17"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(cutoff_naive), </span>
+<span id="cb18-18"><a href="#cb18-18"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"                s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
+<span id="cb18-19"><a href="#cb18-19"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="co">#add a 45 degree line</span></span>
+<span id="cb18-20"><a href="#cb18-20"></a></span>
+<span id="cb18-21"><a href="#cb18-21"></a><span class="co"># lda</span></span>
+<span id="cb18-22"><a href="#cb18-22"></a>predictions_lda <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_desbois)<span class="sc">$</span>x</span>
+<span id="cb18-23"><a href="#cb18-23"></a></span>
+<span id="cb18-24"><a href="#cb18-24"></a>lda_score_group <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(don_desbois, predictions_lda) <span class="sc">%&gt;%</span></span>
+<span id="cb18-25"><a href="#cb18-25"></a>  <span class="fu">group_by</span>(Y) <span class="sc">%&gt;%</span></span>
+<span id="cb18-26"><a href="#cb18-26"></a>  <span class="fu">summarize</span>(<span class="at">mean_score =</span> <span class="fu">mean</span>(LD1), <span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb18-27"><a href="#cb18-27"></a></span>
+<span id="cb18-28"><a href="#cb18-28"></a>cutoff_lda <span class="ot">&lt;-</span> <span class="fu">mean</span>(lda_score_group<span class="sc">$</span>mean_score)</span>
+<span id="cb18-29"><a href="#cb18-29"></a></span>
+<span id="cb18-30"><a href="#cb18-30"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(predictions_lda, labels_desbois)</span>
+<span id="cb18-31"><a href="#cb18-31"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
+<span id="cb18-32"><a href="#cb18-32"></a><span class="fu">plot</span>(perf, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">main=</span><span class="st">"ROC curve Admissions"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
+<span id="cb18-33"><a href="#cb18-33"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"plum4"</span>,</span>
+<span id="cb18-34"><a href="#cb18-34"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(cutoff_lda), </span>
+<span id="cb18-35"><a href="#cb18-35"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"                s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
+<span id="cb18-36"><a href="#cb18-36"></a><span class="fu">legend</span>(<span class="fl">0.6</span>,<span class="fl">0.6</span>,</span>
+<span id="cb18-37"><a href="#cb18-37"></a>       <span class="fu">c</span>(<span class="st">'naive - PCA'</span>, <span class="st">'LDA'</span>),</span>
+<span id="cb18-38"><a href="#cb18-38"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"darkolivegreen"</span>, <span class="st">"plum4"</span>),<span class="at">lwd=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
 <section id="desbois-case-study-29" class="slide level2 smaller scrollable">
 <h2>Desbois case study</h2>
 <p>As a very soft and intuitive introduction to logistic regression. First discretize a ratio <span class="math inline">\(r\)</span> of your choice.</p>
@@ -954,7 +912,7 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -984,12 +942,12 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-29-1.png" width="960"></p>
+<p><img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -1001,23 +959,23 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>class_width <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a>don_desbois_binned <span class="ot">&lt;-</span> don_desbois <span class="sc">%&gt;%</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a>    <span class="fu">mutate</span>(<span class="at">r17_bins =</span> <span class="fu">cut</span>(r17, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.2</span>, class_width),</span>
-<span id="cb23-4"><a href="#cb23-4"></a>                              <span class="at">right =</span> <span class="cn">FALSE</span>, <span class="at">dig.lab =</span> <span class="dv">4</span>, <span class="at">include.lowest =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb23-5"><a href="#cb23-5"></a>           <span class="at">min =</span> <span class="fu">floor</span>(r17 <span class="sc">/</span> class_width) <span class="sc">*</span> class_width,</span>
-<span id="cb23-6"><a href="#cb23-6"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(r17 <span class="sc">==</span> <span class="dv">0</span> , <span class="dv">1</span>, </span>
-<span id="cb23-7"><a href="#cb23-7"></a>                         <span class="co"># customers with 0$ balance should belong to [0, width) class</span></span>
-<span id="cb23-8"><a href="#cb23-8"></a>                         <span class="co"># or be excluded</span></span>
-<span id="cb23-9"><a href="#cb23-9"></a>                         <span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width))  <span class="sc">*</span> class_width,</span>
-<span id="cb23-10"><a href="#cb23-10"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(min<span class="sc">==</span>max, (<span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width) <span class="sc">+</span> <span class="dv">1</span>)  <span class="sc">*</span> class_width, max)) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-11"><a href="#cb23-11"></a>    <span class="fu">group_by</span>(r17_bins, min, max, Y) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-12"><a href="#cb23-12"></a>    <span class="fu">summarize</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-13"><a href="#cb23-13"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb23-14"><a href="#cb23-14"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Y, <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
-<span id="cb23-15"><a href="#cb23-15"></a>    <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-16"><a href="#cb23-16"></a>    <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">/</span> (<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">0</span><span class="st">`</span>), <span class="dv">4</span>))</span>
-<span id="cb23-17"><a href="#cb23-17"></a><span class="fu">cat</span>(simplermarkdown<span class="sc">::</span><span class="fu">md_table</span>(don_desbois_binned <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">r17_class=</span>r17_bins, <span class="st">`</span><span class="at">0</span><span class="st">`</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span>,<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> )))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>class_width <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>don_desbois_binned <span class="ot">&lt;-</span> don_desbois <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    <span class="fu">mutate</span>(<span class="at">r17_bins =</span> <span class="fu">cut</span>(r17, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.2</span>, class_width),</span>
+<span id="cb22-4"><a href="#cb22-4"></a>                              <span class="at">right =</span> <span class="cn">FALSE</span>, <span class="at">dig.lab =</span> <span class="dv">4</span>, <span class="at">include.lowest =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb22-5"><a href="#cb22-5"></a>           <span class="at">min =</span> <span class="fu">floor</span>(r17 <span class="sc">/</span> class_width) <span class="sc">*</span> class_width,</span>
+<span id="cb22-6"><a href="#cb22-6"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(r17 <span class="sc">==</span> <span class="dv">0</span> , <span class="dv">1</span>, </span>
+<span id="cb22-7"><a href="#cb22-7"></a>                         <span class="co"># customers with 0$ balance should belong to [0, width) class</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>                         <span class="co"># or be excluded</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>                         <span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width))  <span class="sc">*</span> class_width,</span>
+<span id="cb22-10"><a href="#cb22-10"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(min<span class="sc">==</span>max, (<span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width) <span class="sc">+</span> <span class="dv">1</span>)  <span class="sc">*</span> class_width, max)) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-11"><a href="#cb22-11"></a>    <span class="fu">group_by</span>(r17_bins, min, max, Y) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-12"><a href="#cb22-12"></a>    <span class="fu">summarize</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-13"><a href="#cb22-13"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb22-14"><a href="#cb22-14"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Y, <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="cb22-15"><a href="#cb22-15"></a>    <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-16"><a href="#cb22-16"></a>    <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">/</span> (<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">0</span><span class="st">`</span>), <span class="dv">4</span>))</span>
+<span id="cb22-17"><a href="#cb22-17"></a><span class="fu">cat</span>(simplermarkdown<span class="sc">::</span><span class="fu">md_table</span>(don_desbois_binned <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">r17_class=</span>r17_bins, <span class="st">`</span><span class="at">0</span><span class="st">`</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span>,<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> )))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>|r17_class  |0  |1 |Mean(Y)|
@@ -1045,22 +1003,22 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>(default_occurrence <span class="ot">&lt;-</span> </span>
-<span id="cb25-2"><a href="#cb25-2"></a> <span class="fu">ggplot</span>(don_desbois <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">if_else</span>(Y <span class="sc">==</span> <span class="st">"1"</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="fu">aes</span>(<span class="at">x=</span>r17, <span class="at">y=</span>Y)) <span class="sc">+</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
-<span id="cb25-5"><a href="#cb25-5"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
-<span id="cb25-6"><a href="#cb25-6"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
-<span id="cb25-7"><a href="#cb25-7"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
-<span id="cb25-8"><a href="#cb25-8"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>(default_occurrence <span class="ot">&lt;-</span> </span>
+<span id="cb24-2"><a href="#cb24-2"></a> <span class="fu">ggplot</span>(don_desbois <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">if_else</span>(Y <span class="sc">==</span> <span class="st">"1"</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="fu">aes</span>(<span class="at">x=</span>r17, <span class="at">y=</span>Y)) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
+<span id="cb24-5"><a href="#cb24-5"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
+<span id="cb24-6"><a href="#cb24-6"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
+<span id="cb24-7"><a href="#cb24-7"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" class="r-stretch"></section>
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"></section>
 <section id="desbois-case-study-32" class="slide level2 smaller scrollable">
 <h2>Desbois case study</h2>
 
-<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-32-1.png" width="960" class="r-stretch"><p>We notice that the mean default occurrence with respect to <span class="math inline">\(r_{17}\)</span> classes follows a kind of “S”-shaped curve or <strong>sigmoid</strong> function. Note that the shape depends on classes width and might change. We “fitted” (blue-dotted) <span class="math inline">\(\sigma: x \to\sigma(x)=\frac{e^{x}} { 1 + e^{x} }\)</span> also known as logistic function to the mean default occurences (orange segments).</p>
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" class="r-stretch"><p>We notice that the mean default occurrence with respect to <span class="math inline">\(r_{17}\)</span> classes follows a kind of “S”-shaped curve or <strong>sigmoid</strong> function. Note that the shape depends on classes width and might change. We “fitted” (blue-dotted) <span class="math inline">\(\sigma: x \to\sigma(x)=\frac{e^{x}} { 1 + e^{x} }\)</span> also known as logistic function to the mean default occurences (orange segments).</p>
 </section>
 <section id="desbois-case-study-33" class="slide level2 smaller">
 <h2>Desbois case study</h2>
@@ -1078,24 +1036,24 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>(default_occurrence <span class="ot">&lt;-</span> </span>
-<span id="cb26-2"><a href="#cb26-2"></a> <span class="fu">ggplot</span>(don_desbois <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">if_else</span>(Y <span class="sc">==</span> <span class="st">"1"</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="fu">aes</span>(<span class="at">x=</span>r17, <span class="at">y=</span>Y)) <span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3"></a> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb26-4"><a href="#cb26-4"></a> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"glm"</span>, </span>
-<span id="cb26-5"><a href="#cb26-5"></a>             <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
-<span id="cb26-6"><a href="#cb26-6"></a>             <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>), </span>
-<span id="cb26-7"><a href="#cb26-7"></a>             <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb26-8"><a href="#cb26-8"></a>             <span class="at">col =</span> <span class="st">"dodgerblue"</span>,</span>
-<span id="cb26-9"><a href="#cb26-9"></a>             <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
-<span id="cb26-10"><a href="#cb26-10"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
-<span id="cb26-11"><a href="#cb26-11"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
-<span id="cb26-12"><a href="#cb26-12"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
-<span id="cb26-13"><a href="#cb26-13"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
-<span id="cb26-14"><a href="#cb26-14"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>(default_occurrence <span class="ot">&lt;-</span> </span>
+<span id="cb25-2"><a href="#cb25-2"></a> <span class="fu">ggplot</span>(don_desbois <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">if_else</span>(Y <span class="sc">==</span> <span class="st">"1"</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="fu">aes</span>(<span class="at">x=</span>r17, <span class="at">y=</span>Y)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"glm"</span>, </span>
+<span id="cb25-5"><a href="#cb25-5"></a>             <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb25-6"><a href="#cb25-6"></a>             <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>), </span>
+<span id="cb25-7"><a href="#cb25-7"></a>             <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb25-8"><a href="#cb25-8"></a>             <span class="at">col =</span> <span class="st">"dodgerblue"</span>,</span>
+<span id="cb25-9"><a href="#cb25-9"></a>             <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
+<span id="cb25-11"><a href="#cb25-11"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
+<span id="cb25-12"><a href="#cb25-12"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
+<span id="cb25-13"><a href="#cb25-13"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
+<span id="cb25-14"><a href="#cb25-14"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-33-1.png" width="960" class="r-stretch"></section></section>
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" class="r-stretch"></section></section>
 <section>
 <section id="scoring---reminders" class="title-slide slide level1 center" data-background-color="#40666e">
 <h1>Scoring - reminders</h1>
@@ -1291,22 +1249,201 @@ se(s)=P(S(X) \geq s|Y=1) = 1 - \beta(s)
 <h3 id="the-receiver-operating-characteristic-roc-curve-1">The Receiver Operating Characteristic (ROC) curve</h3>
 <p><a href="#/fig-roc-perfect-random">Figure&nbsp;1</a> shows the two curves.</p>
 
-<img data-src="1_scoring_logreg_files/figure-revealjs/fig-roc-perfect-random-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;1: ROC curves of a perfect Score (solid, blue) and a random Score (dashed, orange)</p></section>
-<section id="scoring-12" class="slide level2 smaller">
-<h2>Scoring</h2>
-<h3 id="the-receiver-operating-characteristic-roc-curve-2">The Receiver Operating Characteristic (ROC) curve</h3>
-<p>The ROC curves can be summarized to generate numeric criteria such as the AUC (Area Under Curve).</p>
-<p>The AUC will be <span class="math inline">\(1\)</span> for the perfect Score and <span class="math inline">\(0.5\)</span> for the random Score and can be used to rapidly compare two Scores.</p>
-<p>It is considered better than other point-wise criteria.</p>
-<p>However we must keep in mind that the AUC as a summary criterion presents some drawbacks since two Scores can have the same AUC but behave very differently in the plane.</p>
+<img data-src="1_scoring_logreg_files/figure-revealjs/fig-roc-perfect-random-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;1: ROC curves of a perfect Score (solid, blue) and a random Score (dashed, orange)</p></section></section>
+<section>
+<section id="the-logistic-regression-model" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>The Logistic Regression model</h1>
+
 </section>
-<section id="scoring-13" class="slide level2 smaller">
-<h2>Scoring</h2>
-<h3 id="the-receiver-operating-characteristic-roc-curve-3">The Receiver Operating Characteristic (ROC) curve</h3>
-<p>In practice, we do not know <span class="math inline">\(x(s)\)</span> and <span class="math inline">\(y(s)\)</span> to define the ROC curve.</p>
-<p>Usually, a training set will be used to learn a Score <span class="math inline">\(S\)</span> and a testing set to estimate the ROC curve <span class="math inline">\(x(s)\)</span> and <span class="math inline">\(y(s)\)</span> for a range of <span class="math inline">\(s\)</span>.</p>
-<p>In the rest of the course/project we will be equally interested in binary classification and scoring which are closely linked.</p>
-<p>Throughout the course/project, we will focus on two fundamental and complementary models: the Logistic Regression model and Decision Trees, for which we have shown examples of decision boundaries on the Mixture data set.</p>
+<section id="the-logistic-regression-model-1" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example">Informal introductory example</h3>
+<p>We provide here some intuitions leading to the Logistic Regression model using a simulated data set from <span class="citation" data-cites="islr2021">James et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span> (the <strong>Default</strong> data set).</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Default data set (simulated) from ESLII/ISLR</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>default_data <span class="ot">&lt;-</span> ISLR2<span class="sc">::</span>Default <span class="sc">%&gt;%</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>    <span class="fu">as_tibble</span>()</span>
+<span id="cb26-4"><a href="#cb26-4"></a></span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="fu">glimpse</span>(default_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 10,000
+Columns: 4
+$ default &lt;fct&gt; No, No, No, No, No, No, No, No, No, No, No, No, No, No, No, No…
+$ student &lt;fct&gt; No, Yes, No, No, No, Yes, No, Yes, No, No, Yes, Yes, No, No, N…
+$ balance &lt;dbl&gt; 729.5265, 817.1804, 1073.5492, 529.2506, 785.6559, 919.5885, 8…
+$ income  &lt;dbl&gt; 44361.625, 12106.135, 31767.139, 35704.494, 38463.496, 7491.55…</code></pre>
+</div>
+</div>
+<p>This is a toy data set used for teaching purposes containing information on ten thousand customers.</p>
+<p>The aim here is to assess which customers will <strong><em>default</em></strong> on their credit card debt (the target or response variable) based on the current credit card <strong><em>balance</em></strong> and other individual characteristics (the predictors or feature vector).</p>
+</section>
+<section id="the-logistic-regression-model-2" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example-1">Informal introductory example</h3>
+<p>We can start to explore the Default data with a scatterplot (<a href="#/fig-default_balance-scatterplot">Figure&nbsp;2</a>) of the target variable (<strong><em>default</em></strong>) with respect to a predictor (<strong><em>balance</em></strong>):</p>
+
+<img data-src="1_scoring_logreg_files/figure-revealjs/fig-default_balance-scatterplot-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;2: Scatterplot of variable <strong><em>default</em></strong> with respect to credit card <strong><em>balance</em></strong> for 10000 customers</p></section>
+<section id="the-logistic-regression-model-3" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example-2">Informal introductory example</h3>
+<p>In this scatterplot, all points fall on one of two parallel lines representing the absence (No) or occurrence (Yes) of <strong><em>default</em></strong>. We “jitter” the data vertically to avoid overplotting. The plot below shows that the response variable is imbalanced towards the absence of default:</p>
+
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-35-1.png" width="960" class="r-stretch"></section>
+<section id="the-logistic-regression-model-4" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example-3">Informal introductory example</h3>
+<p>We also show the boxplots of credit cards <strong><em>balance</em></strong> with respect to <strong><em>default</em></strong> status:</p>
+
+<img data-src="1_scoring_logreg_files/figure-revealjs/fig-balance_default-boxplot-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;3: Variable <strong><em>balance</em></strong> with respect to <strong><em>default</em></strong> status</p><p>We can see from <a href="#/fig-default_balance-scatterplot">Figure&nbsp;2</a> and <a href="#/fig-balance_default-boxplot">Figure&nbsp;3</a> that default tends to be more prevalent for accounts with a high balance. However it is difficult to guess a simple relationship between default and balance.</p>
+</section>
+<section id="the-logistic-regression-model-5" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example-4">Informal introductory example</h3>
+<p>To investigate further we discretise the balance variables by classes of width <span class="math inline">\(300\$\)</span> and compute the mean of response variable (<strong><em>default</em></strong> is Yes) within each balance class:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 6
+  balance_bins   min   max    No   Yes `Mean(default)`
+  &lt;fct&gt;        &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;           &lt;dbl&gt;
+1 [0,300)          0   300  1497     0          0     
+2 [300,600)      300   600  1784     0          0     
+3 [600,900)      600   900  2305     3          0.0013
+4 [900,1200)     900  1200  2098    19          0.009 
+5 [1200,1500)   1200  1500  1330    53          0.0383
+6 [1500,1800)   1500  1800   527    96          0.154 
+7 [1800,2100)   1800  2100   115   114          0.498 
+8 [2100,2400)   2100  2400    11    41          0.788 
+9 [2400,2700)   2400  2700     0     7          1     </code></pre>
+</div>
+</div>
+</section>
+<section id="the-logistic-regression-model-6" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example-5">Informal introductory example</h3>
+<p>Then we plot the mean of default (in red) within each balance class (of width <span class="math inline">\(300\$\)</span>):</p>
+
+<img data-src="1_scoring_logreg_files/figure-revealjs/fig-balance_default-scatterplot-occurrence-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Figure&nbsp;4: Mean occurrence of <strong><em>default</em></strong> within <strong><em>balance</em></strong> classes</p><p>The relationship between the mean occurrence of <strong><em>default</em></strong> and <strong><em>balance</em></strong> is easier to read.</p>
+<p><a href="#/fig-balance_default-scatterplot-occurrence">Figure&nbsp;4</a> clearly shows that as balance increases, the proportion of customers defaulting on their credit card increases.</p>
+</section>
+<section id="the-logistic-regression-model-7" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example-6">Informal introductory example</h3>
+
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"><p>We also notice that the mean default occurrence with respect to balance classes follows a kind of “S”-shaped curve or <strong>sigmoid</strong> function. Going further and informally, considering that the mean of default occurrence is an estimate of <span class="math inline">\(\mathbf{E}[Y|X=x]\)</span> for each balance classes an idea would be to model:</p>
+<p><span class="math display">\[
+\mathbb{E}[Y|X=x] = \mu_\beta(x)
+\]</span></p>
+<p>where <span class="math inline">\(\mu_\beta\)</span> is a <strong>sigmoid</strong> function in <span class="math inline">\([0,1]\)</span>.</p>
+</section>
+<section id="the-logistic-regression-model-8" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="informal-introductory-example-7">Informal introductory example</h3>
+<p>The Logistic Regression model uses the <strong>sigmoid</strong> function <span class="math inline">\(\sigma: x \to\sigma(x)=\frac{e^{x}} { 1 + e^{x} }\)</span> also known as the logistic function. Below a simple transform of this logistic function has been “fitted” (blue dots) to the <code>default ~ balance</code> data set:</p>
+
+<img data-src="1_scoring_logreg_files/figure-revealjs/unnamed-chunk-40-1.png" width="960" class="r-stretch"></section>
+<section id="the-logistic-regression-model-9" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="a-more-formal-definition---the-discriminative-approach">A more formal definition - the discriminative approach</h3>
+<p>Reminding the statistical learning / scoring concepts introduced before. We try to predict the output <code>default</code> (<span class="math inline">\(Y \in \{0,1\}\)</span>) using a training set of inputs <span class="math inline">\(X\)</span>: this is a binary classification problem.</p>
+<p>We remind that to estimate an optimal classifier for output <span class="math inline">\(Y \in \{0,1\}\)</span> using input <span class="math inline">\(X = (X_1,\cdots,X_p)\)</span> one approach was to:</p>
+<ul>
+<li><p>model the conditional distribution <span class="math inline">\(Y|X\)</span> (the <strong>discriminative</strong> approach),</p></li>
+<li><p>estimate <span class="math inline">\(\eta(x)\)</span> with:</p></li>
+</ul>
+<p><span class="math display">\[
+\eta(x)=\mathbb{P}[Y=1|X=x)] = \mathbb{E}[Y=1|X=x)]
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\eta(x)\)</span> can be used as a Scoring function</p></li>
+<li><p>define the classifier <span class="math inline">\(f_s\)</span> using a cutoff <span class="math inline">\(s\)</span> and Scoring function <span class="math inline">\(\eta(x)\)</span> to predict output <span class="math inline">\(Y\)</span>:</p></li>
+</ul>
+<p><span class="math display">\[
+f_s(x)=\left\{ \begin{array}{ll}
+    1 &amp;  \mbox{if } \eta(x)\geq s\cr
+    0 &amp;  \mbox{otherwise}\cr
+\end{array} \right.
+\]</span></p>
+</section>
+<section id="the-logistic-regression-model-10" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="a-more-formal-definition">A more formal definition</h3>
+<p>In the case of <strong>Logistic Regression</strong> classifier, we model:</p>
+<p><span class="math display">\[
+Y|X=x~ \sim B(\eta(x))
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\eta(x)=\sigma(x^T\beta) =\frac{exp(x^T\beta)}{1+exp(x^T\beta)}
+\]</span></p>
+<p>for some parameter <span class="math inline">\(\beta=(\beta_1,\cdots,\beta_p)\in \mathbb R^p\)</span>, usually <span class="math inline">\(x_1=1\)</span> and <span class="math inline">\(\beta_1\)</span> is an intercept. <span class="math inline">\(\sigma\)</span> is the sigmoid logistic function we have seen before.</p>
+<p>In the literature is usual to denote <span class="math inline">\(\eta(X)=p_{\beta}(X)\)</span> or <span class="math inline">\(\eta(X)=\pi_{\beta}(X)\)</span>.</p>
+<p>From now, we will use the notation <span class="math inline">\(p_{\beta}(X)\)</span>.</p>
+</section>
+<section id="the-logistic-regression-model-11" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="a-more-formal-definition-1">A more formal definition</h3>
+<p>Defining <span class="math inline">\(\mathrm{logit}: x \to \log\bigg( \frac{x}{1-x}\bigg)\)</span>, which is the inverse of <span class="math inline">\(\sigma\)</span> the logistic function (show it as an exercise), we have:</p>
+<p><span class="math display">\[
+\mathrm{logit}(p_{\beta}(X))=X^T\beta
+\]</span></p>
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>The <strong>Logistic Regression</strong> model:</strong></p>
+</div>
+<div class="callout-content">
+<p>We are given <span class="math inline">\((x_i, y_i) \in \mathbb R^p \times \{0,1\}\)</span>, <span class="math inline">\(i=1,\cdots,n\)</span></p>
+<p>The Logistic Regression model assumes that outputs <span class="math inline">\(y_i\)</span> are independent Bernoulli with parameter <span class="math inline">\(p_{\beta}(x_i)\)</span> depending on <span class="math inline">\(x_i\)</span>:</p>
+<p><span class="math display">\[
+\mathrm{logit}(p_{\beta}(x_i))=x_i^T\beta
+\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-logistic-regression-model-13" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="how-to-fit-with-r">How to fit with R</h3>
+<p>The syntax to fit the Logistic model in R using <code>glm()</code> is:</p>
+<p><span class="math display">\[
+\mathtt{glm(} \mathrm{y} \sim \mathrm{~x,~}\mathtt{data=}~\mathrm{dataframe,~}\mathtt{family~=~binomial(link~=~"logit")}
+\]</span></p>
+<p>The formula <span class="math inline">\(\mathrm{y} \sim \mathrm{x}\)</span> depicts the model (i.e.&nbsp;inputs are <span class="math inline">\(X\)</span>, output is <span class="math inline">\(Y\)</span>) and the <code>data=</code> argument points to the training set contained in a R dataframe (or tibble). This is quite similar to the <code>lm()</code> function.</p>
+<p>We also need to specify the distribution for the conditional <span class="math inline">\(Y\)</span> values (binomial) and the link function (logit) via the <code>family=</code> argument.</p>
+</section>
+<section id="the-logistic-regression-model-14" class="slide level2 smaller">
+<h2>The Logistic Regression model</h2>
+<h3 id="how-to-fit-with-r-1">How to fit with R</h3>
+<p>For our default example:</p>
+<p>The command <code>summary</code> produces result summaries of the fitted model:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = default ~ ., family = "binomial", data = default_data)
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -1.087e+01  4.923e-01 -22.080  &lt; 2e-16 ***
+studentYes  -6.468e-01  2.363e-01  -2.738  0.00619 ** 
+balance      5.737e-03  2.319e-04  24.738  &lt; 2e-16 ***
+income       3.033e-06  8.203e-06   0.370  0.71152    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2920.6  on 9999  degrees of freedom
+Residual deviance: 1571.5  on 9996  degrees of freedom
+AIC: 1579.5
+
+Number of Fisher Scoring iterations: 8</code></pre>
+</div>
+</div>
+<p>We will see in the next lesson, how this model is fitted in practice and how to interpret or understand what is printed by the <code>summary</code> function.</p>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
@@ -1322,6 +1459,9 @@ Hastie, T., Tibshirani, R., &amp; Friedman, J. (2009). <em>The elements of stati
 </div>
 <div id="ref-hosmer2013" class="csl-entry" role="listitem">
 Hosmer, D. W., Lemeshow, S., &amp; Sturdivant, R. X. (2013). Applied logistic regression. In <em>Wiley Series in Probability and Statistics</em>.
+</div>
+<div id="ref-islr2021" class="csl-entry" role="listitem">
+James, G., Witten, D., Hastie, T., &amp; Tibshirani, R. (2021). <em>An introduction to statistical learning: With applications in r</em>. Springer US. <a href="https://doi.org/10.1007/978-1-0716-1418">https://doi.org/10.1007/978-1-0716-1418</a>
 </div>
 <div id="ref-scoringThomas" class="csl-entry" role="listitem">
 Thomas, L., Edelman, D., &amp; Crook, J. (2002). Credit scoring and its applications. In <em>Monographs on Mathematical Modeling &amp; Computation</em>.
