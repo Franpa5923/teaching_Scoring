@@ -356,7 +356,7 @@ f^*(x)=\left\{ \begin{array}{ll}
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># saveRDS(mixture_means, "mixture_means.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># saveRDS(mixture_means, "../data/mixture_means.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Then the training set together with the “means”:</p>
@@ -379,7 +379,7 @@ f^*(x)=\left\{ \begin{array}{ll}
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(data_mixture_example, "data_mixture_example.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(data_mixture_example, "../data/data_mixture_example.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Knowing the generative distribution, we generate a testing set of size 10k (half BLUE, half ORANGE).</p>
@@ -417,8 +417,8 @@ f^*(x)=\left\{ \begin{array}{ll}
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># saveRDS(new_mixture, "new_mixture.rds")</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># new_mixture &lt;- readRDS("new_mixture.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># saveRDS(new_mixture, "../data/new_mixture.rds")</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># new_mixture &lt;- readRDS("../data/new_mixture.rds")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="bayes-classifier-1" class="level3" data-number="1.2.1">
@@ -491,7 +491,7 @@ f^*(x)=\left\{ \begin{array}{ll}
 <p>We get a value of 0.213 for the Bayes risk, in line with <span class="citation" data-cites="hastie2009">(<a href="#ref-hastie2009" role="doc-biblioref">Hastie, Tibshirani, and Friedman 2009, fig. 13.4</a>)</span>, see below:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/bayeserror_mixture.png" class="img-fluid figure-img" width="700"></p>
+<p><img src="../images/bayeserror_mixture.png" class="img-fluid figure-img" width="700"></p>
 </figure>
 </div>
 <p>We give below a brief tour showing the decision boundary of common classifiers for the Mixture data set.</p>
@@ -1288,7 +1288,7 @@ f^*(x)=\left\{ \begin{array}{ll}
 <p>We show below a simplified example of a credit scorecard that were typically used by banks to assess the creditworthiness of consumer loans applicants (as shown in <span class="citation" data-cites="scoringThomas">(<a href="#ref-scoringThomas" role="doc-biblioref">Thomas, Edelman, and Crook 2002</a>)</span>):</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/scoring_scorecard.png" class="img-fluid figure-img" width="350"></p>
+<p><img src="../images/scoring_scorecard.png" class="img-fluid figure-img" width="350"></p>
 </figure>
 </div>
 <p>In this example a 35-year-old owner wishing to borrow money for home improvement and that has never had a county court judgement (CCJ) will score <span class="math inline">\(129 = (36+25+36+32)\)</span>, while a 20-year-old living with his parents borrowing for holiday and having more than £1200 of CCJ will score <span class="math inline">\(38=(22+14+19-17)\)</span>.</p>
@@ -1845,7 +1845,7 @@ p_\beta(x_1)(1-p_\beta(x_1)) &amp; \cdots &amp; \cdots\\
 \end{align}
 \]</span></p>
 <p>We have <span class="math inline">\(p_\beta(x_i)(1-p_\beta(x_i))\geq0\)</span> hence <span class="math inline">\(W(\beta)\)</span> is semi-definite negative and since <span class="math inline">\(rank(X)=p\)</span>, <span class="math inline">\(H(\beta)\)</span> is concave.</p>
-<p>It is shown in <span class="citation" data-cites="albert1984a">(<a href="#ref-albert1984a" role="doc-biblioref">Albert and Aanderson 1984</a>)</span> that if additionally there is no complete separation in the training set: <img src="images/unique_mle.png" class="img-fluid" data-fig-align="center"></p>
+<p>It is shown in <span class="citation" data-cites="albert1984a">(<a href="#ref-albert1984a" role="doc-biblioref">Albert and Aanderson 1984</a>)</span> that if additionally there is no complete separation in the training set: <img src="../images/unique_mle.png" class="img-fluid" data-fig-align="center"></p>
 <p>then the MLE exists and is unique.</p>
 <section id="the-newton-raphson-ie-fisher-scoring-method" class="level4" data-number="2.3.2.1">
 <h4 data-number="2.3.2.1" class="anchored" data-anchor-id="the-newton-raphson-ie-fisher-scoring-method"><span class="header-section-number">2.3.2.1</span> The Newton-Raphson (ie Fisher Scoring) method</h4>
@@ -2495,7 +2495,7 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># package used to import spss file</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>don_desbois <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../data/Agriculture Farm Lending/desbois.sav"</span>,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>don_desbois <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../data/presentation_data/Agriculture Farm Lending/desbois.sav"</span>,</span>
 <span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
 <span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>don_desbois <span class="ot">&lt;-</span> don_desbois <span class="sc">%&gt;%</span></span>
 <span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">as.factor</span>(<span class="fu">if_else</span>(DIFF<span class="sc">==</span><span class="st">'healthy'</span>, <span class="dv">0</span>, <span class="dv">1</span>))) <span class="sc">%&gt;%</span></span>

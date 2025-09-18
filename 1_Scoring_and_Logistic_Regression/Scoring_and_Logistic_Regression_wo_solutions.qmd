@@ -1,7 +1,7 @@
 ---
 title: "Scoring and Logistic Regression"
 author: "Louis OLIVE"
-bibliography: references.bib
+bibliography: ../assets/references.bib
 link-citations: true
 format:
   html:
@@ -12,7 +12,7 @@ format:
     code-copy: true
     code-fold: true
     df-print: paged
-    include-in-header: mathjax.html
+    include-in-header: ../assets/mathjax.html
     number-sections: true
     toc: true
     toc_depth: 3
@@ -218,7 +218,7 @@ First we load the data set and plot the "means":
 
 ```{r}
 # Simulated mixture (ORANGE/BLUE) from ESLII/ISLR
-load(file='./data/mixture.example.RData')
+load(file='../data/mixture.example.RData')
 
 x1_means <- mixture.example$means[,1]
 x2_means <- mixture.example$means[,2]
@@ -231,7 +231,7 @@ ggplot(mixture_means) +
     scale_colour_manual(values = c("dodgerblue", "orange")) +
     theme_void()
 
-# saveRDS(mixture_means, "data/mixture_means.rds")
+# saveRDS(mixture_means, "../data/mixture_means.rds")
 ```
 
 Then the training set together with the "means":
@@ -248,7 +248,7 @@ ggplot(data_mixture_example) +
     scale_colour_manual(values = c("dodgerblue", "orange", "dodgerblue", "orange")) +
     theme_void()
 
-#saveRDS(data_mixture_example, "data/data_mixture_example.rds")
+#saveRDS(data_mixture_example, "../data/data_mixture_example.rds")
 ```
 
 Knowing the generative distribution, we generate a testing set of size 10k (half BLUE, half ORANGE).
@@ -278,8 +278,8 @@ ggplot(new_mixture[c(1:250,5001:5251),]) +
     geom_point(data = mixture_means, aes(x = x1_means, y = x2_means, col =Y), size = 3, show.legend = FALSE) +
     scale_colour_manual(values = c("dodgerblue", "orange", "dodgerblue", "orange")) +
     theme_void()
-# saveRDS(new_mixture, "data/new_mixture.rds")
-# new_mixture <- readRDS("data/new_mixture.rds")
+# saveRDS(new_mixture, "../data/new_mixture.rds")
+# new_mixture <- readRDS("../data/new_mixture.rds")
 ```
 
 ### Bayes classifier
@@ -348,7 +348,7 @@ bayes_train_risk <- bayes_error_rate_train %>%
 
 We get a value of `r round(bayes_test_risk,3)` for the Bayes risk, in line with [@hastie2009 Figure 13.4], see below:
 
-![](images/bayeserror_mixture.png){fig-align="center" width="700"}
+![](../images/bayeserror_mixture.png){fig-align="center" width="700"}
 
 We give below a brief tour showing the decision boundary of common classifiers for the Mixture data set.
 
@@ -1111,7 +1111,7 @@ We say that $S(x)$ is the score of the observation $x \in \mathbb R^p$.
 
 We show below a simplified example of a credit scorecard that were typically used by banks to assess the creditworthiness of consumer loans applicants (as shown in [@scoringThomas]):
 
-![](images/scoring_scorecard.png){fig-align="center" width="350"}
+![](../images/scoring_scorecard.png){fig-align="center" width="350"}
 
 In this example a 35-year-old owner wishing to borrow money for home improvement and that has never had a county court judgement (CCJ) will score $129 = (36+25+36+32)$, while a 20-year-old living with his parents borrowing for holiday and having more than £1200 of CCJ will score $38=(22+14+19-17)$.
 
@@ -1671,7 +1671,7 @@ $$
 
 We have $p_\beta(x_i)(1-p_\beta(x_i))\geq0$ hence $W(\beta)$ is semi-definite negative and since $rank(X)=p$, $H(\beta)$ is concave.
 
-It is shown in [@albert1984a] that if additionally there is no complete separation in the training set: ![](images/unique_mle.png){fig-align="center"}
+It is shown in [@albert1984a] that if additionally there is no complete separation in the training set: ![](../images/unique_mle.png){fig-align="center"}
 
 then the MLE exists and is unique.
 
@@ -1882,7 +1882,7 @@ The German Credit data set is available at the [UCI archive](https://archive.ics
 
 ```{r, message=FALSE}
 #| code-fold: show
-load('./data/germancredit.RData')
+load('../data/germancredit.RData')
 
 germancredit_clean <- germancredit %>%
     as_tibble() %>% 
@@ -1966,7 +1966,7 @@ The data set uses a format specific to the SPSS software, but is readable from R
 # package used to import spss file
 library(foreign)
 
-don_desbois <- read.spss("../data/Agriculture Farm Lending/desbois.sav",
+don_desbois <- read.spss("../data/presentation_data/Agriculture Farm Lending/desbois.sav",
                        to.data.frame = TRUE) %>% as_tibble()
 don_desbois <- don_desbois %>%
     mutate(Y = as.factor(if_else(DIFF=='healthy', 0, 1))) %>%

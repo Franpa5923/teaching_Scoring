@@ -178,7 +178,7 @@ div.csl-indent {
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># package used to import spss file</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>don_desbois <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../slides/presentation_data/Agriculture Farm Lending/desbois.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>don_desbois <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../data/presentation_data/Agriculture Farm Lending/desbois.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(don_desbois)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -259,7 +259,7 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 </details>
 </div>
 <p>To be compared with article Figure 1</p>
-<p><img src="images/desbois_pca_projection_pc1_pc2.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_pca_projection_pc1_pc2.png" class="r-stretch img-fluid"></p>
 <p>Following Desbois path, visualize the farm holdings in data set as a bivariate plot on the first two components of PCA (based on financial ratios), use variable Y (0=”healthy”; 1=”failing”) to colour your observations:</p>
 <div class="cell">
 <details open="">
@@ -286,7 +286,7 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <p>To be compared with article Figure 2</p>
 <p>It strikes Desbois that the PCA (even if not a discriminative/scoring procedure), seems to do a rather good job identifying defaulting farms on the training set.</p>
 <p>Disclaimer: in general it won’t be necessarily the case as PCA operates only on the predictors without “knowledge” of target variable.</p>
-<p><img src="images/desbois_pca_individuals_pc1_pc2.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_pca_individuals_pc1_pc2.png" class="r-stretch img-fluid"></p>
 <p>As suggested by Desbois, extract the first principal component (some help <a href="https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i">here</a>), and use it as a Scoring function.</p>
 <p>Today it will allow us to use a first Scoring function without introducing the Logistic Regression that you have not yet studied in class.</p>
 <div class="cell">
@@ -343,7 +343,7 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 </div>
 </div>
 <p>Looking at this plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate as a classifier (setting a threshold at <span class="math inline">\(PC_1 &gt; 0.02\)</span>):</p>
-<p><img src="images/desbois_pca_rule.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_pca_rule.png" class="r-stretch img-fluid"></p>
 <p>Going further than Desbois and for illustrative purposes only, use <span class="math inline">\(PC_1\)</span> as a very naive Scoring function.</p>
 <p>Plot below the ROC curve as defined in the Scoring part of the presentation (you can use package <code>ROCR</code>, but a simple for-loop for different cutoff values <span class="math inline">\(s\)</span> will do the job):</p>
 <div class="cell">
@@ -373,7 +373,7 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <p>We follow closely the case study, but we will see that ROC curves are usually evaluated on a hold-out data set.</p>
 <p>Then compare with a Scoring function obtained with Linear Discriminant Analysis (LDA). For a reminder on LDA see for example <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#ref-hastie2009" role="doc-biblioref">2009, Chapter 4.3</a> LDA, p.&nbsp;103-111)</span>.</p>
 <p>You can use Desbois variables selected in the article by a stepwise procedure (using Wilk’s lambda<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>). Selected variables are:</p>
-<p><img src="images/desbois_lda_stepwise.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_lda_stepwise.png" class="r-stretch img-fluid"></p>
 <p>So basically you can fit LDA with <code>r2+r3+r7+r14+r17+r18+r21+r32+r36</code> as predictors (I use <code>R</code> formula notation to ease your copy-paste).</p>
 <p>Fit LDA (<code>MASS::lda</code>) with model specification of your choice. Then display model coefficients:</p>
 <div class="cell">
@@ -558,8 +558,8 @@ r36  0.192</code></pre>
 </div>
 </div>
 <p>This roughly corresponds to the intuitive introduction to the logistic regression model given in <span class="citation" data-cites="hosmer2013">Hosmer et al. (<a href="#ref-hosmer2013" role="doc-biblioref">2013</a>)</span> using a Coronary Heart Disease (CHD) event as <span class="math inline">\(Y\)</span> and AGE as <span class="math inline">\(X\)</span>:</p>
-<p><img src="images/hosmer_lemeshow_chd3.png" class="img-fluid"></p>
-<p><img src="images/hosmer_lemeshow_chd4.png" class="img-fluid"></p>
+<p><img src="../images/hosmer_lemeshow_chd3.png" class="img-fluid"></p>
+<p><img src="../images/hosmer_lemeshow_chd4.png" class="img-fluid"></p>
 
 </section>
 

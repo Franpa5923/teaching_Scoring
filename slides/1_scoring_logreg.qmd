@@ -9,8 +9,8 @@ author:
   - name: Louis Olive
     email: louis.olive@gmail.com / louis.olive@ut-capitole.fr
 date: 2025-09-16
-bibliography: references_intro.bib
-csl: apa.csl
+bibliography: ../assets/references_intro.bib
+csl: ../assets/apa.csl
 ---
 
 # Outline {background-color="#40666e"}
@@ -79,7 +79,7 @@ Loading Desbois data and first glimpse at it:
 # package used to import spss file
 library(foreign)
 
-don_desbois <- read.spss("presentation_data/Agriculture Farm Lending/desbois.sav", to.data.frame = TRUE) %>% as_tibble()
+don_desbois <- read.spss("../data/presentation_data/Agriculture Farm Lending/desbois.sav", to.data.frame = TRUE) %>% as_tibble()
 glimpse(don_desbois)
 ```
 ## Desbois case study{.smaller}
@@ -225,7 +225,7 @@ plot(res.pca, choix = "var")
 ### To be compared with article Figure 1
 
 
-![](images/desbois_pca_projection_pc1_pc2.png){.r-stretch}
+![](../images/desbois_pca_projection_pc1_pc2.png){.r-stretch}
 
 ## Desbois case study{.smaller}
 
@@ -251,7 +251,7 @@ FactoMineR::plot.PCA(res.pca, axes=c(1, 2), choix="ind", habillage=1, invisible 
 
 It strikes Desbois that the PCA (even if not a discriminative/scoring procedure), seems to do a rather good job identifying defaulting farms on the training set.
 
-![](images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
+![](../images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
 Disclaimer: in general it won't be necessarily the case as PCA operates only on the predictors without "knowledge" of target variable. 
 
 ## Desbois case study{.smaller}
@@ -272,7 +272,7 @@ FactoMineR::plot.PCA(res.pca, axes=c(1, 2), choix="ind", habillage=1, invisible 
 
 Looking at the preceding plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate (setting a threshold at $PC_1 > 0.02$):
 
-![](images/desbois_pca_rule.png){.r-stretch}
+![](../images/desbois_pca_rule.png){.r-stretch}
 
 
 ## Desbois case study{.smaller}
@@ -434,7 +434,7 @@ You can use Desbois variables selected in the article by a stepwise procedure (u
 
 
 
-![](images/desbois_lda_stepwise.png){.r-stretch}
+![](../images/desbois_lda_stepwise.png){.r-stretch}
 
 So basically you can fit LDA with `r2+r3+r7+r14+r17+r18+r21+r32+r36` as predictors (I use `R` formula notation to ease your copy-paste).
 
@@ -464,7 +464,7 @@ round(lda_desbois$scaling,3)
 ::: {.column width="40%"}
 Similar[^5] to what Desbois obtains:
 
-![](images/desbois_lda_score.png)
+![](../images/desbois_lda_score.png)
 :::
 
 ::::
@@ -727,12 +727,12 @@ This roughly corresponds to the intuitive introduction to the logistic regressio
 
 ::: {.column width="50%"}
 
-![](images/hosmer_lemeshow_chd3.png)
+![](../images/hosmer_lemeshow_chd3.png)
 :::
 
 ::: {.column width="50%"}
 
-![](images/hosmer_lemeshow_chd4.png)
+![](../images/hosmer_lemeshow_chd4.png)
 :::
 
 ::::
@@ -883,12 +883,12 @@ $$
 
 We show below a simplified example of a credit scorecard that were typically used by banks to assess the creditworthiness of consumer loans applicants (as shown in [@scoringThomas]):
 
-![](images/scoring_scorecard.png){.r-stretch}
+![](../images/scoring_scorecard.png){.r-stretch}
 
 ## Scoring{.smaller}
 ### First example
 
-![](images/scoring_scorecard.png){.r-stretch}
+![](../images/scoring_scorecard.png){.r-stretch}
 
 - a 35-year-old owner wishing to borrow money for home improvement and that has never had a county court judgement (CCJ) will score $129 = (36+25+36+32)$,
 

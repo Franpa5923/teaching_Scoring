@@ -178,7 +178,7 @@ div.csl-indent {
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># package used to import spss file</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreign)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>don_desbois <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"presentation_data/Agriculture Farm Lending/desbois.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>don_desbois <span class="ot">&lt;-</span> <span class="fu">read.spss</span>(<span class="st">"../data/presentation_data/Agriculture Farm Lending/desbois.sav"</span>, <span class="at">to.data.frame =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(don_desbois)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -238,13 +238,8 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_wo_solution_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <p>To be compared with article Figure 1</p>
-<p><img src="images/desbois_pca_projection_pc1_pc2.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_pca_projection_pc1_pc2.png" class="r-stretch img-fluid"></p>
 <p>Following Desbois path, visualize the farm holdings in data set as a bivariate plot on the first two components of PCA (based on financial ratios), use variable Y (0=”healthy”; 1=”failing”) to colour your observations:</p>
 <div class="cell">
 <details open="">
@@ -252,15 +247,10 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_wo_solution_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <p>To be compared with article Figure 2</p>
 <p>It strikes Desbois that the PCA (even if not a discriminative/scoring procedure), seems to do a rather good job identifying defaulting farms on the training set.</p>
 <p>Disclaimer: in general it won’t be necessarily the case as PCA operates only on the predictors without “knowledge” of target variable.</p>
-<p><img src="images/desbois_pca_individuals_pc1_pc2.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_pca_individuals_pc1_pc2.png" class="r-stretch img-fluid"></p>
 <p>As suggested by Desbois, extract the first principal component (some help <a href="https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i">here</a>), and use it as a Scoring function.</p>
 <p>Today it will allow us to use a first Scoring function without introducing the Logistic Regression that you have not yet studied in class.</p>
 <div class="cell">
@@ -269,14 +259,8 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Below the score for each observation is the x-axis or first principal component:</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_wo_solution_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <p>Looking at this plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate as a classifier (setting a threshold at <span class="math inline">\(PC_1 &gt; 0.02\)</span>):</p>
-<p><img src="images/desbois_pca_rule.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_pca_rule.png" class="r-stretch img-fluid"></p>
 <p>Going further than Desbois and for illustrative purposes only, use <span class="math inline">\(PC_1\)</span> as a very naive Scoring function.</p>
 <p>Plot below the ROC curve as defined in the Scoring part of the presentation (you can use package <code>ROCR</code>, but a simple for-loop for different cutoff values <span class="math inline">\(s\)</span> will do the job):</p>
 <div class="cell">
@@ -285,15 +269,10 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_wo_solution_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <p>We follow closely the case study, but we will see that ROC curves are usually evaluated on a hold-out data set.</p>
 <p>Then compare with a Scoring function obtained with Linear Discriminant Analysis (LDA). For a reminder on LDA see for example <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#ref-hastie2009" role="doc-biblioref">2009, Chapter 4.3</a> LDA, p.&nbsp;103-111)</span>.</p>
 <p>You can use Desbois variables selected in the article by a stepwise procedure (using Wilk’s lambda<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>). Selected variables are:</p>
-<p><img src="images/desbois_lda_stepwise.png" class="r-stretch img-fluid"></p>
+<p><img src="../images/desbois_lda_stepwise.png" class="r-stretch img-fluid"></p>
 <p>So basically you can fit LDA with <code>r2+r3+r7+r14+r17+r18+r21+r32+r36</code> as predictors (I use <code>R</code> formula notation to ease your copy-paste).</p>
 <p>Fit LDA (<code>MASS::lda</code>) with model specification of your choice. Then display model coefficients:</p>
 <div class="cell">
@@ -302,31 +281,12 @@ $ r37     &lt;dbl&gt; 0.572, 0.867, 0.475, 0.470, 0.520, 0.431, 0.803, 0.656, 0.
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>       LD1
-r2  -2.542
-r3   2.398
-r7   1.099
-r14  0.604
-r17 18.702
-r18 -6.798
-r21 -0.622
-r32 -4.163
-r36  0.192</code></pre>
-</div>
-</div>
 <p>Now compare the LDA Scoring function with the naive Score build with first component of PCA using a ROC curve (on training set):</p>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_wo_solution_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
-</div>
 </div>
 <p>As a very soft and intuitive introduction to logistic regression. First discretize a ratio <span class="math inline">\(r\)</span> of your choice.</p>
 <ul>
@@ -335,28 +295,8 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>|r17_class  |0  |1 |Mean(Y)|
-|-----------|---|--|-------|
-|[0,0.01)   |  2| 0|0.0000 |
-|[0.01,0.02)|  4| 2|0.3333 |
-|[0.02,0.03)| 65|14|0.1772 |
-|[0.03,0.04)|106|38|0.2639 |
-|[0.04,0.05)|112|64|0.3636 |
-|[0.05,0.06)|104|77|0.4254 |
-|[0.06,0.07)| 88|93|0.5138 |
-|[0.07,0.08)| 63|83|0.5685 |
-|[0.08,0.09)| 49|66|0.5739 |
-|[0.09,0.1) | 27|71|0.7245 |
-|[0.1,0.11) | 14|42|0.7500 |
-|[0.11,0.12)| 12|42|0.7778 |
-|[0.12,0.13)|  7|14|0.6667 |
-|[0.19,0.2] |  0| 1|1.0000 |</code></pre>
-</div>
 </div>
 <ul>
 <li>Then using this table, plot an empirical conditional distribution of default given <span class="math inline">\(r\)</span> classes:</li>
@@ -364,22 +304,12 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_wo_solution_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_wo_solution_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <p>This roughly corresponds to the intuitive introduction to the logistic regression model given in <span class="citation" data-cites="hosmer2013">Hosmer et al. (<a href="#ref-hosmer2013" role="doc-biblioref">2013</a>)</span> using a Coronary Heart Disease (CHD) event as <span class="math inline">\(Y\)</span> and AGE as <span class="math inline">\(X\)</span>:</p>
-<p><img src="images/hosmer_lemeshow_chd3.png" class="img-fluid"></p>
-<p><img src="images/hosmer_lemeshow_chd4.png" class="img-fluid"></p>
+<p><img src="../images/hosmer_lemeshow_chd3.png" class="img-fluid"></p>
+<p><img src="../images/hosmer_lemeshow_chd4.png" class="img-fluid"></p>
 
 </section>
 

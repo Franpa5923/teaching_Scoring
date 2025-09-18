@@ -1,8 +1,8 @@
 ---
 title: "Warm up - The Desbois Case study"
 author: "Your NAME"
-bibliography: references_intro.bib
-csl: apa.csl
+bibliography: ../assets/references_intro.bib
+csl: ../assets/apa.csl
 link-citations: true
 format:
   html:
@@ -13,7 +13,7 @@ format:
     code-copy: true
     code-fold: true
     df-print: paged
-    include-in-header: mathjax.html
+    include-in-header: ../assets/mathjax.html
     number-sections: true
     toc: true
     toc_depth: 3
@@ -62,7 +62,7 @@ library(tidyverse)
 # package used to import spss file
 library(foreign)
 
-don_desbois <- read.spss("../slides/presentation_data/Agriculture Farm Lending/desbois.sav", to.data.frame = TRUE) %>% as_tibble()
+don_desbois <- read.spss("../data/presentation_data/Agriculture Farm Lending/desbois.sav", to.data.frame = TRUE) %>% as_tibble()
 glimpse(don_desbois)
 ```
 
@@ -116,7 +116,7 @@ plot(res.pca, choix = "var")
 
 To be compared with article Figure 1
 
-![](images/desbois_pca_projection_pc1_pc2.png){.r-stretch}
+![](../images/desbois_pca_projection_pc1_pc2.png){.r-stretch}
 
 Following Desbois path, visualize the farm holdings in data set as a bivariate plot on the first two components of PCA (based on financial ratios), use variable Y (0=”healthy”; 1=”failing”) to colour your observations:
 
@@ -144,7 +144,7 @@ It strikes Desbois that the PCA (even if not a discriminative/scoring procedure)
 
 Disclaimer: in general it won't be necessarily the case as PCA operates only on the predictors without "knowledge" of target variable.
 
-![](images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
+![](../images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
 
 As suggested by Desbois, extract the first principal component (some help [here](https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i)), and use it as a Scoring function.
 
@@ -202,7 +202,7 @@ ggplot(naive_score) +
 
 Looking at this plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate as a classifier (setting a threshold at $PC_1 > 0.02$):
 
-![](images/desbois_pca_rule.png){.r-stretch}
+![](../images/desbois_pca_rule.png){.r-stretch}
 
 Going further than Desbois and for illustrative purposes only, use $PC_1$ as a very naive Scoring function.
 
@@ -237,7 +237,7 @@ You can use Desbois variables selected in the article by a stepwise procedure (u
 
 [^1]: We won’t describe the procedure here. A SPSS script is given in the article. It is not straightforward to reproduce it with R. I tried scripting manually the procedure and it works but is not very interesting.
 
-![](images/desbois_lda_stepwise.png){.r-stretch}
+![](../images/desbois_lda_stepwise.png){.r-stretch}
 
 So basically you can fit LDA with `r2+r3+r7+r14+r17+r18+r21+r32+r36` as predictors (I use `R` formula notation to ease your copy-paste).
 
@@ -390,6 +390,6 @@ cat(simplermarkdown::md_table(don_desbois_binned %>% select(r17_class=r17_bins, 
 
 This roughly corresponds to the intuitive introduction to the logistic regression model given in @hosmer2013 using a Coronary Heart Disease (CHD) event as $Y$ and AGE as $X$:
 
-![](images/hosmer_lemeshow_chd3.png)
+![](../images/hosmer_lemeshow_chd3.png)
 
-![](images/hosmer_lemeshow_chd4.png)
+![](../images/hosmer_lemeshow_chd4.png)

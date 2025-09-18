@@ -9,8 +9,8 @@ author:
   - name: Louis Olive
     email: louis.olive@gmail.com / louis.olive@ut-capitole.fr
 date: 2025-09-10
-bibliography: references_intro.bib
-csl: apa.csl
+bibliography: ../assets/references_intro.bib
+csl: ../assets/apa.csl
 ---
 
 # Outline {background-color="#40666e"}
@@ -153,7 +153,7 @@ Codes are given in R.
 ### Newspaper headline
 
 
-![](images/news_us_bankruptcies_ft.png){.r-stretch}
+![](../images/news_us_bankruptcies_ft.png){.r-stretch}
 
 
 Source: [Financial Times](https://www.ft.com/content/ac3c1e2f-c9bc-417e-a686-7170e1bf8533), January 7 2025
@@ -163,7 +163,7 @@ Source: [Financial Times](https://www.ft.com/content/ac3c1e2f-c9bc-417e-a686-717
 ### Newspaper headline
 
 
-![](images/news_us_bankruptcies_echos.png){.r-stretch}
+![](../images/news_us_bankruptcies_echos.png){.r-stretch}
 
 
 Source: [Les Echos](https://www.lesechos.fr/monde/etats-unis/aux-etats-unis-les-faillites-dentreprises-a-leur-plus-haut-depuis-2010-2140819), January 7 2025
@@ -172,7 +172,7 @@ Source: [Les Echos](https://www.lesechos.fr/monde/etats-unis/aux-etats-unis-les-
 ## Corporate bankruptcies - US - 2024{.smaller}
 ### Newspaper source
 
-![](images/news_us_bankruptcies_s&p.png){.r-stretch}
+![](../images/news_us_bankruptcies_s&p.png){.r-stretch}
 
 
 Source: [S&P Global Market](https://www.spglobal.com/marketintelligence/en/news-insights/latest-news-headlines/us-corporate-bankruptcies-soar-to-14-year-high-in-2024-61-filings-in-december-87008718), January 7 2025
@@ -180,70 +180,70 @@ Source: [S&P Global Market](https://www.spglobal.com/marketintelligence/en/news-
 ## Corporate bankruptcies - US - 2025 YTD{.smaller}
 ### Update
 
-![](images/news_us_bankruptcies_s&p_jul25.png){.r-stretch}
+![](../images/news_us_bankruptcies_s&p_jul25.png){.r-stretch}
 
 Source: [S&P Global Market](https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/7/63-us-corporate-bankruptcies-in-june-set-up-2025-for-highest-pace-since-2010-91441423), July 8 2025 
 
 ## Corporate bankruptcies - US - 2025 YTD{.smaller}
 ### Update
 
-![](images/news_us_bankruptcies_s&p_aug25.png){.r-stretch}
+![](../images/news_us_bankruptcies_s&p_aug25.png){.r-stretch}
 
 Source: [S&P Global Market](https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/8/july-us-corporate-bankruptcy-filings-hit-highest-monthly-total-in-5-years-91873904), August 6 2025 
 
 ## Corporate bankruptcies - US - 2025 YTD{.smaller}
 ### Update
 
-![](images/news_us_bankruptcies_s&p_aug25_graph.png){.r-stretch}
+![](../images/news_us_bankruptcies_s&p_aug25_graph.png){.r-stretch}
 
 Source: [S&P Global Market](https://www.spglobal.com/market-intelligence/en/news-insights/articles/2025/8/july-us-corporate-bankruptcy-filings-hit-highest-monthly-total-in-5-years-91873904), August 6 2025 
 
 ## Corporate bankruptcies - FR - 2024{.smaller}
 ### Newspaper headline
 
-![](images/news_fr_bankruptcies_echos.png){.r-stretch}
+![](../images/news_fr_bankruptcies_echos.png){.r-stretch}
 
 Source: [Les Echos](https://www.lesechos.fr/economie-france/conjoncture/record-de-defaillances-dentreprises-en-france-pas-declaircie-en-vue-2141233), January 8 2025
 
 ## Corporate bankruptcies - FR - 2024{.smaller}
 ### Newspaper source
 
-![](images/news_fr_bankruptcies_bpce.png){.r-stretch}
+![](../images/news_fr_bankruptcies_bpce.png){.r-stretch}
 
 Source: [BPCE L’Observatoire](https://newsroom.groupebpce.fr/actualites/etude-defaillances-dentreprises-en-france-les-defaillances-de-pme-eti-au-plus-haut-en-2024-b0b3d-7b707.html), January 8 2025
 
 ## Corporate bankruptcies - FR - 2024{.smaller}
 ### Alternative source
 
-![](images/news_en_bankruptcies_bdf_lt.png){.r-stretch}
+![](../images/news_en_bankruptcies_bdf_lt.png){.r-stretch}
 
 Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12), January 17 2025
 
 ## Corporate bankruptcies - FR - 2024{.smaller}
 ### Alternative source
 
-![](images/news_en_bankruptcies_bdf.png){.r-stretch}
+![](../images/news_en_bankruptcies_bdf.png){.r-stretch}
 
 Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12), January 17 2025
 
 ## Corporate bankruptcies - FR - 2024{.smaller}
 ### Alternative source
 
-![](images/news_en_bankruptcies_bdf_sector.png){.r-stretch}
+![](../images/news_en_bankruptcies_bdf_sector.png){.r-stretch}
 
 Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2024-12), January 17 2025
 
 ## Corporate bankruptcies - FR - 2025 YTD{.smaller}
 ### Alternative source
 
-![](images/news_en_bankruptcies_bdf_lt_ytd205.png){.r-stretch}
+![](../images/news_en_bankruptcies_bdf_lt_ytd205.png){.r-stretch}
 
 Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2025-07), September 5 2025
 
 ## Corporate bankruptcies - FR - 2025 YTD{.smaller}
 ### Alternative source
 
-![](images/news_en_bankruptcies_bdf_ytd205.png){.r-stretch}
+![](../images/news_en_bankruptcies_bdf_ytd205.png){.r-stretch}
 
 Source: [Banque de France](https://www.banque-france.fr/en/statistics/compagnies/business-failures-france-2025-07), September 5 2025
 
@@ -260,12 +260,12 @@ FR: ["défaillance"](https://www.insee.fr/fr/metadonnees/definition/c1617)
 
 ::: {.column width="50%"}
 
-![](images/insee_defaillance_fr.png)
+![](../images/insee_defaillance_fr.png)
 :::
 
 ::: {.column width="50%"}
 
-![](images/insee_bankruptcy_us.png)
+![](../images/insee_bankruptcy_us.png)
 :::
 
 ::::
@@ -276,7 +276,7 @@ US: [Chapter 11](https://en.wikipedia.org/wiki/Chapter_11,_Title_11,_United_Stat
 ## Corporate bankruptcies{.smaller}
 ### A complex phenomenon
 
-![](images/bardos_scoring_lda.png){.r-stretch}
+![](../images/bardos_scoring_lda.png){.r-stretch}
 
 Source: [@bardos2007]
 
@@ -449,7 +449,7 @@ First we load the data set and plot the "means":
 ```{r}
 #| code-fold: true
 # Simulated mixture (ORANGE/BLUE) from ESLII/ISLR
-load(file='presentation_data/mixture.example.RData')
+load(file='../data/mixture.example.RData')
 
 x1_means <- mixture.example$means[,1]
 x2_means <- mixture.example$means[,2]
@@ -462,7 +462,7 @@ ggplot(mixture_means) +
     scale_colour_manual(values = c("dodgerblue", "orange")) +
     theme_void()
 
-# saveRDS(mixture_means, "mixture_means.rds")
+# saveRDS(mixture_means, "../data/mixture_means.rds")
 ```
 
 ## Scoring{.smaller}
@@ -517,8 +517,8 @@ ggplot(new_mixture[c(1:250,5001:5251),]) +
     geom_point(data = mixture_means, aes(x = x1_means, y = x2_means, col =Y), size = 3, show.legend = FALSE) +
     scale_colour_manual(values = c("dodgerblue", "orange", "dodgerblue", "orange")) +
     theme_void()
-# saveRDS(new_mixture, "new_mixture.rds")
-# new_mixture <- readRDS("new_mixture.rds")
+# saveRDS(new_mixture, "../data/new_mixture.rds")
+# new_mixture <- readRDS("../data/new_mixture.rds")
 ```
 
 ## Scoring{.smaller}
@@ -593,7 +593,7 @@ bayes_train_risk <- bayes_error_rate_train %>%
 
 We get a value of `r round(bayes_test_risk,3)` for the "estimated" Bayes risk, which is in line with [@hastie2009 Figure 13.4], see below:
 
-![](images/bayeserror_mixture.png){fig-align="center" width="700"}
+![](../images/bayeserror_mixture.png){fig-align="center" width="700"}
 
 ## Scoring{.smaller}
 ### Toy example - A brief tour
@@ -1100,7 +1100,7 @@ The empirical risk on testing set is `r round(knn_error_rate, 3)`.
 
 To be compared with [@hastie2009 Figure 13.4]:
 
-![](images/bayeserror_mixture.png){fig-align="center" width="700"}
+![](../images/bayeserror_mixture.png){fig-align="center" width="700"}
 
 ## Scoring{.smaller}
 ### Toy example - k-Nearest Neighbors Algorithm - varying $k$
@@ -1176,7 +1176,7 @@ labs(col = NULL)
 
 To be compared with [@hastie2009 Figure 2.4]:
 
-![](images/bayes_error_mixture_k.png)
+![](../images/bayes_error_mixture_k.png)
 
 ## Scoring{.smaller}
 ### Toy example - Decision Trees
@@ -1305,12 +1305,12 @@ $$
 
 We show below a simplified example of a credit scorecard that were typically used by banks to assess the creditworthiness of consumer loans applicants (as shown in [@scoringThomas]):
 
-![](images/scoring_scorecard.png){.r-stretch}
+![](../images/scoring_scorecard.png){.r-stretch}
 
 ## Scoring{.smaller}
 ### First example
 
-![](images/scoring_scorecard.png){.r-stretch}
+![](../images/scoring_scorecard.png){.r-stretch}
 
 - a 35-year-old owner wishing to borrow money for home improvement and that has never had a county court judgement (CCJ) will score $129 = (36+25+36+32)$,
 
@@ -1514,7 +1514,7 @@ Loading Desbois data and first glimpse at it:
 # package used to import spss file
 library(foreign)
 
-don_desbois <- read.spss("presentation_data/Agriculture Farm Lending/desbois.sav", to.data.frame = TRUE) %>% as_tibble()
+don_desbois <- read.spss("../data/presentation_data/Agriculture Farm Lending/desbois.sav", to.data.frame = TRUE) %>% as_tibble()
 glimpse(don_desbois)
 ```
 ## Desbois case study{.smaller}
@@ -1643,7 +1643,7 @@ plot(res.pca, choix = "var")
 ### To be compared with article Figure 1
 
 
-![](images/desbois_pca_projection_pc1_pc2.png){.r-stretch}
+![](../images/desbois_pca_projection_pc1_pc2.png){.r-stretch}
 
 ## Desbois case study{.smaller .scrollable}
 
@@ -1674,7 +1674,7 @@ It strikes Desbois that the PCA (even if not a discriminative/scoring procedure)
 
 Disclaimer: in general it won't be necessarily the case as PCA operates only on the predictors without "knowledge" of target variable. 
 
-![](images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
+![](../images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
 
 
 ## Desbois case study{.smaller}
@@ -1728,7 +1728,7 @@ ggplot(naive_score) +
 
 Looking at this plot Desbois concludes that a simple classifier can be devised using the first PCA coordinate (setting a threshold at $PC_1 > 0.02$):
 
-![](images/desbois_pca_rule.png){.r-stretch}
+![](../images/desbois_pca_rule.png){.r-stretch}
 
 ## Desbois case study{.smaller}
 
@@ -1770,7 +1770,7 @@ You can use Desbois variables selected in the article by a stepwise procedure (u
 
 
 
-![](images/desbois_lda_stepwise.png){.r-stretch}
+![](../images/desbois_lda_stepwise.png){.r-stretch}
 
 So basically you can fit LDA with `r2+r3+r7+r14+r17+r18+r21+r32+r36` as predictors (I use `R` formula notation to ease your copy-paste).
 
@@ -1800,7 +1800,7 @@ round(lda_desbois$scaling,3)
 ::: {.column width="40%"}
 Similar[^5] to what Desbois obtains:
 
-![](images/desbois_lda_score.png)
+![](../images/desbois_lda_score.png)
 :::
 
 ::::
@@ -1958,12 +1958,12 @@ This roughly corresponds to the intuitive introduction to the logistic regressio
 
 ::: {.column width="50%"}
 
-![](images/hosmer_lemeshow_chd3.png)
+![](../images/hosmer_lemeshow_chd3.png)
 :::
 
 ::: {.column width="50%"}
 
-![](images/hosmer_lemeshow_chd4.png)
+![](../images/hosmer_lemeshow_chd4.png)
 :::
 
 ::::
