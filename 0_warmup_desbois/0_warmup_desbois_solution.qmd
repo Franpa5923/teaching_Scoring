@@ -319,13 +319,6 @@ As a very soft and intuitive introduction to logistic regression. First discreti
 ########## YOUR CODE HERE #####################
 ```
 
-```{r}
-#| echo: true
-#| code-fold: show
-#| warning: false
-
-########## YOUR CODE HERE #####################
-```
 
 ```{r, warning = FALSE, message = FALSE}
 #| code-fold: true
@@ -393,3 +386,81 @@ This roughly corresponds to the intuitive introduction to the logistic regressio
 ![](../images/hosmer_lemeshow_chd3.png)
 
 ![](../images/hosmer_lemeshow_chd4.png)
+
+Since Logistic Regression has been briefly introduced in class, you can directly apply it to the Desbois dataset using R glm() function and compare it to (i) the naive score based on PCA and (ii) the LDA using a ROC curve. You can re-use the code provided before covering the first part of Desbois case study and adapt it to your needs.
+
+First fit a linear regression model, we use the same set of variables as for LDA before:
+
+```{r}
+glm_desbois <- glm(Y~r2+r3+r7+r14+r17+r18+r21+r32+r36,
+                   data=don_desbois, 
+                   family = binomial(link = "logit"))
+summary(glm_desbois)
+```
+
+Now compare the LDA Scoring function with the naive Score build with first component of PCA using a ROC curve (on training set):
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| warning: false
+
+########## YOUR CODE HERE #####################
+```
+
+```{r}
+# for ROCR
+labels_desbois <- don_desbois$Y
+
+# naive score
+predictions_naive_score <- naive_score$Dim.1
+
+naive_score_group <- naive_score %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(Dim.1), n = n())
+
+cutoff_naive <- mean(naive_score_group$mean_score)
+
+pred <- prediction(predictions_naive_score, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "darkolivegreen", 
+     print.cutoffs.at = c(cutoff_naive), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+abline(0, 1) #add a 45 degree line
+
+# lda
+predictions_lda <- predict(lda_desbois)$x
+
+lda_score_group <- bind_cols(don_desbois, predictions_lda) %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(LD1), n = n())
+
+cutoff_lda <- mean(lda_score_group$mean_score)
+
+pred <- prediction(predictions_lda, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, add = TRUE, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "plum4",
+     print.cutoffs.at = c(cutoff_lda), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+
+# glm
+predictions_glm <- predict(glm_desbois, type='response')
+
+glm_score_group <- bind_cols(don_desbois, tibble(pred_glm =predictions_glm)) %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(pred_glm), n = n())
+
+cutoff_glm <- mean(glm_score_group$mean_score)
+
+pred <- prediction(predictions_glm, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, add = TRUE, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "dodgerblue",
+     print.cutoffs.at = c(cutoff_glm), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+legend(0.6,0.6,
+       c('naive - PCA', 'LDA', 'Logistic'),
+       col=c("darkolivegreen", "plum4", "dodgerblue"),lwd=3)
+```

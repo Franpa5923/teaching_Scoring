@@ -465,31 +465,25 @@ r36  0.192</code></pre>
 </details>
 </div>
 <div class="cell">
-<details open="">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>class_width <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>don_desbois_binned <span class="ot">&lt;-</span> don_desbois <span class="sc">%&gt;%</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">r17_bins =</span> <span class="fu">cut</span>(r17, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.2</span>, class_width),</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">right =</span> <span class="cn">FALSE</span>, <span class="at">dig.lab =</span> <span class="dv">4</span>, <span class="at">include.lowest =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">min =</span> <span class="fu">floor</span>(r17 <span class="sc">/</span> class_width) <span class="sc">*</span> class_width,</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(r17 <span class="sc">==</span> <span class="dv">0</span> , <span class="dv">1</span>, </span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                         <span class="co"># customers with 0$ balance should belong to [0, width) class</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>                         <span class="co"># or be excluded</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width))  <span class="sc">*</span> class_width,</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(min<span class="sc">==</span>max, (<span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width) <span class="sc">+</span> <span class="dv">1</span>)  <span class="sc">*</span> class_width, max)) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(r17_bins, min, max, Y) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Y, <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">/</span> (<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">0</span><span class="st">`</span>), <span class="dv">4</span>))</span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(simplermarkdown<span class="sc">::</span><span class="fu">md_table</span>(don_desbois_binned <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">r17_class=</span>r17_bins, <span class="st">`</span><span class="at">0</span><span class="st">`</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span>,<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> )))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>class_width <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>don_desbois_binned <span class="ot">&lt;-</span> don_desbois <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">r17_bins =</span> <span class="fu">cut</span>(r17, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">0.2</span>, class_width),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">right =</span> <span class="cn">FALSE</span>, <span class="at">dig.lab =</span> <span class="dv">4</span>, <span class="at">include.lowest =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">min =</span> <span class="fu">floor</span>(r17 <span class="sc">/</span> class_width) <span class="sc">*</span> class_width,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(r17 <span class="sc">==</span> <span class="dv">0</span> , <span class="dv">1</span>, </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                         <span class="co"># customers with 0$ balance should belong to [0, width) class</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                         <span class="co"># or be excluded</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width))  <span class="sc">*</span> class_width,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">max =</span> <span class="fu">if_else</span>(min<span class="sc">==</span>max, (<span class="fu">ceiling</span>(r17 <span class="sc">/</span> class_width) <span class="sc">+</span> <span class="dv">1</span>)  <span class="sc">*</span> class_width, max)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(r17_bins, min, max, Y) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">n=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Y, <span class="at">values_from =</span> n) <span class="sc">%&gt;%</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">replace_na</span>(<span class="fu">list</span>(<span class="st">`</span><span class="at">0</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">round</span>(<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">/</span> (<span class="st">`</span><span class="at">1</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">0</span><span class="st">`</span>), <span class="dv">4</span>))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(simplermarkdown<span class="sc">::</span><span class="fu">md_table</span>(don_desbois_binned <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">r17_class=</span>r17_bins, <span class="st">`</span><span class="at">0</span><span class="st">`</span>, <span class="st">`</span><span class="at">1</span><span class="st">`</span>,<span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span> )))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>|r17_class  |0  |1 |Mean(Y)|
@@ -516,8 +510,24 @@ r36  0.192</code></pre>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(default_occurrence <span class="ot">&lt;-</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(don_desbois <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">if_else</span>(Y <span class="sc">==</span> <span class="st">"1"</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="fu">aes</span>(<span class="at">x=</span>r17, <span class="at">y=</span>Y)) <span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="0_warmup_desbois_solution_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <div class="cell">
 <details>
@@ -525,41 +535,134 @@ r36  0.192</code></pre>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(default_occurrence <span class="ot">&lt;-</span> </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(don_desbois <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">if_else</span>(Y <span class="sc">==</span> <span class="st">"1"</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="fu">aes</span>(<span class="at">x=</span>r17, <span class="at">y=</span>Y)) <span class="sc">+</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"glm"</span>, </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>), </span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">"dodgerblue"</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="0_warmup_desbois_solution_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(default_occurrence <span class="ot">&lt;-</span> </span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>(don_desbois <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Y =</span> <span class="fu">if_else</span>(Y <span class="sc">==</span> <span class="st">"1"</span>, <span class="dv">1</span>, <span class="dv">0</span>)), <span class="fu">aes</span>(<span class="at">x=</span>r17, <span class="at">y=</span>Y)) <span class="sc">+</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">height=</span><span class="fl">0.1</span>) <span class="sc">+</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"glm"</span>, </span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>), </span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">col =</span> <span class="st">"dodgerblue"</span>,</span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_segment</span>(<span class="at">data =</span> don_desbois_binned,</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x =</span> min, <span class="at">xend =</span> max, <span class="at">y =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>, <span class="at">yend =</span> <span class="st">`</span><span class="at">Mean(Y)</span><span class="st">`</span>),</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">color =</span> <span class="st">'coral'</span>,</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">linewidth=</span><span class="fl">1.25</span>)) <span class="sc">+</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a> <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<p><img src="0_warmup_desbois_solution_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <p>This roughly corresponds to the intuitive introduction to the logistic regression model given in <span class="citation" data-cites="hosmer2013">Hosmer et al. (<a href="#ref-hosmer2013" role="doc-biblioref">2013</a>)</span> using a Coronary Heart Disease (CHD) event as <span class="math inline">\(Y\)</span> and AGE as <span class="math inline">\(X\)</span>:</p>
 <p><img src="../images/hosmer_lemeshow_chd3.png" class="img-fluid"></p>
 <p><img src="../images/hosmer_lemeshow_chd4.png" class="img-fluid"></p>
+<p>Since Logistic Regression has been briefly introduced in class, you can directly apply it to the Desbois dataset using R glm() function and compare it to (i) the naive score based on PCA and (ii) the LDA using a ROC curve. You can re-use the code provided before covering the first part of Desbois case study and adapt it to your needs.</p>
+<p>First fit a linear regression model, we use the same set of variables as for LDA before:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>glm_desbois <span class="ot">&lt;-</span> <span class="fu">glm</span>(Y<span class="sc">~</span>r2<span class="sc">+</span>r3<span class="sc">+</span>r7<span class="sc">+</span>r14<span class="sc">+</span>r17<span class="sc">+</span>r18<span class="sc">+</span>r21<span class="sc">+</span>r32<span class="sc">+</span>r36,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data=</span>don_desbois, </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>))</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm_desbois)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = Y ~ r2 + r3 + r7 + r14 + r17 + r18 + r21 + r32 + 
+    r36, family = binomial(link = "logit"), data = don_desbois)
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -3.4203     1.2834  -2.665  0.00770 ** 
+r2           -5.2156     1.2108  -4.307 1.65e-05 ***
+r3            5.8347     1.2487   4.673 2.97e-06 ***
+r7            2.9003     0.9530   3.043  0.00234 ** 
+r14           2.1470     0.4777   4.494 6.98e-06 ***
+r17          45.6847     9.6836   4.718 2.38e-06 ***
+r18         -24.6368     9.1127  -2.704  0.00686 ** 
+r21           1.7335     1.9481   0.890  0.37355    
+r32          -5.0215     1.8907  -2.656  0.00791 ** 
+r36           0.4494     0.3558   1.263  0.20661    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1745.1  on 1259  degrees of freedom
+Residual deviance:  691.3  on 1250  degrees of freedom
+AIC: 711.3
+
+Number of Fisher Scoring iterations: 8</code></pre>
+</div>
+</div>
+<p>Now compare the LDA Scoring function with the naive Score build with first component of PCA using a ROC curve (on training set):</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">########## YOUR CODE HERE #####################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for ROCR</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>labels_desbois <span class="ot">&lt;-</span> don_desbois<span class="sc">$</span>Y</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># naive score</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>predictions_naive_score <span class="ot">&lt;-</span> naive_score<span class="sc">$</span>Dim<span class="fl">.1</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>naive_score_group <span class="ot">&lt;-</span> naive_score <span class="sc">%&gt;%</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Y) <span class="sc">%&gt;%</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_score =</span> <span class="fu">mean</span>(Dim<span class="fl">.1</span>), <span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>cutoff_naive <span class="ot">&lt;-</span> <span class="fu">mean</span>(naive_score_group<span class="sc">$</span>mean_score)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(predictions_naive_score, labels_desbois)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(perf, <span class="at">main=</span><span class="st">"ROC curve Admissions"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"darkolivegreen"</span>, </span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(cutoff_naive), </span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"                s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="co">#add a 45 degree line</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co"># lda</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>predictions_lda <span class="ot">&lt;-</span> <span class="fu">predict</span>(lda_desbois)<span class="sc">$</span>x</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>lda_score_group <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(don_desbois, predictions_lda) <span class="sc">%&gt;%</span></span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Y) <span class="sc">%&gt;%</span></span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_score =</span> <span class="fu">mean</span>(LD1), <span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>cutoff_lda <span class="ot">&lt;-</span> <span class="fu">mean</span>(lda_score_group<span class="sc">$</span>mean_score)</span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(predictions_lda, labels_desbois)</span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(perf, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">main=</span><span class="st">"ROC curve Admissions"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"plum4"</span>,</span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(cutoff_lda), </span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"                s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a><span class="co"># glm</span></span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>predictions_glm <span class="ot">&lt;-</span> <span class="fu">predict</span>(glm_desbois, <span class="at">type=</span><span class="st">'response'</span>)</span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>glm_score_group <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(don_desbois, <span class="fu">tibble</span>(<span class="at">pred_glm =</span>predictions_glm)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Y) <span class="sc">%&gt;%</span></span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_score =</span> <span class="fu">mean</span>(pred_glm), <span class="at">n =</span> <span class="fu">n</span>())</span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>cutoff_glm <span class="ot">&lt;-</span> <span class="fu">mean</span>(glm_score_group<span class="sc">$</span>mean_score)</span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">prediction</span>(predictions_glm, labels_desbois)</span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(pred, <span class="at">measure =</span> <span class="st">"tpr"</span>, <span class="at">x.measure =</span> <span class="st">"fpr"</span>)</span>
+<span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(perf, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">main=</span><span class="st">"ROC curve Admissions"</span>, <span class="at">xlab=</span><span class="st">"Specificity"</span>,</span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Sensitivity"</span>, <span class="at">col =</span> <span class="st">"dodgerblue"</span>,</span>
+<span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a>     <span class="at">print.cutoffs.at =</span> <span class="fu">c</span>(cutoff_glm), </span>
+<span id="cb32-51"><a href="#cb32-51" aria-hidden="true" tabindex="-1"></a>     <span class="at">cutoff.label.function =</span> <span class="cf">function</span>(x) {<span class="fu">paste0</span>(<span class="st">"                s = "</span>,<span class="fu">round</span>(x,<span class="dv">2</span>))})</span>
+<span id="cb32-52"><a href="#cb32-52" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="fl">0.6</span>,<span class="fl">0.6</span>,</span>
+<span id="cb32-53"><a href="#cb32-53" aria-hidden="true" tabindex="-1"></a>       <span class="fu">c</span>(<span class="st">'naive - PCA'</span>, <span class="st">'LDA'</span>, <span class="st">'Logistic'</span>),</span>
+<span id="cb32-54"><a href="#cb32-54" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"darkolivegreen"</span>, <span class="st">"plum4"</span>, <span class="st">"dodgerblue"</span>),<span class="at">lwd=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="0_warmup_desbois_solution_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 </section>
 
