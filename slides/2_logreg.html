@@ -11,8 +11,8 @@
   <meta name="generator" content="quarto-1.3.450">
 
   <meta name="author" content="Louis Olive">
-  <meta name="dcterms.date" content="2025-09-23">
-  <title>Scoring</title>
+  <meta name="dcterms.date" content="2025-09-24">
+  <title>The Logistic Regression model - Estimation and Inference</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -410,7 +410,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Scoring</h1>
+  <h1 class="title">The Logistic Regression model - Estimation and Inference</h1>
   <p class="subtitle">M2 D3S/EGR 2025-2026</p>
 
 <div class="quarto-title-authors">
@@ -424,7 +424,7 @@ Louis Olive
 </div>
 </div>
 
-  <p class="date">September 23, 2025</p>
+  <p class="date">September 24, 2025</p>
 </section>
 <section>
 <section id="outline" class="title-slide slide level1 center" data-background-color="#40666e">
@@ -453,6 +453,9 @@ Louis Olive
 <div class="extrapad">
 <ul>
 <li>The Logistic Regression model</li>
+<li>Estimation</li>
+<li>Inference</li>
+<li>Goodness of Fit</li>
 </ul>
 </div>
 </section></section>
@@ -609,9 +612,14 @@ Y|X=x~ \sim B(\eta(x))
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="estimation" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Estimation</h1>
+
 </section>
-<section id="the-logistic-regression-model-13" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="estimation-1" class="slide level2 smaller">
+<h2>Estimation</h2>
 <h3 id="how-to-fit-with-r">How to fit with R</h3>
 <p>The syntax to fit the Logistic model in R using <code>glm()</code> is:</p>
 <p><span class="math display">\[
@@ -620,8 +628,8 @@ Y|X=x~ \sim B(\eta(x))
 <p>The formula <span class="math inline">\(\mathrm{y} \sim \mathrm{x}\)</span> depicts the model (i.e.&nbsp;inputs are <span class="math inline">\(X\)</span>, output is <span class="math inline">\(Y\)</span>) and the <code>data=</code> argument points to the training set contained in a R dataframe (or tibble). This is quite similar to the <code>lm()</code> function.</p>
 <p>We also need to specify the distribution for the conditional <span class="math inline">\(Y\)</span> values (binomial) and the link function (logit) via the <code>family=</code> argument.</p>
 </section>
-<section id="the-logistic-regression-model-14" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="estimation-2" class="slide level2 smaller">
+<h2>Estimation</h2>
 <h3 id="how-to-fit-with-r-1">How to fit with R</h3>
 <p>For our default example:</p>
 <p>The command <code>summary</code> produces result summaries of the fitted model:</p>
@@ -651,9 +659,9 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 <p>We will see in the next lesson, how this model is fitted in practice and how to interpret or understand what is printed by the <code>summary</code> function.</p>
 </section>
-<section id="the-logistic-regression-model-15" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation">Estimation</h3>
+<section id="estimation-3" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="maximum-likelihood-estimator">Maximum Likelihood Estimator</h3>
 <p>We are given <span class="math inline">\((x_i, y_i) \in \mathbb R^p \times \{0,1\}\)</span>, <span class="math inline">\(i=1,\cdots,n\)</span> where outputs <span class="math inline">\(y_i\)</span> are independent Bernoulli with parameter <span class="math inline">\(p_{\beta}(x_i)\)</span> depending on <span class="math inline">\(x_i\)</span>:</p>
 <p><span class="math display">\[
 \mathrm{logit}(p_{\beta}(x_i))=x_i^T\beta
@@ -665,9 +673,9 @@ L(Y,\beta) = \prod_{i=1}^n p_{\beta}(x_i)^{y_i}(1-p_{\beta}(x_i))^{1-y_i}
 \]</span></p>
 <p>with <span class="math inline">\(Y=(y_1,\cdots,y_n)\)</span> and <span class="math inline">\(\beta=(\beta_1,\cdots,\beta_p)\)</span>.</p>
 </section>
-<section id="the-logistic-regression-model-16" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation-1">Estimation</h3>
+<section id="estimation-4" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="maximum-likelihood-estimator-1">Maximum Likelihood Estimator</h3>
 <p>We seek to maximize the likelihood function over <span class="math inline">\(\beta\)</span>, it is equivalent but easier to maximize the log-likelihood:</p>
 <p><span class="math display">\[
 \begin{align}
@@ -681,9 +689,9 @@ L(Y,\beta) = \prod_{i=1}^n p_{\beta}(x_i)^{y_i}(1-p_{\beta}(x_i))^{1-y_i}
 \nabla\ell(Y,\beta)=\left(\frac{\partial \ell(Y,\beta)}{\partial \beta_1}, \cdots,\frac{\partial \ell(Y,\beta)}{\partial \beta_p}\right)=\mathbf 0
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-17" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation-2">Estimation</h3>
+<section id="estimation-5" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="maximum-likelihood-estimator-2">Maximum Likelihood Estimator</h3>
 <p>We have for <span class="math inline">\(j=1,\cdots,p\)</span>:</p>
 <p><span class="math display">\[
 \frac{\partial \ell(Y,\beta)}{\partial \beta_j}=\sum_{i=1}^{n} \left(y_i x_{ij} -x_{ij}\frac{\exp(x_i^T\beta)}{1+\exp(x_i^T\beta)}\right)=\sum_{i=1}^{n} x_{ij} \left(y_i- p_{\beta}(x_i)\right)
@@ -722,9 +730,9 @@ p_{\beta}(x_n)
 \end{aligned}
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-18" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation-3">Estimation</h3>
+<section id="estimation-6" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="maximum-likelihood-estimator-3">Maximum Likelihood Estimator</h3>
 <p>In the literature <span class="math inline">\(\nabla\ell(Y,\beta)\)</span> is denoted as the Fisher’s score function <span class="math inline">\(S(\beta)\)</span>.</p>
 <p>If the MLE <span class="math inline">\(\hat\beta\)</span> exists, we have:</p>
 <p><span class="math display">\[
@@ -735,9 +743,9 @@ S(\hat\beta)=\nabla\ell(Y,\hat\beta)=X^T(Y-P_{\hat\beta})=0
 y_1 x_{1j} + \cdots + y_n x_{nj} = x_{1j}\frac{\exp(x_1^T\beta)}{1+\exp(x_1^T\beta)}+ \cdots + x_{nj}\frac{\exp(x_n^T\beta)}{1+\exp(x_n^T\beta)},\quad j=1,\cdots,p
 \]</span> Numerical methods are used to solve these non-linear equations as no closed-form solution exist.</p>
 </section>
-<section id="the-logistic-regression-model-19" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation---mle-existence">Estimation - MLE existence</h3>
+<section id="estimation-7" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="mle-existence">MLE existence</h3>
 <p>If we assume that <span class="math inline">\(rank(X)=p\)</span>, we have that <span class="math inline">\(S(\beta)\)</span> is concave in <span class="math inline">\(\beta\)</span> hence if we find a local maximum it is a global maximum.</p>
 <p>We have for <span class="math inline">\((k,l) \in (1,\cdots,p)^2\)</span>:</p>
 <p><span class="math display">\[
@@ -749,9 +757,9 @@ y_1 x_{1j} + \cdots + y_n x_{nj} = x_{1j}\frac{\exp(x_1^T\beta)}{1+\exp(x_1^T\be
 \end{align}
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-20" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation---mle-existence-1">Estimation - MLE existence</h3>
+<section id="estimation-8" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="mle-existence-1">MLE existence</h3>
 <p>We obtain that in matrix form:</p>
 <p><span class="math display">\[
 H(\beta)=\nabla^2\ell(Y,\beta)=-X^T W_\beta X
@@ -768,16 +776,16 @@ p_\beta(x_1)(1-p_\beta(x_1)) &amp; \cdots &amp; \cdots\\
 \]</span></p>
 <p>We have <span class="math inline">\(p_\beta(x_i)(1-p_\beta(x_i))\geq0\)</span> hence <span class="math inline">\(W(\beta)\)</span> is semi-definite negative and since <span class="math inline">\(rank(X)=p\)</span>, <span class="math inline">\(H(\beta)\)</span> is concave.</p>
 </section>
-<section id="the-logistic-regression-model-21" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation---mle-existence-2">Estimation - MLE existence</h3>
+<section id="estimation-9" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="mle-existence-2">MLE existence</h3>
 <p>It is shown in <span class="citation" data-cites="albert1984a">(<a href="#/references" role="doc-biblioref" onclick="">Albert &amp; Aanderson, 1984</a>)</span> that if additionally there is no complete separation in the training set:</p>
 
 <img data-src="../images/unique_mle.png" class="r-stretch"><p>then the MLE exists and is unique, we will denote it <span class="math inline">\(\hat\beta\)</span>.</p>
 </section>
-<section id="the-logistic-regression-model-22" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation---the-newton-raphson-method">Estimation - The Newton-Raphson method</h3>
+<section id="estimation-10" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="the-newton-raphson-method">The Newton-Raphson method</h3>
 <p>In practice a numerical/iterative method such as the Newton-Raphson method is used to solve the equation:</p>
 <p><span class="math display">\[
 S(\beta)=\nabla\ell(Y,\beta)=X^T(Y-P_{\beta})=0
@@ -791,9 +799,9 @@ S(\hat\beta) \approx S(\beta^{(0)})+H(\beta^{(0)})(\hat\beta-\beta^{(0)})
 \beta^{(k+1)} = \beta^{(k)} - H^{-1}(\beta^{(k)})S(\beta^{(k)})
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-23" class="slide level2 smaller scrollable">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation---the-newton-raphson-method-1">Estimation - The Newton-Raphson method</h3>
+<section id="estimation-11" class="slide level2 smaller scrollable">
+<h2>Estimation</h2>
+<h3 id="the-newton-raphson-method-1">The Newton-Raphson method</h3>
 <p>We show below a naive implementation of Newton-Raphson method to estimate <span class="math inline">\(\beta\)</span>:</p>
 <div class="cell">
 <details open="">
@@ -837,9 +845,9 @@ S(\hat\beta) \approx S(\beta^{(0)})+H(\beta^{(0)})(\hat\beta-\beta^{(0)})
 </details>
 </div>
 </section>
-<section id="the-logistic-regression-model-24" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation---the-newton-raphson-method-2">Estimation - The Newton-Raphson method</h3>
+<section id="estimation-12" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="the-newton-raphson-method-2">The Newton-Raphson method</h3>
 <p>We verify that the R <code>glm()</code> function and our algorithm give close values for coefficients <span class="math inline">\(\beta\)</span>:</p>
 <ul>
 <li>R <code>glm()</code>:</li>
@@ -860,10 +868,10 @@ S(\hat\beta) \approx S(\beta^{(0)})+H(\beta^{(0)})(\hat\beta-\beta^{(0)})
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-25" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="estimation---machine-learning-approach">Estimation - Machine Learning approach</h3>
-<p>We rewrite the log-likelihood equation stated before:</p>
+<section id="estimation-13" class="slide level2 smaller">
+<h2>Estimation</h2>
+<h3 id="machine-learning-point-of-view">Machine learning “point of view”</h3>
+<p>We can rewrite the log-likelihood equation stated before:</p>
 <p><span class="math display">\[
 \begin{align}
 \ell(Y,\beta)=\log L(Y,\beta) &amp;=\sum_{i=1}^n \left(y_i \log(p_{\beta}(x_i))+(1-y_i) \log(1- p_{\beta}(x_i))\right) \\
@@ -880,9 +888,14 @@ S(\hat\beta) \approx S(\beta^{(0)})+H(\beta^{(0)})(\hat\beta-\beta^{(0)})
 \]</span></p>
 <p>and <span class="math inline">\(\hat{\mathrm{R}}(p_\beta)\)</span> is the empirical risk on the training set.</p>
 <p>Estimating <span class="math inline">\(\beta\)</span> by maximizing the log-likelihood is equivalent to minimizing with respect to <span class="math inline">\(\beta\)</span> the empirical risk of <span class="math inline">\(p_\beta\)</span> for the logistic loss.</p>
+</section></section>
+<section>
+<section id="inference" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Inference</h1>
+
 </section>
-<section id="the-logistic-regression-model-26" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-1" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="interpretation---the-r-glm-output">Interpretation - the R <code>glm()</code> output</h3>
 <div class="cell">
 <details open="">
@@ -917,8 +930,8 @@ Number of Fisher Scoring iterations: 8</code></pre>
 \log \bigg( \frac{p_{\beta}(x_i)}{1 - p_{\beta}(x_i)}\bigg) = -1.08 - 0.65(\mathbb{1}_{\mathrm{student}_i=\mathrm{Yes}}) + 5.74(\frac{\mathrm{balance}_i}{1000})+ 0.03(\frac{\mathrm{income}_i}{10000})
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-27" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-2" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="interpretation---logits">Interpretation - logits</h3>
 <p><span class="math display">\[
 \log \bigg( \frac{p_{\beta}(x_i)}{1 - p_{\beta}(x_i)}\bigg) = -1.08 - 0.65(\mathbb{1}_{\mathrm{student}_i=\mathrm{Yes}}) + 5.74(\frac{\mathrm{balance}_i}{1000})+ 0.03(\frac{\mathrm{income}_i}{10000})
@@ -939,8 +952,8 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-28" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-3" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="interpretation---odds">Interpretation - odds</h3>
 <p>We remind the following relationship:</p>
 <p><span class="math display">\[
@@ -956,14 +969,14 @@ odd_\beta(x) = \frac{p_{\beta}(x)}{1-p_{\beta}(x)}=exp(x^T\beta)
 p_\beta(x) = \frac{odds_{\beta}(x)}{1+odds_{\beta}(x)}
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-29" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-4" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="interpretation---odds-1">Interpretation - odds</h3>
 <p>To set these ideas, for a variable <span class="math inline">\(x\)</span> in <span class="math inline">\([-5,5]\)</span>, we plot the logistic curve (i.e.&nbsp;the probabilities) together with the odds and the logits (ie log(odds)):</p>
 
 <img data-src="2_logreg_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
-<section id="the-logistic-regression-model-30" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-5" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="interpretation---odds-ratio">Interpretation - odds ratio</h3>
 <p>For two observations <span class="math inline">\(x\)</span> and <span class="math inline">\(\tilde{x}\)</span> we define odds ratio as:</p>
 <p><span class="math display">\[
@@ -983,8 +996,8 @@ OR(x,\tilde{x})=\exp(\beta_1(x_1-\tilde{x_1}))\cdots exp(\beta_p(x_p-\tilde{x_p}
 OR(x,\tilde{x})=\exp(\beta_j(x_j-\tilde{x_j}))
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-31" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-6" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="interpretation---odds-ratio-1">Interpretation - odds ratio</h3>
 <p><span class="math inline">\(exp(\beta_j)\)</span> is the odds ratio associated with a one-unit increase in the <span class="math inline">\(x_j\)</span>.</p>
 <div class="callout callout-tip no-icon callout-titled callout-style-default">
@@ -1004,10 +1017,10 @@ OR(x,\tilde{x})=\exp(\beta_j(x_j-\tilde{x_j}))
 </div>
 <p>More on odds ratio interpretation can be found <a href="https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faq-how-do-i-interpret-odds-ratios-in-logistic-regression/">here</a>.</p>
 </section>
-<section id="the-logistic-regression-model-32" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---asymptotic-properties-of-mle">Inference - asymptotic properties of MLE</h3>
-<p>Under certain assumptions (see for example <span class="citation" data-cites="gourieroux1981">Gourieroux &amp; Monfort (<a href="#/references" role="doc-biblioref" onclick="">1981</a>)</span> or <span class="citation" data-cites="fahrmeir1986">Fahrmeir &amp; Kaufmann (<a href="#/references" role="doc-biblioref" onclick="">1986</a>)</span>), the Maximum Likelihood Estimator has the following asymptotic properties:</p>
+<section id="inference-7" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="asymptotic-properties-of-mle">Asymptotic properties of MLE</h3>
+<p>Under certain assumptions (see for example <span class="citation" data-cites="gourieroux1981">Gourieroux (<a href="#/references" role="doc-biblioref" onclick="">1981</a>)</span> or <span class="citation" data-cites="fahrmeir1986">Fahrmeir (<a href="#/references" role="doc-biblioref" onclick="">1986</a>)</span>), the Maximum Likelihood Estimator has the following asymptotic properties:</p>
 <p><span class="math display">\[
 \hat\beta \xrightarrow[] {p} \beta \textrm{, as n} \to \infty
 \]</span></p>
@@ -1020,9 +1033,9 @@ OR(x,\tilde{x})=\exp(\beta_j(x_j-\tilde{x_j}))
 \]</span></p>
 <p>where <span class="math inline">\(\mathcal I(\beta)\)</span> is the Fisher information matrix. We recognize the Hessian matrix we have seen before.</p>
 </section>
-<section id="the-logistic-regression-model-33" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---asymptotic-properties-of-mle-1">Inference - asymptotic properties of MLE</h3>
+<section id="inference-8" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="asymptotic-properties-of-mle-1">Asymptotic properties of MLE</h3>
 <p>The asymptotic property rewrites:</p>
 <p><span class="math display">\[
 (\hat\beta-\beta)^Tn\mathcal I(\beta)(\hat\beta-\beta) \xrightarrow[]{\mathcal L} \chi_p^2
@@ -1036,9 +1049,9 @@ OR(x,\tilde{x})=\exp(\beta_j(x_j-\tilde{x_j}))
 \hat\beta -\beta \xrightarrow[]{\mathcal L} \mathcal N(0,\mathcal ( X^T W_{\hat\beta} X )^{-1})
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-34" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---wald-statistics">Inference - Wald statistics</h3>
+<section id="inference-9" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics">Wald statistics</h3>
 <p>Using the preceding asymptotic properties we can derive confidence interval and tests for the coefficients <span class="math inline">\(\beta_j\)</span>, <span class="math inline">\(j =1,\cdots,p\)</span> of the model:</p>
 <p><span class="math display">\[
 \frac{\hat\beta_j-\beta_j}{\hat \sigma_j} \xrightarrow[]{\mathcal L} \mathcal N(0,1)
@@ -1048,18 +1061,18 @@ OR(x,\tilde{x})=\exp(\beta_j(x_j-\tilde{x_j}))
 \hat\beta_j \pm z_{1-\alpha/2} \hat \sigma_j
 \]</span> where <span class="math inline">\(z_{1-\alpha/2}\)</span> is the <span class="math inline">\((1-\alpha/2)\)</span> quantile of the standard normal distribution.</p>
 </section>
-<section id="the-logistic-regression-model-35" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---wald-statistics-1">Inference - Wald statistics</h3>
+<section id="inference-10" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics-1">Wald statistics</h3>
 <p>Going further, the asymptotic properties of MLE also allow to test the “statistical significance” of each coefficient in the model, the Wald test.</p>
 <p>Denoting: <span class="math inline">\(\textrm{H}_0\textrm{: } \beta_j=0\)</span> and <span class="math inline">\(\textrm{H}_1\textrm{: } \beta_j \neq 0\)</span> we have under <span class="math inline">\(\textrm{H}_0\)</span>:</p>
 <p><span class="math display">\[
 \frac{\hat\beta_j}{\hat \sigma_j} \xrightarrow[]{\mathcal L} \mathcal N(0,1)
 \]</span> We will reject <span class="math inline">\(\textrm{H}_0\)</span> at level <span class="math inline">\(\alpha\)</span> if the absolute of the observed value <span class="math inline">\(\frac{\hat\beta_j}{\hat \sigma_j}\)</span> (denoted in <code>glm</code> output as <code>z value</code>) is above the <span class="math inline">\((1-\alpha/2)\)</span> quantile of the standard normal distribution.</p>
 </section>
-<section id="the-logistic-regression-model-36" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---wald-statistics-2">Inference - Wald statistics</h3>
+<section id="inference-11" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics-2">Wald statistics</h3>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -1092,9 +1105,9 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-37" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---wald-statistics-3">Inference - Wald statistics</h3>
+<section id="inference-12" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics-3">Wald statistics</h3>
 <p>We reject <span class="math inline">\(\textrm{H}_0\)</span> at level <span class="math inline">\(\alpha\)</span> when <span class="math inline">\(p = \mathbf P(|z|&gt;|\frac{\hat\beta_j}{\hat \sigma_j}|)&lt;\alpha\)</span>.</p>
 <p><span class="math inline">\(p\)</span> is called the p-value.</p>
 <p>The output of <code>glm</code> in <code>R</code> shows:</p>
@@ -1105,9 +1118,9 @@ Number of Fisher Scoring iterations: 8</code></pre>
 <li><p>and the p-value as <code>Pr(&gt;|z|)</code></p></li>
 </ul>
 </section>
-<section id="the-logistic-regression-model-38" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---wald-statistics-4">Inference - Wald statistics</h3>
+<section id="inference-13" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics-4">Wald statistics</h3>
 <p>We obtain the <code>z value</code> <span class="math inline">\(\frac{\hat\beta_j}{\hat \sigma_j}\)</span> using estimate and its standard deviation:</p>
 <div class="cell">
 <details open="">
@@ -1132,9 +1145,9 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-39" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---wald-statistics-5">Inference - Wald statistics</h3>
+<section id="inference-14" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics-5">Wald statistics</h3>
 <p>Using the hessian matrix obtained before as a side product of the Newton-Raphson algorithm, we retrieve comparable values with <code>glm</code> outputs for <span class="math inline">\(\hat \sigma_j\)</span>:</p>
 <div class="cell">
 <details open="">
@@ -1170,9 +1183,9 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-40" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---confidence-intervals">Inference - confidence intervals</h3>
+<section id="inference-15" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics---confidence-intervals">Wald statistics - confidence intervals</h3>
 <p>The <code>R</code> command to get confidence interval of estimators based on Wald statistic is the following (by default <span class="math inline">\(\alpha=5\%\)</span>)</p>
 <div class="cell">
 <details open="">
@@ -1206,9 +1219,9 @@ income       1.103823e-05  3.057972e-05</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-41" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---confidence-intervals-1">Inference - confidence intervals</h3>
+<section id="inference-16" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="confidence-intervals">Confidence intervals</h3>
 <p>The following <code>R</code> command provides confidence interval of estimators using a more advanced profile likelihood method:</p>
 <div class="cell">
 <details open="">
@@ -1224,9 +1237,9 @@ income       1.105359e-05  3.060844e-05</code></pre>
 </div>
 <p>More details on profile likelihood method can be found <a href="https://stats.stackexchange.com/questions/5304/why-is-there-a-difference-between-manually-calculating-a-logistic-regression-95">here</a>.</p>
 </section>
-<section id="the-logistic-regression-model-42" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---tests-on-model-coefficients">Inference - tests on model coefficients</h3>
+<section id="inference-17" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="wald-statistics---tests-on-model-coefficients">Wald statistics - tests on model coefficients</h3>
 <p>Based on the same idea, it is possible to test for the nullity of a subset of the model coefficients.</p>
 <p>Denoting: <span class="math inline">\(\textrm{H}_0\textrm{: } \beta_1=\cdots=\beta_q=0\)</span>, <span class="math inline">\(\textrm{H}_1\textrm{: } \exists j \in \{1,\cdots,q \} \textrm{ }|\textrm{ }\beta_j \neq 0\)</span>, <span class="math inline">\(\hat\beta=(\hat\beta_1,\cdots,\hat\beta_p)\)</span> the MLE and <span class="math inline">\(\hat\beta_{1:q}=(\hat\beta_1,\cdots,\hat\beta_q)\)</span> the vector of first <span class="math inline">\(q\)</span> parameters.</p>
 <p>We have under <span class="math inline">\(\textrm{H}_0\)</span>:</p>
@@ -1235,9 +1248,9 @@ income       1.105359e-05  3.060844e-05</code></pre>
 \]</span> where <span class="math inline">\((X^T W_{\hat\beta} X )^{-1}_{1:q}\)</span> is the <span class="math inline">\(q \times q\)</span> upper left block matrix extracted from the inverse of hessian.</p>
 <p>We will reject <span class="math inline">\(\textrm{H}_0\)</span> at level <span class="math inline">\(\alpha\)</span> if the observed value <span class="math inline">\(\hat\beta_{1:q}^T( X^T W_{\hat\beta} X )^{-1}_{1:q}\hat\beta_{1:q}\)</span> is above the <span class="math inline">\(1-\alpha\)</span> quantile of the <span class="math inline">\(\chi_q^2\)</span> distribution.</p>
 </section>
-<section id="the-logistic-regression-model-43" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---tests-on-model-coefficients-1">Inference - tests on model coefficients</h3>
+<section id="inference-18" class="slide level2 smaller">
+<h2>Inference</h2>
+<h3 id="inference---tests-on-model-coefficients">Inference - tests on model coefficients</h3>
 <p>We show below the Wald tests for each coefficient in the model using <code>summary</code>:</p>
 <div class="cell">
 <details open="">
@@ -1268,9 +1281,9 @@ Number of Fisher Scoring iterations: 8</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-44" class="slide level2 smaller scrollable">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---tests-on-model-coefficients-2">Inference - tests on model coefficients</h3>
+<section id="inference-19" class="slide level2 smaller scrollable">
+<h2>Inference</h2>
+<h3 id="wald-statistics---tests-on-model-coefficients-1">Wald statistics - tests on model coefficients</h3>
 <p>These tests can be also performed in <code>R</code> using <code>car::Anova</code> or <code>aod::wald.test</code> routines. In particular when categorical variables have more than two levels these functions allow to test each variables as a whole (vs coefficient by coefficient when using <code>summary</code>)</p>
 <div class="cell">
 <details open="">
@@ -1291,9 +1304,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-45" class="slide level2 smaller scrollable">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---tests-on-model-coefficients-3">Inference - tests on model coefficients</h3>
+<section id="inference-20" class="slide level2 smaller scrollable">
+<h2>Inference</h2>
+<h3 id="wald-statistics---tests-on-model-coefficients-2">Wald statistics - tests on model coefficients</h3>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -1323,9 +1336,9 @@ X2 = 7.5, df = 1, P(&gt; X2) = 0.0062</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-46" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---tests-on-model-coefficients-4">Inference - tests on model coefficients</h3>
+<section id="inference-21" class="slide level2 smaller scrollable">
+<h2>Inference</h2>
+<h3 id="wald-statistics---tests-on-model-coefficients-3">Wald statistics - tests on model coefficients</h3>
 <p>We can retrieve these outputs manually:</p>
 <div class="cell">
 <details open="">
@@ -1353,9 +1366,9 @@ X2 = 7.5, df = 1, P(&gt; X2) = 0.0062</code></pre>
 </div>
 <p>With all routines, the p-value for the income coefficient is <span class="math inline">\(0.71\)</span> validating the null hypothesis.</p>
 </section>
-<section id="the-logistic-regression-model-47" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="inference---tests-on-model-coefficients-5">Inference - tests on model coefficients</h3>
+<section id="inference-22" class="slide level2 smaller scrollable">
+<h2>Inference</h2>
+<h3 id="wald-statistics---tests-on-model-coefficients-4">Wald statistics - tests on model coefficients</h3>
 <p>Using <code>Terms</code> or <code>L</code> parameters in <code>aod::wald.test</code> it is also feasible to test the null hypothesis for a subsets of parameters:</p>
 <div class="cell">
 <details open="">
@@ -1373,8 +1386,8 @@ X2 = 698.3, df = 3, P(&gt; X2) = 0.0</code></pre>
 </div>
 <p>The null hypothesis is rejected for the model with balance and student.</p>
 </section>
-<section id="the-logistic-regression-model-48" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-23" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="likelihood-ratio-tests">Likelihood ratio tests</h3>
 <p>It is possible to test for the nullity of a subset of the model coefficients using Likelihood Ratio statistics.</p>
 <p>Denoting: <span class="math inline">\(\textrm{H}_0\textrm{: } \beta_1=\cdots=\beta_q=0\)</span>, <span class="math inline">\(\textrm{H}_1\textrm{: } \exists j \in \{1,\cdots,q \} \textrm{ }|\textrm{ }\beta_j \neq 0\)</span>, and <span class="math inline">\(\hat\beta=(\hat\beta_1,\cdots,\hat\beta_p)\)</span> the MLE, we have under <span class="math inline">\(\textrm{H}_0\)</span>:</p>
@@ -1385,8 +1398,8 @@ X2 = 698.3, df = 3, P(&gt; X2) = 0.0</code></pre>
 \mathrm{logit}(p_{\beta}(X))=x_{q+1}\beta_{q+1}+\cdots+x_{n}\beta_{n}
 \]</span></p>
 </section>
-<section id="the-logistic-regression-model-49" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-24" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="likelihood-ratio-tests-1">Likelihood ratio tests</h3>
 <p>Consider two models, a larger model with <span class="math inline">\(l\)</span> parameters and likelihood <span class="math inline">\(L_L\)</span> and a smaller model with <span class="math inline">\(s\)</span> parameters and likelihood <span class="math inline">\(L_S\)</span>, where the smaller model represents a subset of the larger model. Typically the smaller model is equivalent to the large model where we have imposed:</p>
 <p><span class="math display">\[
@@ -1410,8 +1423,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-50" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-25" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="likelihood-ratio-tests-2">Likelihood ratio tests</h3>
 <p>Using base <code>R</code> <code>anova</code> it is also possible to test subsets of variables and in particular individual variables within the “full” model, we have to fit <code>glm</code> for each sub model:</p>
 <div class="cell">
@@ -1429,8 +1442,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </details>
 </div>
 </section>
-<section id="the-logistic-regression-model-51" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-26" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="likelihood-ratio-tests-3">Likelihood ratio tests</h3>
 <p>Testing the model without student predictor:</p>
 <div class="cell">
@@ -1462,8 +1475,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-52" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-27" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="likelihood-ratio-tests-4">Likelihood ratio tests</h3>
 <p>Testing the other sub models:</p>
 <div class="cell">
@@ -1500,21 +1513,26 @@ Model 2: default ~ student + balance + income
 </div>
 <p>The deviance defined as <span class="math inline">\(D=-2 \ell\)</span> is often reported by statistical software in place of log-likelihood. A large likelihood corresponding to a small deviance.</p>
 </section>
-<section id="the-logistic-regression-model-53" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
+<section id="inference-28" class="slide level2 smaller">
+<h2>Inference</h2>
 <h3 id="likelihood-ratio-tests-5">Likelihood ratio tests</h3>
 <p>A better and full coverage of tests in the context of Logistic Regression can be found <a href="https://stats.oarc.ucla.edu/other/mult-pkg/faq/general/faqhow-are-the-likelihood-ratio-wald-and-lagrange-multiplier-score-tests-different-andor-similar/">here</a> or in <span class="citation" data-cites="hosmer2013">(<a href="#/references" role="doc-biblioref" onclick="">Hosmer et al., 2013</a>)</span>. See also <a href="https://stats.oarc.ucla.edu/r/dae/logit-regression/">here</a> for a data analysis using <code>R</code> and see the question <a href="https://stats.stackexchange.com/questions/86351/interpretation-of-rs-output-for-binomial-regression">here</a> for a very detailed description of the outputs of <code>glm()</code> (in particular this <a href="https://stats.stackexchange.com/a/86375">answer</a>).</p>
+</section></section>
+<section>
+<section id="goodness-of-fit" class="title-slide slide level1 center" data-background-color="#40666e">
+<h1>Goodness of Fit</h1>
+
 </section>
-<section id="the-logistic-regression-model-54" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="goodness-of-fit-test-calibration">Goodness of Fit test / Calibration</h3>
+<section id="goodness-of-fit-1" class="slide level2 smaller">
+<h2>Goodness of Fit</h2>
+<h3 id="hosmer-lemeshow-test">Hosmer &amp; Lemeshow test</h3>
 <p>Although it is generally not recommended by practitioners and theoreticians, the Hosmer &amp; Lemeshow test (see <a href="https://en.wikipedia.org/wiki/Hosmer–Lemeshow_test">here</a>, <a href="https://stats.stackexchange.com/questions/169438/evaluating-logistic-regression-and-interpretation-of-hosmer-lemeshow-goodness-of">here</a> or <a href="https://stats.stackexchange.com/a/18772">here</a>) allows to quickly assess the “goodness of fit” of a Logistic Regression.</p>
 <p>But more than the test in itself, the underlying motivation is interesting: the Logistic Regression model provides an estimate of the probability of an outcome (success/failure, here the default is success or 1). The estimated probability of this outcome should be close to the true observed probability.</p>
 <p>The Hosmer &amp; Lemeshow test assess if observed event rates match expected event rates in subgroups of “similar” observations. Models for which expected and observed event rates agree on these subgroups are considered well calibrated.</p>
 </section>
-<section id="the-logistic-regression-model-55" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="goodness-of-fit-test-calibration-1">Goodness of Fit test / Calibration</h3>
+<section id="goodness-of-fit-2" class="slide level2 smaller">
+<h2>Goodness of Fit</h2>
+<h3 id="hosmer-lemeshow-test-1">Hosmer &amp; Lemeshow test</h3>
 <p>A first step of the test is to order the predicted probabilities of the outcome and divide it into Q groups (usually using deciles, Q=10). Then the average predicted probability for each group is computed and compared to the observed probability.</p>
 <p>The Hosmer &amp; Lemeshow test statistic <span class="math inline">\(H\)</span> is compared to a <span class="math inline">\(\chi_{Q-2}^2\)</span> distribution:</p>
 <p><span class="math display">\[H=\sum_{q=1}^{Q}\frac{(o_{q}-m_{q}\mu_{q})^2}{m_{q}\mu_{q}(1-\mu_{q})} \]</span> where:</p>
@@ -1525,9 +1543,9 @@ Model 2: default ~ student + balance + income
 </ul>
 <p>The null hypothesis is that observed/expected outcomes are close along all subgroups.</p>
 </section>
-<section id="the-logistic-regression-model-56" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="goodness-of-fit-test-calibration-2">Goodness of Fit test / Calibration</h3>
+<section id="goodness-of-fit-3" class="slide level2 smaller">
+<h2>Goodness of Fit</h2>
+<h3 id="hosmer-lemeshow-test-2">Hosmer &amp; Lemeshow test</h3>
 <div class="cell">
 <details open="">
 <summary>Code</summary>
@@ -1555,17 +1573,17 @@ degrees of freedom =  8
            p-value =  0.88459 </code></pre>
 </div>
 </div>
-<p>Here the p-value for a chi-squared statistic of <span class="math inline">\(H=3.68\)</span> with <span class="math inline">\(df=Q-2=8\)</span> is <span class="math inline">\(p=0.885\)</span> which is well above the usual levels (eg <span class="math inline">\(0.05\)</span>), so that the null hypothesis is accepted, goodness of fit is acceptable.</p>
+<p>Here the p-value for a chi-squared statistic of <span class="math inline">\(H=3.68\)</span> with <span class="math inline">\(df=Q-2=8\)</span> is <span class="math inline">\(p=0.885\)</span> which is well above the usual levels (eg <span class="math inline">\(0.05\)</span>), so that the null hypothesis is accepted (ie observed and expected probabilities agree across the Q subgroups), goodness of fit is acceptable.</p>
 <p>However the Hosmer &amp; Lemeshow test is dependent on the choice of Q and the binning performed on probabilities and is sometimes considered unreliable.</p>
 </section>
-<section id="the-logistic-regression-model-57" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="goodness-of-fit-test-calibration-3">Goodness of Fit test / Calibration</h3>
+<section id="goodness-of-fit-4" class="slide level2 smaller">
+<h2>Goodness of Fit</h2>
+<h3 id="calibration-plots">Calibration plots</h3>
 <p>Nonetheless it is usual to assess or diagnose the good calibration of a model probabilities using Calibration Plots or Probability Calibration Curves (see here for a <a href="https://www.tidyverse.org/blog/2022/11/model-calibration/">recent R package from the tidyverse/tidymodel ecosystem</a> and here for a <a href="https://scikit-learn.org/stable/auto_examples/calibration/plot_calibration_curve.html">scikit-learn version</a>): they are used to visualize if predictions are consistent with the observed event rates (be it on the training set or a testing set, which is better).</p>
 </section>
-<section id="the-logistic-regression-model-58" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="goodness-of-fit-test-calibration-4">Goodness of Fit test / Calibration</h3>
+<section id="goodness-of-fit-5" class="slide level2 smaller">
+<h2>Goodness of Fit</h2>
+<h3 id="calibration-plots-1">Calibration plots</h3>
 <p>For example considering the <code>default</code> data set we have:</p>
 <div class="cell">
 <details open="">
@@ -1601,23 +1619,16 @@ degrees of freedom =  8
 </div>
 </div>
 </section>
-<section id="the-logistic-regression-model-59" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="goodness-of-fit-test-calibration-5">Goodness of Fit test / Calibration</h3>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="2_logreg_files/figure-revealjs/unnamed-chunk-40-1.png" width="960"></p>
-</div>
-<div class="cell-output-display">
-<p><img data-src="2_logreg_files/figure-revealjs/unnamed-chunk-40-2.png" width="960"></p>
-</div>
-</div>
-</section>
-<section id="the-logistic-regression-model-60" class="slide level2 smaller">
-<h2>The Logistic Regression model</h2>
-<h3 id="goodness-of-fit-test-calibration-6">Goodness of Fit test / Calibration</h3>
+<section id="goodness-of-fit-6" class="slide level2 smaller">
+<h2>Goodness of Fit</h2>
+<h3 id="calibration-plots-2">Calibration plots</h3>
 
-<img data-src="2_logreg_files/figure-revealjs/unnamed-chunk-41-1.png" width="960" class="r-stretch"><p>The model tends to slightly overestimate/underestimates some deciles without a clear pattern.</p>
+<img data-src="2_logreg_files/figure-revealjs/unnamed-chunk-40-1.png" width="960" class="r-stretch"></section>
+<section id="goodness-of-fit-7" class="slide level2 smaller">
+<h2>Goodness of Fit</h2>
+<h3 id="calibration-plots-3">Calibration plots</h3>
+
+<img data-src="2_logreg_files/figure-revealjs/unnamed-chunk-41-1.png" width="960" class="r-stretch"><p>The model seems to slightly overestimate/underestimates depending on considered deciles, with no clear pattern of bias.</p>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
@@ -1626,13 +1637,13 @@ degrees of freedom =  8
 Albert, A., &amp; Aanderson, J. A. (1984). On the existence of maximum likelihood estimates in logistic regression models. <em>Biometrika</em>, <em>71</em>(1), 1–10. <a href="https://doi.org/10.1093/biomet/71.1.1">https://doi.org/10.1093/biomet/71.1.1</a>
 </div>
 <div id="ref-fahrmeir1986" class="csl-entry" role="listitem">
-Fahrmeir, L., &amp; Kaufmann, H. &amp;. (1986). Asymptotic inference in discrete response models. <em>Statistische Hefte</em>, <em>27</em>(1), 179–205. <a href="https://doi.org/10.1007/bf02932567">https://doi.org/10.1007/bf02932567</a>
+Fahrmeir, &amp;. K., L. (1986). Asymptotic inference in discrete response models. <em>Statistische Hefte</em>, <em>27</em>(1), 179–205. <a href="https://doi.org/10.1007/bf02932567">https://doi.org/10.1007/bf02932567</a>
 </div>
 <div id="ref-gourieroux1981" class="csl-entry" role="listitem">
-Gourieroux, C., &amp; Monfort, A. (1981). Asymptotic properties of the maximum likelihood estimator in dichotomous logit models. <em>Journal of Econometrics</em>, <em>17</em>(1), 83–97. <a href="https://doi.org/10.1016/0304-4076(81)90060-9">https://doi.org/10.1016/0304-4076(81)90060-9</a>
+Gourieroux, &amp;. M., C. (1981). Asymptotic properties of the maximum likelihood estimator in dichotomous logit models. <em>Journal of Econometrics</em>, <em>17</em>(1), 83–97. <a href="https://doi.org/10.1016/0304-4076(81)90060-9">https://doi.org/10.1016/0304-4076(81)90060-9</a>
 </div>
 <div id="ref-hosmer2013" class="csl-entry" role="listitem">
-Hosmer, D. W., Lemeshow, S., &amp; Sturdivant, R. X. (2013). Applied logistic regression. In <em>Wiley Series in Probability and Statistics</em>.
+Hosmer, D. W., Lemeshow, S., &amp; Sturdivant, R. X. (2013). Applied logistic regression. In <em>Wiley Series in Probability and Statistics</em>. <a href="https://doi.org/10.1002/9781118548387">https://doi.org/10.1002/9781118548387</a>
 </div>
 <div id="ref-islr2021" class="csl-entry" role="listitem">
 James, G., Witten, D., Hastie, T., &amp; Tibshirani, R. (2021). <em>An introduction to statistical learning: With applications in r</em>. Springer US. <a href="https://doi.org/10.1007/978-1-0716-1418">https://doi.org/10.1007/978-1-0716-1418</a>
