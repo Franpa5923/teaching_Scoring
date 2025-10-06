@@ -51,6 +51,8 @@ The `echo: false` option disables the printing of code (only output is displayed
 
 ## Desbois case study
 
+### Loading data + short Exploratory Data Analysis (EDA)
+
 Loading Desbois data and first glimpse at it:
 
 ```{r}
@@ -89,7 +91,7 @@ Each time I show an example of what is expected.
 
 I suggest that you start using `Quarto` (setup [here](https://quarto.org/docs/get-started/)) to code and track/publish your results. It will be requested for your projects (it is very similar to `RMarkdown`). It integrates perfectly with `RStudio`.
 
-Principal Component Analysis (PCA) of financial ratios
+#### Principal Component Analysis (PCA) of financial ratios
 
 First perform PCA on financial ratios (use for example package [FactoMineR](http://factominer.free.fr/factomethods/principal-components-analysis.html)), then display correlations between ratios and the two first principal components :
 
@@ -147,6 +149,8 @@ Disclaimer: in general it won't be necessarily the case as PCA operates only on 
 ![](../images/desbois_pca_individuals_pc1_pc2.png){.r-stretch}
 
 As suggested by Desbois, extract the first principal component (some help [here](https://stats.stackexchange.com/questions/460787/pcr-after-pca-with-mixed-data-how-to-extract-export-the-pcs-as-new-variables-i)), and use it as a Scoring function.
+
+#### First Score
 
 Today it will allow us to use a first Scoring function without introducing the Logistic Regression that you have not yet studied in class.
 
@@ -206,6 +210,8 @@ Looking at this plot Desbois concludes that a simple classifier can be devised u
 
 Going further than Desbois and for illustrative purposes only, use $PC_1$ as a very naive Scoring function.
 
+#### First ROC curve
+
 Plot below the ROC curve as defined in the Scoring part of the presentation (you can use package `ROCR`, but a simple for-loop for different cutoff values $s$ will do the job):
 
 ```{r}
@@ -240,6 +246,8 @@ You can use Desbois variables selected in the article by a stepwise procedure (u
 ![](../images/desbois_lda_stepwise.png){.r-stretch}
 
 So basically you can fit LDA with `r2+r3+r7+r14+r17+r18+r21+r32+r36` as predictors (I use `R` formula notation to ease your copy-paste).
+
+#### Linear Discriminant Analysis
 
 Fit LDA (`MASS::lda`) with model specification of your choice. Then display model coefficients:
 
@@ -306,6 +314,65 @@ legend(0.6,0.6,
        c('naive - PCA', 'LDA'),
        col=c("darkolivegreen", "plum4"),lwd=3)
 ```
+#### Additional EDA
+
+Weplot the bivariate (scatter plots) relationships between the variable of interest and the quantitative predictors:
+
+```{r}
+#| code-fold: true
+vars_quanti <- names(don_desbois %>% select_if(is.numeric))
+for(var in vars_quanti){
+    var <- as.name(var)
+    print(ggplot(don_desbois %>%
+                     # filter(r17 <0.14) %>% 
+                     mutate(Y = as.numeric(Y)-1), aes(x=!! var,y = Y)) +
+        geom_jitter(height = 0.1, width = 0) +
+        geom_smooth(method = "glm", 
+                    formula = y ~ x,
+                    method.args = list(family = "binomial"), 
+                    se = FALSE,
+                    col = "dodgerblue")) # this one adda a bivariate glm fit to the plot
+}
+```
+
+At first sight there seem to be outliers in the financial ratios values (for example r18, r19, r21). We can deal with that for example by winsorizing variables, in real life, if we were responsible for the data collection, it would be a good idea to investigate closely these outliers.
+
+```{r}
+#| code-fold: true
+don_desbois_winsorized <- don_desbois %>%
+    mutate(across(r1:r37, ~ DescTools::Winsorize(.x , quantile( .x, probs = c(0.00, 0.975)))))
+
+vars_quanti <- names(don_desbois_winsorized %>% select_if(is.numeric))
+for(var in vars_quanti){
+    var <- as.name(var)
+    print(ggplot(don_desbois_winsorized %>%
+                     # filter(r17 <0.14) %>% 
+                     mutate(Y = as.numeric(Y)-1), aes(x=!! var,y = Y)) +
+        geom_jitter(height = 0.1, width = 0) +
+        geom_smooth(method = "glm", 
+                    formula = y ~ x,
+                    method.args = list(family = "binomial"), 
+                    se = FALSE,
+                    col = "dodgerblue"))
+}
+```
+
+We also show the prevalence of default for each categorical variables:
+
+```{r, message = FALSE}
+#| code-fold: true
+vars_quali <- names(don_desbois %>% select_if(is.factor) %>% select(-Y))
+for(var in vars_quali){
+    var <- as.name(var)
+    print(ggplot(don_desbois %>% 
+                     group_by(!!var, Y) %>% 
+                     summarize(count = n()) %>% 
+                     ungroup()) +
+        geom_bar(aes(x = Y, y = count, fill = !!var), position="dodge",stat="identity"))
+}
+```
+
+#### Logistic Regression
 
 As a very soft and intuitive introduction to logistic regression. First discretize a ratio $r$ of your choice.
 
@@ -318,7 +385,6 @@ As a very soft and intuitive introduction to logistic regression. First discreti
 
 ########## YOUR CODE HERE #####################
 ```
-
 
 ```{r, warning = FALSE, message = FALSE}
 #| code-fold: true
@@ -398,15 +464,7 @@ glm_desbois <- glm(Y~r2+r3+r7+r14+r17+r18+r21+r32+r36,
 summary(glm_desbois)
 ```
 
-Now compare the LDA Scoring function with the naive Score build with first component of PCA using a ROC curve (on training set):
-
-```{r}
-#| echo: true
-#| code-fold: show
-#| warning: false
-
-########## YOUR CODE HERE #####################
-```
+Then add to ROC curve with Naive and LDA Scores:
 
 ```{r}
 # for ROCR
@@ -464,3 +522,1078 @@ legend(0.6,0.6,
        c('naive - PCA', 'LDA', 'Logistic'),
        col=c("darkolivegreen", "plum4", "dodgerblue"),lwd=3)
 ```
+
+
+### Coefficient interpretation
+
+Fit a Logistic Regression model with all numerical variables (ie financial ratios), the "full" model:
+
+```{r}
+glm_desbois_full_numerical <- glm(Y~., data = don_desbois %>% select(Y, r1:r37), family=binomial())
+summary(glm_desbois_full_numerical)
+```
+
+
+Outliers in the predictors variables might cause some observations to have "fitted" probabilities close to 0 or 1, hence the R warning `Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred`, removing outliers suppress this issues, but be careful with outliers handling:
+
+```{r}
+glm_desbois_full_numerical_winsorized <- glm(Y~., data = don_desbois_winsorized %>% select(Y, r1:r37), family=binomial())
+summary(glm_desbois_full_numerical_winsorized)
+```
+
+Using the "full" Logistic Regression model with all variables in data set, interpret the `r17` coefficient:
+
+```{r}
+# YOUR CODE HERE
+```
+
+The coefficient of `r17` is `r round(as.numeric(coef(glm_desbois_full_numerical)["r17"]),2)`. Hence an increase of `r17` by 1% increases odds for default by a factor of `r round(exp(as.numeric(coef(glm_desbois_full_numerical)["r17"]*0.01)),2)`. Since we are dealing with a ratio and coefficient is rather large, we use 1% as our unit "bump" for the ratio.
+
+### Tests
+
+Considering this "full" model Y~r1+...+r37, is the effect of variable r36 significant? Using Wald test. Using Likelihood Ratio Test.
+
+Considering the model `Y~.`, is the effect of variable `r36` significant? Using Wald test. Using Likelihood Ratio Test.
+
+#### Wald
+
+```{r}
+# YOUR CODE HERE
+```
+
+```{r}
+#| code-fold: show
+# Looking at summary outputs
+(sum_desbois <- summary(glm_desbois_full_numerical))
+```
+
+```{r}
+#| code-fold: show
+# Testing the r36 coefficient (Terms = 22)
+aod::wald.test(b = coef(glm_desbois_full_numerical), Sigma = vcov(glm_desbois_full_numerical), Terms = 22)
+```
+Manually
+
+```{r}
+#| code-fold: show
+# manually computing from beta/hessian
+beta_r17 <- sum_desbois$coefficients[22,1]
+stdev_r17 <- sum_desbois$coefficients[22,2]
+
+wald <- beta_r17 ^ 2 / stdev_r17 ^ 2
+1-pchisq(wald, df = 1)
+
+z_val <- sum_desbois$coefficients[22,3]
+z_val
+2*(1-pnorm(abs(z_val)))
+```
+
+With the usual p-value levels in mind (e.g. at the $\alpha = 0.05$ level), the Wald test indicates that variable `r36` has a statistically significant effect on the outcome ($p\approx0.003 \ll0.05$).
+
+#### LRT
+
+Is the effect of variable `r36` significant? Using Likelihood Ratio Test.
+
+```{r}
+# YOUR CODE HERE
+```
+
+We fit a model removing the `r36` ratio and compare to the "full" model:
+
+```{r}
+#| code-fold: show
+# using anova on two models (with/without  r36)
+glm_desbois_wo_r36 <- glm(Y~., data = don_desbois %>% select(Y,r1:r37) %>% select(-r36), family=binomial())
+anova(glm_desbois_wo_r36, glm_desbois_full_numerical, test= "LRT")
+```
+
+With the usual p-value levels in mind (e.g. at the $\alpha = 0.05$ level), the Likelihood Ratio test (LRT) indicates that variable `r36` has a statistically significant effect on the outcome ($p\approx0.002 \ll0.05$).
+
+We redo the same manually:
+
+```{r}
+#| code-fold: show
+# Manually
+LRT <- 2 * (logLik(glm_desbois_full_numerical)-logLik(glm_desbois_wo_r36))
+
+pval <- 1 - pchisq(LRT, df = 1)
+scales::scientific(pval, digits = 3)
+```
+
+Now fit a "smaller" model removing 5/10 ratios of your choice. Use Likelihood Ratio Test to test if the "full" model fits significantly better than the "smaller" one. We reuse here the model fitted before with variables selected by Desbois for the LDA `r2+r3+r7+r14+r17+r18+r21+r32+r36`:
+
+```{r}
+# YOUR CODE HERE
+```
+
+```{r}
+summary(glm_desbois)
+```
+
+
+```{r}
+#| code-fold: show
+# using anova on two models (desbois selection/full)
+anova(glm_desbois, glm_desbois_full_numerical, test= "LRT")
+```
+The likelihood ratio test indicates that the full model (22 variables) provides a significantly better fit than the reduced/Desbois model (9 variables) at the $\alpha = 0.05$ level ($p = 0.001822 \ll0.05$).
+
+
+
+#### Hosmer & Lemeshow
+
+Perform a goodness of fit test (Hosmer and Lemeshow test) and a calibration plot on "full" model, compare.
+
+```{r}
+# YOUR CODE HERE
+```
+
+```{r}
+#| code-fold: show
+glmtoolbox::hltest(glm_desbois_full_numerical)
+```
+
+Here the p-value for a chi-squared statistic of $H=19.1$ with $df=Q-2=8$ is $p=0.015$ which is bellow the usual levels (eg $\alpha=0.05$), so that the null hypothesis is rejected, goodness of fit is not acceptable according to the H&L test at this level.
+
+
+We fit a reduced model, and use winsorization:
+
+```{r}
+glm_desbois_winsorized <- glm(Y~r2+r3+r7+r14+r17+r18+r32+r36,
+                   data=don_desbois_winsorized, 
+                   family = binomial(link = "logit"))
+summary(glm_desbois_winsorized)
+```
+
+
+```{r}
+#| code-fold: show
+glmtoolbox::hltest(glm_desbois_winsorized)
+```
+Here the p-value for a chi-squared statistic of $H=13.5$ with $df=Q-2=8$ is $p=0.097$ which is above the usual levels (eg $\alpha=0.05$), so that the null hypothesis is not rejected, goodness of fit is acceptable according to the H&L test at this level.
+
+
+Below a graphical exploration of fitted vs observed probabilities tends to indicate a good overall calibration, except maybe for some deciles were observed default probabilities or events are very rare and estimated probabilities might be overestimated:
+
+```{r}
+#| code-fold: show
+check_default_prob <- as_tibble(cbind(fitted=glm_desbois_full_numerical$fitted.values,
+                                      Y = don_desbois %>%
+                                        mutate(Y = if_else(Y == "1", 1, 0)) %>%
+                                        pull(Y)))
+(calibration_data <- check_default_prob %>%
+  mutate(bins_prob = cut(fitted, breaks = quantile(fitted,seq(0,1,0.10)), include.lowest = TRUE)) %>%
+  group_by(bins_prob) %>%
+  summarize(n = n(),
+            def = sum(Y),
+            no_def = n - def,  
+            predict_prob = mean(fitted),
+            real_prob = def/n,
+            forecast_acc = def / sum(check_default_prob$Y)))
+
+(calib_plot <- ggplot(calibration_data, aes(x = predict_prob, y = real_prob)) +
+  geom_point() +
+  geom_abline())
+```
+
+### Stepwise Logistic Regression
+
+Use forward stepwise selection based on the AIC criterion to select variables in the Agriculture Farm Lending data set. Compare with results from the article. 
+```{r}
+# YOUR CODE HERE
+```
+
+We first define lower (intercept only) / upper (all variables) bound models for the stepwise approaches:
+
+```{r}
+#| code-fold: show
+
+#define intercept-only model
+intercept_only <- glm(Y ~ 1, data=don_desbois, family="binomial")
+
+#define model with all predictors
+# In Desbois only financial ratios are used
+all <- glm(Y ~ ., data=don_desbois %>% select(Y, starts_with('r')), family="binomial")
+
+# We use all variables
+# all <- glm(Y ~ ., data=don_desbois , family="binomial")
+```
+Then we use the `stats::step()` function to perform a forward stepwise selection based on AIC:
+
+```{r, warning=FALSE}
+#| code-fold: show
+# perform forward stepwise regression
+forward_aic <- step(intercept_only, direction='forward', test = 'LRT', scope=formula(all), k=2, trace = FALSE)
+summary(forward_aic)
+```
+
+We do the same manually (ie step by step) performing a likelihood-ratio-test-based forward selection (as described in Desbois) using only financial ratios as predictors.
+
+```{r, warning = FALSE}
+#| code-fold: show
+all <- glm(Y ~ ., data=don_desbois %>% select(Y, starts_with('r')), family="binomial")
+
+first_step <- add1(intercept_only, scope = formula(all), test = "LRT")
+first_step <- first_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(first_step)) %>% 
+    arrange(desc(LRT))
+first_step
+```
+
+`r1` is the most significant variable in the first step based on likelihood-ratio-test.
+
+```{r, warning = FALSE}
+#| code-fold: show
+second_step <- add1(update(intercept_only, ~. + r1), scope = formula(all), test = "LRT")
+second_step <- second_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(second_step)) %>% 
+    arrange(desc(LRT))
+second_step
+```
+
+`r21` is the most significant variable in the second step (it differs from the article where r32 is selected (p70, the r32 in R is the same as in article (129.65) but r21 and r14 have higher LRT)).
+
+```{r, warning = FALSE}
+#| code-fold: show
+third_step <- add1(update(intercept_only, ~. + r1 + r21), scope = formula(all), test = "LRT")
+third_step <- third_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(third_step)) %>% 
+    arrange(desc(LRT))
+third_step
+```
+
+`r14` is the most significant variable in the third step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+fourth_step <- add1(update(intercept_only, ~. + r1 + r21 + r14), scope = formula(all), test = "LRT")
+fourth_step <- fourth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(fourth_step)) %>% 
+    arrange(desc(LRT))
+fourth_step
+```
+
+`r17` is the most significant variable in the fourth step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+fifth_step <- add1(update(intercept_only, ~. + r1 + r21 + r14 + r17), scope = formula(all), test = "LRT")
+fifth_step <- fifth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(fifth_step)) %>% 
+    arrange(desc(LRT))
+fifth_step
+```
+
+`r24` is the most significant variable in the fifth step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+sixth_step <- add1(update(intercept_only, ~. + r1 + r21 + r14 + r17 + r24), scope = formula(all), test = "LRT")
+sixth_step <- sixth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(sixth_step)) %>% 
+    arrange(desc(LRT))
+sixth_step
+```
+
+`r11` is the most significant variable in the sixth step.
+
+Equivalently the `step` routine produces the same results:
+
+```{r, warning=FALSE}
+#| code-fold: show
+# perform forward stepwise regression
+forward_aic <- step(intercept_only, direction='forward', test = 'LRT', scope=formula(all), k=2, trace = FALSE)
+summary(forward_aic)
+```
+
+We now perform manual likelihood-ratio-test-based forward selection with override when needed to match the procedure of Desbois article (i.e. forcing the selection of the same variables as in Desbois if `R` procedure disagrees).
+
+```{r, warning = FALSE}
+#| code-fold: show
+first_step_article <- add1(intercept_only, scope = formula(all), test = "LRT")
+first_step_article <- first_step_article %>% 
+    tibble() %>%
+    add_column(variable=row.names(first_step_article)) %>% 
+    arrange(desc(LRT))
+head(first_step, 4)
+```
+
+`r1` is the most significant variable in the first step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+second_step_article <- add1(update(intercept_only, ~. + r1), scope = formula(all), test = "LRT")
+second_step_article <- second_step_article %>% 
+    tibble() %>%
+    add_column(variable=row.names(second_step_article)) %>% 
+    arrange(desc(LRT))
+head(second_step,4)
+```
+
+In the article `r32` is the most significant variable in the second step: we force the selection of `r32` instead of `r21` proposed by `R`. We have exactly the same LRT as in the article:
+
+```{r, warning = FALSE}
+#| code-fold: show
+third_step <- add1(update(intercept_only, ~. + r1 + r32), scope = formula(all), test = "LRT")
+third_step <- third_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(third_step)) %>% 
+    arrange(desc(LRT))
+head(third_step, 4)
+```
+
+Like in the article `r14` is the most significant variable in the third step (with same LRT).
+
+```{r, warning = FALSE}
+#| code-fold: show
+fourth_step <- add1(update(intercept_only, ~. + r1 + r32 + r14), scope = formula(all), test = "LRT")
+fourth_step <- fourth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(fourth_step)) %>% 
+    arrange(desc(LRT))
+head(fourth_step, 4)
+```
+
+In the article `r17` is the most significant variable in the fourth step: : we choose `r17`instead of `r18`.
+
+```{r, warning = FALSE}
+#| code-fold: show
+fifth_step <- add1(update(intercept_only, ~. + r1 + r32 + r14 + r17), scope = formula(all), test = "LRT")
+fifth_step <- fifth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(fifth_step)) %>% 
+    arrange(desc(LRT))
+head(fifth_step,4)
+```
+
+Like in the article `r36` is the most significant variable in the fifth step (with same LRT)
+
+```{r, warning = FALSE}
+#| code-fold: show
+sixth_step <- add1(update(intercept_only, ~. + r1 + r32 + r14 + r17 + r36), scope = formula(all), test = "LRT")
+sixth_step <- sixth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(sixth_step)) %>% 
+    arrange(desc(LRT))
+head(sixth_step, 4)
+```
+
+Like in the article `r12` is the most significant variable in the sixth step (with same LRT). The routine (`SPSS`) in the article stops with this six variables.
+
+![](../images/desbois_forward_stepwise.png){fig-align="center" width="350"}
+Looking at the Appendix of Desbois and `SPSS` documentation, it seems that the `SPSS` procedure `FSTEP` used by Desbois for the study performs a Rao score test instead of LRT so select the variables to entry the model (with a p-value threshold at 1%):
+
+![](../images/desbois_spss.png){fig-align="center" width="500"}
+
+![](../images/desbois_spss_fstep.png){fig-align="center"}
+
+Contrarily to what is claimed in the article:
+
+![](../images/desbois_spss_lrt.png){fig-align="center"}
+
+We now perform a manual (Rao)-score-test-based forward selection, and retrieve the variables selected by Desbois routine:
+
+```{r, warning = FALSE}
+#| code-fold: show
+first_step_article <- add1(intercept_only, scope = formula(all), test = "Rao")
+first_step_article <- first_step_article %>% 
+    tibble() %>%
+    add_column(variable=row.names(first_step_article)) %>% 
+    arrange(desc(`Rao score`))
+head(first_step, 4)
+```
+
+`r1` is the most significant variable in the first step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+second_step_article <- add1(update(intercept_only, ~. + r1), scope = formula(all), test = "Rao")
+second_step_article <- second_step_article %>% 
+    tibble() %>%
+    add_column(variable=row.names(second_step_article)) %>% 
+    arrange(desc(`Rao score`))
+head(second_step,4)
+```
+
+In the article `r32` is the most significant variable in the second step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+third_step <- add1(update(intercept_only, ~. + r1 + r32), scope = formula(all), test = "Rao")
+third_step <- third_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(third_step)) %>% 
+    arrange(desc(`Rao score`))
+head(third_step, 4)
+```
+
+Like in the article `r14` is the most significant variable in the third step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+fourth_step <- add1(update(intercept_only, ~. + r1 + r32 + r14), scope = formula(all), test = "Rao")
+fourth_step <- fourth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(fourth_step)) %>% 
+    arrange(desc(`Rao score`))
+head(fourth_step, 4)
+```
+
+In the article `r17` is the most significant variable in the fourth step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+fifth_step <- add1(update(intercept_only, ~. + r1 + r32 + r14 + r17), scope = formula(all), test = "Rao")
+fifth_step <- fifth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(fifth_step)) %>% 
+    arrange(desc(`Rao score`))
+head(fifth_step,4)
+```
+
+Like in the article `r36` is the most significant variable in the fifth step.
+
+```{r, warning = FALSE}
+#| code-fold: show
+sixth_step <- add1(update(intercept_only, ~. + r1 + r32 + r14 + r17 + r36), scope = formula(all), test = "Rao")
+sixth_step <- sixth_step %>% 
+    tibble() %>%
+    add_column(variable=row.names(sixth_step)) %>% 
+    arrange(desc(`Rao score`))
+head(sixth_step, 4)
+```
+
+Like in the article `r12` is the most significant variable in the sixth step. The routine (`SPSS`) in the article stops with this six variables.
+
+So basically the article prints and focus on a statistic (LRT, Table 13) which is different form the one used by the effective procedure (Rao score test) to perform variable selection, hence the difference with our findings. Also the AIC criterion (based on LRT) implies a higher p-value than the one used by Desbois to stop the procedure, hence more variables are selected by `stats::step()` than Desbois procedure.
+
+R performs automated AIC/BIC based variable selections using (step)
+
+```{r, warning=FALSE}
+#| code-fold: show
+forward_bic <- step(intercept_only, direction='forward', test = 'LRT', scope=formula(all), k=log(nrow(don_desbois)), trace = FALSE)
+summary(forward_bic)
+```
+
+```{r, warning=FALSE}
+#| code-fold: show
+backward_aic <- step(all, direction='backward', test = 'LRT', scope=formula(all), k=2, trace = FALSE)
+summary(backward_aic)
+```
+
+```{r, warning=FALSE}
+#| code-fold: show
+backward_bic <- step(all, direction='backward', test = 'LRT', scope=formula(all), k=log(nrow(don_desbois)), trace = FALSE)
+summary(backward_bic)
+```
+Doing the Stepwise Forward variable selection using both quntitative/qualitative variables:
+
+```{r}
+#| code-fold: show
+#define intercept-only model
+intercept_only_w <- glm(Y ~ 1, data=don_desbois_winsorized, family="binomial")
+
+#define model with all predictors
+all_w <- glm(Y ~ ., data=don_desbois_winsorized, family="binomial")
+
+#perform forward stepwise regression AIC
+forward_aic_w <- step(intercept_only_w, direction='forward', scope=formula(all_w), k=2, trace = FALSE)
+
+#perform forward stepwise regression BIC
+forward_bic_w <- step(intercept_only_w, direction='forward', scope=formula(all_w), k=log(nrow(don_desbois_winsorized)), trace = FALSE)
+```
+
+```{r}
+#| code-fold: show
+summary(forward_aic_w)
+```
+
+### Penalized Logistic Regression
+
+Perform penalized logistic regression with the Desbois data set. You can find help [here](https://glmnet.stanford.edu/articles/glmnet.html#logistic-regression-family-binomial).
+
+```{r}
+# YOUR CODE HERE
+```
+
+For example below we show the lasso "path" of coefficients when increasing $\lambda$ (from right to left).
+
+```{r}
+#| code-fold: show
+
+Y <- don_desbois %>% pull(Y)
+desbois_lasso <- glmnetUtils::glmnet(Y ~ ., data=don_desbois, family="binomial", alpha=1)
+
+plot(desbois_lasso)
+```
+
+We can extract for each $\lambda$ the value of coefficients:
+
+```{r}
+#| code-fold: show
+lasso_result <- as_tibble(as.matrix(cbind(desbois_lasso$lambda, t(as.matrix(desbois_lasso$beta)))))
+names(lasso_result) <-  c("lambda", row.names(desbois_lasso$beta))
+lasso_result
+```
+
+`glmnet` also provides an automatic and efficient procedure to select $\lambda$ implementing K-fold Cross-Validation (see next question for an example implementation of the K-fold Cross-Validation method in general).
+
+Functions `glmnet::cv.glmnet` / `glmnetUtils::cv.glmnet` fit the lasso path (ie multiple penalized models for multiple values of lambda) with the selection of the best lambda by K-Fold Cross-Validation (by default 10-fold) using a given criterion such as the AUC (`type.measure = "auc"`).
+
+The function computes two optimal values: `lambda.min` is the value of lambda that gives minimum mean Cross-validated criterion; `lambda.1se` is the value of lambda that gives the most regularized model (highest lambda) such that the Cross-validated criterion is within one standard error of the minimum, it favours penalization/parsimony versus `lambda.min` (see [here](https://stats.stackexchange.com/questions/138569/why-is-lambda-within-one-standard-error-from-the-minimum-is-a-recommended-valu)).
+
+```{r}
+#| code-fold: show
+
+# glmnet::cv.glmnet / glmnetUtils::cv.glmnet fit the lasso path (ie multiple penalized models for multiple values of lambda) 
+# with selection of the best lambda by cross-validation (by default 10-fold)
+# using a given criterion (type.measure = "auc")
+desbois_lasso_cv <- glmnetUtils::cv.glmnet(Y ~ ., data=don_desbois, family="binomial", alpha=1, type.measure = "auc")
+
+
+# We can extract model coefficients for lambda = lambda.1se
+lasso_coeffs <- coef(desbois_lasso_cv, s = "lambda.1se")
+data.frame(name = lasso_coeffs@Dimnames[[1]][lasso_coeffs@i + 1], coefficient = lasso_coeffs@x)
+```
+
+By default the `predict` function for a `cv.glmnet` model uses `lambda.1se`, but we can specify any value of lambda, in particular `lambda.min`, also note that the predict function outputs a `matrix` (`predict` functions in `R` outputs a vector in general):
+
+```{r}
+#| code-fold: show
+#| 
+tibble(one_se = as.vector(predict(desbois_lasso_cv, newdata = don_desbois, s = desbois_lasso_cv$lambda.1se, type = "response")),# specifying lambda = lambda.1se
+       min = as.vector(predict(desbois_lasso_cv, newdata = don_desbois, s = desbois_lasso_cv$lambda.min, type = "response")),# specifying lambda = lambda.min
+       default = as.vector(predict(desbois_lasso_cv, newdata = don_desbois,  type = "response"))) # by default lambda = lambda.1se for a cv.glmnet model
+```
+
+```{r}
+# for ROCR
+labels_desbois <- don_desbois$Y
+
+# naive score
+predictions_naive_score <- naive_score$Dim.1
+
+naive_score_group <- naive_score %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(Dim.1), n = n())
+
+cutoff_naive <- mean(naive_score_group$mean_score)
+
+pred <- prediction(predictions_naive_score, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "darkolivegreen", 
+     print.cutoffs.at = c(cutoff_naive), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+abline(0, 1) #add a 45 degree line
+
+# lda
+predictions_lda <- predict(lda_desbois)$x
+
+lda_score_group <- bind_cols(don_desbois, predictions_lda) %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(LD1), n = n())
+
+cutoff_lda <- mean(lda_score_group$mean_score)
+
+pred <- prediction(predictions_lda, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, add = TRUE, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "plum4",
+     print.cutoffs.at = c(cutoff_lda), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+
+# glm
+predictions_glm <- predict(glm_desbois, type='response')
+
+glm_score_group <- bind_cols(don_desbois, tibble(pred_glm =predictions_glm)) %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(pred_glm), n = n())
+
+cutoff_glm <- mean(glm_score_group$mean_score)
+
+pred <- prediction(predictions_glm, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, add = TRUE, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "dodgerblue",
+     print.cutoffs.at = c(cutoff_glm), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+
+
+# glm - lasso
+predictions_lasso <- as.vector(predict(desbois_lasso_cv, newdata = don_desbois, s = desbois_lasso_cv$lambda.1se, type = "response"))
+
+lasso_score_group <- bind_cols(don_desbois, tibble(pred_lasso =predictions_lasso)) %>%
+  group_by(Y) %>%
+  summarize(mean_score = mean(pred_lasso), n = n())
+
+cutoff_lasso <- mean(lasso_score_group$mean_score)
+
+pred <- prediction(predictions_lasso, labels_desbois)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, add = TRUE, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "darkorange",
+     print.cutoffs.at = c(cutoff_lasso), 
+     cutoff.label.function = function(x) {paste0("                s = ",round(x,2))})
+legend(0.6,0.6,
+       c('naive - PCA', 'LDA', 'Logistic', 'Lasso'),
+       col=c("darkolivegreen", "plum4", "dodgerblue", "darkorange"),lwd=4)
+```
+
+### Model assessment
+
+#### Hold-out
+
+Perform a simple Hold-out approach (train/test split) and evaluate ROC / AUC for some `glm()` model specification of your choice (ie choose manually a subset of variables), you might take inspiration from this [book chapter](https://bradleyboehmke.github.io/HOML/process.html)
+
+```{r}
+# YOUR CODE HERE
+```
+
+We choose 70%/30% split of the data set (training and testing set). Here the data set is balanced and train/test split using a simple random sampling shows a similar distribution of default:
+
+```{r}
+#| code-fold: show
+# Using base R
+set.seed(1987)  # for reproducibility
+index_1 <- sample(1:nrow(don_desbois), round(nrow(don_desbois) * 0.7))
+train_1 <- don_desbois[index_1, ]
+test_1  <- don_desbois[-index_1, ]
+
+# table(don_desbois$Y) %>% prop.table()
+#        0        1 
+# 0.518254 0.481746
+
+# table(train_1$Y) %>% prop.table()
+#         0         1 
+# 0.5136054 0.4863946 
+
+# table(test_1$Y) %>% prop.table()
+#         0         1 
+# 0.5291005 0.4708995 
+
+# Using rsample package
+set.seed(1987)  # for reproducibility
+split_1  <- rsample::initial_split(don_desbois, prop = 0.7)
+train_2  <- rsample::training(split_1)
+test_2   <- rsample::testing(split_1)
+
+# table(train_2$Y) %>% prop.table()
+#         0         1 
+# 0.5136054 0.4863946 
+
+# table(test_2$Y) %>% prop.table()
+#         0         1 
+# 0.5291005 0.4708995 
+
+```
+
+In case we want to avoid the split of an already imbalanced data set to further skew distributions we may want to use [Stratified sampling](https://rsample.tidymodels.org/articles/Common_Patterns.html#stratified-resampling):
+
+```{r}
+#| code-fold: show
+set.seed(1987)
+split_strat  <- rsample::initial_split(don_desbois, prop = 0.7, 
+                              strata = "Y")
+train_strat  <- rsample::training(split_strat)
+test_strat   <- rsample::testing(split_strat)
+
+# table(don_desbois$Y) %>% prop.table()
+#        0        1 
+# 0.518254 0.481746
+
+# table(train_strat$Y) %>% prop.table()
+#         0         1 
+# 0.5187287 0.4812713  
+
+# table(test_strat$Y) %>% prop.table()
+#         0         1 
+# 0.5171504 0.4828496 
+
+```
+
+We obtain the AUC and plot the ROC curves for training (for information only) and testing sets (the one we are interested in to assess models):
+
+```{r}
+#| code-fold: show
+#fit logistic regression model
+model_desbois <- glm(Y ~ STATUS + HECTARE + r1 + r3 + r17 + r24 + r28 + r36,
+                     data = train_strat,
+                     family = "binomial")
+
+# plot ROC / compute AUC for the training set
+pred_train <- ROCR::prediction(model_desbois$fitted.values, train_strat$Y)
+perf_train <- ROCR::performance(pred_train, measure = "tpr", x.measure = "fpr")
+plot(perf_train, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "darkorange")
+abline(0, 1) #add a 45 degree line
+
+auc_train <- ROCR::performance(pred_train, measure = "auc")
+auc_train <- auc_train@y.values[[1]]
+auc_train 
+# auc_train
+# 0.9630589
+
+# use fitted model to predict value on testing set
+test_predict <- predict(model_desbois, newdata=test_strat, type="response")
+
+# plot ROC / compute AUC for the training set
+pred_test <- ROCR::prediction(test_predict, test_strat$Y)
+perf_test <- ROCR::performance(pred_test, measure = "tpr", x.measure = "fpr")
+plot(perf_test, add = TRUE, main="ROC curve Admissions", xlab="Specificity",
+     ylab="Sensitivity", col = "dodgerblue")
+
+auc_test <- ROCR::performance(pred_test, measure = "auc")
+auc_test <- auc_test@y.values[[1]]
+auc_test
+# auc_test
+# 0.9642021
+
+# As in the Desbois article, the AUC figures are around 0.96 
+```
+
+#### K-fold cross validation
+
+Perform k-fold cross validation and for each fold evaluate ROC / AUC for the same models as before
+
+```{r}
+# YOUR CODE HERE
+```
+
+First leveraging `rsample`, the `tidyverse` and stackoverflow, efficient and compact but difficult to understand or tweak:
+
+Splitting the data set into 10 folds or blocks:
+
+```{r, warning=FALSE, message=FALSE}
+#| code-fold: show
+set.seed(1987)
+folds_10  <- rsample::vfold_cv(train_strat, v = 10)
+
+cvfun <- function(split, ...){
+  mod <- glm(Y ~ STATUS + HECTARE + r1 + r3 + r17 + r24 + r28 + r36,
+             data=rsample::analysis(split),
+             family=binomial)
+  fit <- predict(mod, newdata=rsample::assessment(split), type="response")
+  data.frame(fit = fit, y = model.response(model.frame(formula(mod), data=rsample::assessment(split))))
+}
+
+cv_out <- folds_10 %>% 
+    mutate(fit = purrr::map(splits, cvfun)) %>% 
+    unnest(fit) %>% 
+    group_by(id) %>% 
+    summarise(auc = pROC::roc(y, fit, plot=FALSE)$auc[1])
+```
+
+```{r, warning=FALSE, message=FALSE, warning = FALSE}
+#| code-fold: show
+# https://stackoverflow.com/questions/66000977/roc-with-cross-validation-for-linear-regression-in-r
+cv_out_plot <- folds_10 %>% 
+  mutate(fit = map(splits, cvfun)) %>% 
+  unnest(fit) %>% 
+  group_by(id) %>% 
+  summarise(sens = pROC::roc(y, fit, plot=FALSE)$sensitivities, 
+              spec = pROC::roc(y, fit, plot=FALSE)$specificities, 
+              obs = 1:length(sens))
+
+ave <- cv_out_plot %>% 
+  ungroup %>% 
+  group_by(obs) %>% 
+  summarise(sens = mean(sens), 
+            spec = mean(spec), 
+            id = "Average")
+
+cv_out_plot <- bind_rows(cv_out_plot, ave) %>% 
+  mutate(col = factor(ifelse(id == "Average", "Average", "Individual"), 
+                      levels=c("Individual", "Average")))
+
+ggplot(cv_out_plot , aes(x=1-sens, y=spec, group=id, colour=col)) + 
+  geom_line(aes(size=col, alpha=col)) + 
+  scale_colour_manual(values=c("black", "red")) + 
+  scale_size_manual(values=c(.5,1.25)) + 
+  scale_alpha_manual(values=c(.3, 1)) + 
+  theme_classic() + 
+  theme(legend.position=c(.75, .15)) + 
+  labs(x="1-Sensitivity", y="Specificity", colour="", alpha="", size="")
+```
+
+We implement k-fold cross validation (using AUC as metric) from scratch.
+
+It is a less efficient and lengthy code than before, but it is also easier to understand and adapt to your needs. We commented the code below as it takes time to run, launching five times a 10-fold Cross Validation for 10 different models, (alternatively you can diminish the repeat and fold number):
+
+```{r, warning=FALSE, message=FALSE}
+#| code-fold: show
+# Set to TRUE to run, can be very slow
+RUN = FALSE
+set.seed(1987)
+
+if(RUN){
+  res_list <- list()
+   
+  # we repeat the k-fold cross validation nb_iter times
+  nb_iter <- 5 # Usually 5 x 10 fold validation, set to 1 if too slow
+   
+  for (j in 1:nb_iter) {
+   
+  # we split randomly the dataset into 10 folds
+   
+        nb_blocks <- 10 # number of folds/blocks, set to 5 if too low
+        blocks <- sample(rep(1:nb_blocks,nrow(don_desbois))[1:nrow(don_desbois)])
+   
+        result <- data.frame(matrix(nrow=dim(don_desbois),ncol=10))
+  
+       for (i in 1:nb_blocks) {
+             print(i)
+  
+             # we sequentially use each fold as a testing set / the complement being used as training set
+             XX_train <- don_desbois[blocks!=i,]
+             XX_test <- don_desbois[blocks==i,]
+  
+             # we then fit different models we want to assess
+  
+             # glm full (ie a logistic regression with all variables)
+             class1 <- glm(Y ~ .,
+                           data=XX_train,
+                           family=binomial)
+             # glm desbois (ie a logistic regression with the variables selected by Desbois)
+             class2 <- glm(Y ~ r1 + r32 + r14 + r17 + r36 + r12,
+                           data=XX_train,
+                           family=binomial)
+  
+             # stepwise methods
+  
+             # the forward methods need to start with a simple model, here with only the intercept
+  
+             intercept_only <- glm(Y ~ 1, data=XX_train, family="binomial")
+  
+             # forward aic
+             class3 <- step(intercept_only, direction='forward', test = 'LRT', scope=formula(class1),
+                            k=2, trace = FALSE)
+             # forward bic
+             class4 <- step(intercept_only, direction='forward', test = 'LRT', scope=formula(class1),
+                            k=log(nrow(don_desbois)), trace = FALSE)
+  
+             # backward methods start usually from a full model
+  
+             # backward aic
+             class5 <- step(class1, direction='backward', test = 'LRT', scope=formula(class1),
+                            k=2, trace = FALSE)
+             # backward bic
+             class6 <- step(class1, direction='backward', test = 'LRT', scope=formula(class1),
+                            k=log(nrow(don_desbois)), trace = FALSE)
+  
+             # we test here penalized logistic regression approaches,
+             # selecting the best penalization parameters lambda in terms of AUC using glmnet cv.glmnet function
+             # this function implementing a k-fold cross-validation for glmnet, and producing two 'optimal' values of lambda
+             # lambda.min (value of lambda that gives minimum metric (here AUC so maximum) and
+             # lambda.1se (largest value of lambda such that metric is within 1 standard error of the minimum (here AUC so maximum) metric)
+             # the lambda.1se is used by the predict function of glmnet
+             # using lambda.1se is an heuristic so you can challenge it, below the justification of the authors for the use of 1se:
+             # "We often use the “one-standard-error” rule when selecting the best model; this acknowledges the fact that the risk curves
+             # are estimated with error, so errs on the side of parsimony."
+             # see also here https://stats.stackexchange.com/questions/138569/why-is-lambda-within-one-standard-error-from-the-minimum-is-a-recommended-valu
+  
+             # more details on glmnet here https://glmnet.stanford.edu/articles/glmnet.html or in the Elements of Statistical learning
+  
+             # penalized regression
+             # ridge
+             # class7 <- cv.glmnet(as.matrix(XX_train[,-which(names(XX_train)=="maxO3")]),XX_train$maxO3,alpha=0)
+             class7  <- glmnetUtils::cv.glmnet(Y ~ ., data=XX_train, family="binomial", alpha=0, type.measure = "auc")
+             # lasso
+             # class8 <- cv.glmnet(as.matrix(XX_train[,-which(names(XX_train)=="maxO3")]),XX_train$maxO3,alpha=1)
+             class8  <- glmnetUtils::cv.glmnet(Y ~ ., data=XX_train, family="binomial", alpha=1, type.measure = "auc")
+             # elastic-net
+             # class9 <- cv.glmnet(as.matrix(XX_train[,-which(names(XX_train)=="maxO3")]),XX_train$maxO3,alpha=0.5)
+             class9  <- glmnetUtils::cv.glmnet(Y ~ ., data=XX_train, family="binomial", alpha=0.5, type.measure = "auc")
+  
+             # cart
+             class10 <- rpart::rpart(Y~., data = XX_train, method = "class")
+  
+             # we save predictions on test set for later use (for example plotting ROC curves or computing AUC or any other metric)
+  
+             result[blocks==i,1] = predict(class1, newdata=XX_test, type = "response")
+             result[blocks==i,2] = predict(class2, newdata=XX_test, type = "response")
+             result[blocks==i,3] = predict(class3, newdata=XX_test, type = "response")
+             result[blocks==i,4] = predict(class4, newdata=XX_test, type = "response")
+             result[blocks==i,5] = predict(class5, newdata=XX_test, type = "response")
+             result[blocks==i,6] = predict(class6, newdata=XX_test, type = "response")
+             # penalized - glmnet
+             result[blocks==i,7] = as.vector(predict(class7, newdata=XX_test, type = "response"))
+             result[blocks==i,8] = as.vector(predict(class8, newdata=XX_test, type = "response"))
+             result[blocks==i,9] = as.vector(predict(class9, newdata=XX_test, type = "response"))
+             # cart
+             result[blocks==i,10] = predict(class10, newdata=XX_test, type = "prob")[, 2]
+  
+       }
+  
+      # we give names to the result columns corresponding to the models assessed
+       names(result) <- c("glm full",
+                          "glm desbois",
+                          "forward aic",
+                          "forward bic",
+                          "backward aic",
+                          "backward bic",
+                          "ridge",
+                          "lasso",
+                          "elastic-net",
+                          "cart")
+  
+       # as the AUC is the metric requested, we define a function to compute the AUC given a Scoring/Probabilities vector X and a output/response vector of true
+       # values Y
+       auc <- function(X,Y){
+              pred <- ROCR::prediction(X, Y)
+              auc <- ROCR::performance(pred, measure = "auc")
+              auc <- auc@y.values[[1]]
+       }
+       # we compute the AUC to each of the fitted models
+       res_list[[j]] = list(auc = apply(result, 2, auc, Y=don_desbois$Y), result = result)
+  }
+  
+  # saving/persisting to rds for latter use
+  saveRDS(res_list, "res_list.rds")
+}
+
+```
+
+```{r, warning=FALSE, message=FALSE}
+#| code-fold: show
+# Uncomment to run, can be slow
+# set.seed(1987)
+# 
+#res_list <- list()
+# 
+# # we repeat the k-fold cross validation nb_iter times
+# nb_iter <- 5 # Usually 5 x 10 fold validation, set to 1 if too low
+# 
+# for (j in 1:nb_iter) {
+# 
+# # we split randomly the dataset into 10 folds
+# 
+#      nb_blocks <- 10 # number of folds/blocks, set to 5 if too low
+#      blocks <- sample(rep(1:nb_blocks,nrow(don_desbois))[1:nrow(don_desbois)])
+# 
+#      result <- data.frame(matrix(nrow=dim(don_desbois),ncol=10))
+# 
+#      for (i in 1:nb_blocks) {
+#            print(i)
+# 
+#            # we sequentially use each fold as a testing set / the complement being used as training set
+#            XX_train <- don_desbois[blocks!=i,]
+#            XX_test <- don_desbois[blocks==i,]
+# 
+#            # we then fit different models we want to assess
+# 
+#            # glm full (ie a logistic regression with all variables)
+#            class1 <- glm(Y ~ .,
+#                          data=XX_train,
+#                          family=binomial)
+#            # glm desbois (ie a logistic regression with the variables selected by Desbois)
+#            class2 <- glm(Y ~ r1 + r32 + r14 + r17 + r36 + r12,
+#                          data=XX_train,
+#                          family=binomial)
+# 
+#            # stepwise methods
+# 
+#            # the forward methods need to start with a simple model, here with only the intercept
+# 
+#            intercept_only <- glm(Y ~ 1, data=XX_train, family="binomial")
+# 
+#            # forward aic
+#            class3 <- step(intercept_only, direction='forward', test = 'LRT', scope=formula(class1),
+#                           k=2, trace = FALSE)
+#            # forward bic
+#            class4 <- step(intercept_only, direction='forward', test = 'LRT', scope=formula(class1),
+#                           k=log(nrow(don_desbois)), trace = FALSE)
+# 
+#            # backward methods start usually from a full model
+# 
+#            # backward aic
+#            class5 <- step(class1, direction='backward', test = 'LRT', scope=formula(class1),
+#                           k=2, trace = FALSE)
+#            # backward bic
+#            class6 <- step(class1, direction='backward', test = 'LRT', scope=formula(class1),
+#                           k=log(nrow(don_desbois)), trace = FALSE)
+# 
+#            # we test here penalized logistic regression approaches, 
+#            # selecting the best penalization parameters lambda in terms of AUC using glmnet cv.glmnet function
+#            # this function implementing a k-fold cross-validation for glmnet, and producing two 'optimal' values of lambda
+#            # lambda.min (value of lambda that gives minimum metric (here AUC so maximum) and 
+#            # lambda.1se (largest value of lambda such that metric is within 1 standard error of the minimum (here AUC so maximum) metric)
+#            # the lambda.1se is used by the predict function of glmnet
+#            # using lambda.1se is an heuristic so you can challenge it, below the justification of the authors for the use of 1se:
+#            # "We often use the “one-standard-error” rule when selecting the best model; this acknowledges the fact that the risk curves 
+#            # are estimated with error, so errs on the side of parsimony."
+#            # see also here https://stats.stackexchange.com/questions/138569/why-is-lambda-within-one-standard-error-from-the-minimum-is-a-recommended-valu
+#            
+#            # more details on glmnet here https://glmnet.stanford.edu/articles/glmnet.html or in the Elements of Statistical learning
+#            
+#            # penalized regression
+#            # ridge
+#            # class7 <- cv.glmnet(as.matrix(XX_train[,-which(names(XX_train)=="maxO3")]),XX_train$maxO3,alpha=0)
+#            class7  <- glmnetUtils::cv.glmnet(Y ~ ., data=XX_train, family="binomial", alpha=0, type.measure = "auc")
+#            # lasso
+#            # class8 <- cv.glmnet(as.matrix(XX_train[,-which(names(XX_train)=="maxO3")]),XX_train$maxO3,alpha=1)
+#            class8  <- glmnetUtils::cv.glmnet(Y ~ ., data=XX_train, family="binomial", alpha=1, type.measure = "auc")
+#            # elastic-net
+#            # class9 <- cv.glmnet(as.matrix(XX_train[,-which(names(XX_train)=="maxO3")]),XX_train$maxO3,alpha=0.5)
+#            class9  <- glmnetUtils::cv.glmnet(Y ~ ., data=XX_train, family="binomial", alpha=0.5, type.measure = "auc")
+# 
+#            # cart
+#            class10 <- rpart::rpart(Y~., data = XX_train, method = "class")
+# 
+#            # we save predictions on test set for later use (for example plotting ROC curves or computing AUC or any other metric)
+# 
+#            result[blocks==i,1] = predict(class1, newdata=XX_test, type = "response")
+#            result[blocks==i,2] = predict(class2, newdata=XX_test, type = "response")
+#            result[blocks==i,3] = predict(class3, newdata=XX_test, type = "response")
+#            result[blocks==i,4] = predict(class4, newdata=XX_test, type = "response")
+#            result[blocks==i,5] = predict(class5, newdata=XX_test, type = "response")
+#            result[blocks==i,6] = predict(class6, newdata=XX_test, type = "response")
+#            # penalized - glmnet
+#            result[blocks==i,7] = as.vector(predict(class7, newdata=XX_test, type = "response"))
+#            result[blocks==i,8] = as.vector(predict(class8, newdata=XX_test, type = "response"))
+#            result[blocks==i,9] = as.vector(predict(class9, newdata=XX_test, type = "response"))
+#            # cart
+#            result[blocks==i,10] = predict(class10, newdata=XX_test, type = "prob")[, 2]
+# 
+#      }
+# 
+#     # we give names to the result columns corresponding to the models assessed
+#      names(result) <- c("glm full",
+#                         "glm desbois",
+#                         "forward aic",
+#                         "forward bic",
+#                         "backward aic",
+#                         "backward bic",
+#                         "ridge",
+#                         "lasso",
+#                         "elastic-net",
+#                         "cart")
+# 
+#      # as the AUC is the metric requested, we define a function to compute the AUC given a Scoring/Probabilities vector X and a output/response vector of true
+#      # values Y
+#      auc <- function(X,Y){
+#             pred <- ROCR::prediction(X, Y)
+#             auc <- ROCR::performance(pred, measure = "auc")
+#             auc <- auc@y.values[[1]]
+#      }
+#      # we compute the AUC to each of the fitted models
+#      res_list[[j]] = list(auc = apply(result, 2, auc, Y=don_desbois$Y), result = result)
+# }
+# 
+# # saving/persisting to rds for latter use
+# saveRDS(res_list, "res_list.rds")
+```
+
+```{r}
+res_list <- readRDS("res_list.rds")
+res_list[[1]]$auc
+res_list[[2]]$auc
+```
+
+
