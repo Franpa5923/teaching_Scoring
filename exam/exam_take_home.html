@@ -102,7 +102,11 @@ div.csl-indent {
    
   <ul>
   <li><a href="#exercise-lasso-choice-of-lambda-using-hold-out-cross-validation-25-total-points" id="toc-exercise-lasso-choice-of-lambda-using-hold-out-cross-validation-25-total-points" class="nav-link active" data-scroll-target="#exercise-lasso-choice-of-lambda-using-hold-out-cross-validation-25-total-points"><span class="header-section-number">1</span> Exercise: Lasso: choice of lambda using hold out / cross-validation (25% total points)</a></li>
-  <li><a href="#exercise-decision-trees-35-total-points" id="toc-exercise-decision-trees-35-total-points" class="nav-link" data-scroll-target="#exercise-decision-trees-35-total-points"><span class="header-section-number">2</span> Exercise: Decision trees (35% total points)</a></li>
+  <li><a href="#exercise-decision-trees-35-total-points" id="toc-exercise-decision-trees-35-total-points" class="nav-link" data-scroll-target="#exercise-decision-trees-35-total-points"><span class="header-section-number">2</span> Exercise: Decision trees (35% total points)</a>
+  <ul class="collapse">
+  <li><a href="#cartrpart" id="toc-cartrpart" class="nav-link" data-scroll-target="#cartrpart"><span class="header-section-number">2.1</span> <code>CART/rpart</code></a></li>
+  <li><a href="#gradient-boosting" id="toc-gradient-boosting" class="nav-link" data-scroll-target="#gradient-boosting"><span class="header-section-number">2.2</span> Gradient boosting</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="exam_take_home.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
@@ -168,31 +172,30 @@ div.csl-indent {
 <section id="exercise-decision-trees-35-total-points" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Exercise: Decision trees (35% total points)</h1>
 <p><strong>TO DO at-home</strong></p>
+<section id="cartrpart" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="cartrpart"><span class="header-section-number">2.1</span> <code>CART/rpart</code></h2>
 <ul>
-<li><p><code>CART/rpart</code></p>
-<ul>
-<li>Using the data set <code>financial_data_scaled_exam</code>, build and plot a decision tree of your choice using <code>rpart</code>. You can use default parameters or tweak it and this way learn their effect. (see for example 2. Building the tree <a href="https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf">here</a></li>
-</ul></li>
+<li><p>Using the data set <code>financial_data_scaled_exam</code>, build and plot a decision tree of your choice using <code>rpart</code>. You can use default parameters or tweak it and this way learn their effect. (see for example 2. Building the treecin <code>rpart</code> vignette <a href="https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf">here</a>).</p></li>
+<li><p>Try to display class probabilities and number of observations per node/leaf (for that explore functions <code>rpart.plot</code> or <code>pdp</code> from package <code>rpart.plot</code> see <a href="http://www.milbo.org/doc/prp.pdf">vignette</a>).</p></li>
 </ul>
-<p>Try to display class probabilities and number of observations per node/leaf (for that explore functions <code>rpart.plot</code> or <code>pdp</code> from package <code>rpart.plot</code> see <a href="http://www.milbo.org/doc/prp.pdf">vignette</a>).</p>
 <div class="cell" data-hash="exam_take_home_cache/html/unnamed-chunk-8_0977b0f926756a35f704b9172a66b4d4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Explain briefly how the score / probabilities / class are assigned to a single observation using the tree.</p>
 <ul>
-<li>Playing with <code>rpart</code> parameters (in particular those inside <code>rpart.control</code>), fit, plot, then compare a “large/deep” decision tree and a “smaller/shallower” tree in terms of ROC/AUC/prediction on the holdout set from the exam. Looking at the ROC curves, especially those of the smaller tree, you should remark something peculiar with the ROC curve aspect, can you explain?</li>
+<li>Playing with <code>rpart</code> parameters (in particular those inside <code>rpart.control</code>), fit, plot, then compare a “larger/deeper” decision tree and a “smaller/shallower” tree in terms of ROC/AUC/prediction on the holdout set from the exam. Looking at the ROC curves, especially those of the smaller tree, you should remark something peculiar with the ROC curve aspect, can you explain?</li>
 </ul>
 <div class="cell" data-hash="exam_take_home_cache/html/unnamed-chunk-9_2df54fdda252bcc887fd83d526de851c">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Try to understand the pruning process of a decision tree. You don’t have to understand deeply the pruning algorithm but understand what is at stake in the process (see for example 4. Pruning the tree of package <code>rpart</code> vignette <a href="https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf">here</a> or chapter 9. Additive Models, Trees, and Related Methods, p.&nbsp;308 of <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#ref-hastie2009" role="doc-biblioref">2009</a>)</span>) and also how to prune a tree with <code>rpart</code>. Display the output of the <code>printcp</code> function for your larger/deeper tree, look at the package documentation to undertand the meaning of the columns:</li>
+<li>Try to understand the pruning process of a decision tree. You don’t have to understand deeply the pruning algorithm but understand what is at stake in the process (see for example 4. Pruning the tree of package <code>rpart</code> vignette <a href="https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf">here</a> or chapter 9. Additive Models, Trees, and Related Methods, p.&nbsp;308 of <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#ref-hastie2009" role="doc-biblioref">2009</a>)</span>) and also how to prune a tree with in practice <code>rpart</code>. Display the output of the <code>printcp</code> function for your “larger/deeper” tree, look at the package documentation to understand the meaning of the columns:</li>
 </ul>
 <div class="cell" data-hash="exam_take_home_cache/html/unnamed-chunk-10_02907d859d2ea199dfe15f64a4bc2fdd">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Choose an arbitrary terminal number of leaves (closely linked to the number of splits <code>nsplits</code>) and the corresponding <code>cp</code> parameter, then prune the tree using the <code>prune</code> function. and <code>cp</code> parmeter:</li>
+<li>Choose an arbitrary terminal number of leaves (closely linked to the number of splits <code>nsplits</code>) and the corresponding <code>cp</code> parameter, then prune the tree using the <code>prune</code> function. and <code>cp</code> parameter:</li>
 </ul>
 <div class="cell" data-hash="exam_take_home_cache/html/unnamed-chunk-11_b389a9699d540bf928477f2bf0e83d0f">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -203,9 +206,9 @@ div.csl-indent {
 <div class="cell" data-hash="exam_take_home_cache/html/unnamed-chunk-12_890bf76bf26ac889bc0d626d6578cb3c">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ul>
-<li>Gradient boosting</li>
-</ul>
+</section>
+<section id="gradient-boosting" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="gradient-boosting"><span class="header-section-number">2.2</span> Gradient boosting</h2>
 <p>Using a gradient boosting package of your choice <code>gbm</code> or <code>xgboost</code>, assess the hyperparameters (i) number of boosting iterations, (ii) learning rate and (iii) weak learner complexity (decision tree depth, min number of observations) on the financial_data_scaled_exam data. You can use learning curves (ie misclassification error or AUC on testing set versus number of iterations) or ROC curves. You can take inspiration from this short example from scikit-learn documentation <a href="https://scikit-learn.org/stable/auto_examples/ensemble/plot_gradient_boosting_regularization.html">here</a>) which reproduces figures from <span class="citation" data-cites="hastie2009">Hastie et al. (<a href="#ref-hastie2009" role="doc-biblioref">2009</a>)</span> (Chapter 10 Boosting and Additive Trees, figures 10.9/11/12). Time permitting you can also compare the logistic loss (<code>bernoulli</code>) with the exponential loss (<code>adaboost</code>).</p>
 <div class="cell" data-hash="exam_take_home_cache/html/unnamed-chunk-13_805c3ef4158123b19e5460c9433e46e0">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># YOUR CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -239,6 +242,7 @@ div.csl-indent {
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#             tree_method = "exact") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
