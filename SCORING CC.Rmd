@@ -1,0 +1,27 @@
+---
+title: "Scoring_GONZALEZ_FRANCISCO"
+author: "FRANCISCO GONZALEZ GARCIA"
+date: "2025-10-11"
+output: html_document
+---
+
+```{r}
+# # UNCOMMENT IF NEEDED
+packages <- c("tidyverse", "ROCR", "car", "aod", "broom", "rsample", "bestglm",
+"glmnet", "glmnetUtils", "DescTools", "splines", "rpart", "rpart.plot", "ada", "gbm","xgboost")
+
+ # # Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+install.packages(packages[!installed_packages])
+}
+ # # Packages loading
+invisible(lapply(packages, library, character.only = TRUE))
+
+ #
+
+additional_packages <- c( "purrr", "pROC", "foreign", "patchwork", "class",
+"scales")
+```
+
+upda
